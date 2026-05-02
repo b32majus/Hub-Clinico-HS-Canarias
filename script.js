@@ -887,6 +887,103 @@ function PatientAutocomplete(inputEl, opts) {
     self.close = close;
 }
 
+// === Búsqueda de pacientes por NHC (Enter, iconos, clear, sync) ===
+
+function initPatientSearch() {
+  const sidebarInput = document.getElementById('patientSearch');
+  const centralInput = document.getElementById('patientId');
+  const clearBtn = document.getElementById('clearPatientSearch');
+
+  function normalizeNHC(value) {
+    return String(value || '').trim();
+  }
+
+  function ensureDatabaseReady() {
+    if (HubTools?.data?.isLoaded) return true;
+    if (typeof HubTools?.data?.initDatabaseFromStorage === 'function') {
+      return !!HubTools.data.initDatabaseFromStorage();
+    }
+    return false;
+  }
+
+  function runSearch(value) {
+    const nhc = normalizeNHC(value);
+    if (!nhc) return;
+
+    if (!ensureDatabaseReady()) {
+      if (typeof HubTools?.utils?.mostrarNotificacion === 'function') {
+        HubTools.utils.mostrarNotificacion('Cargue la base de datos antes de buscar pacientes.', 'warning');
+      } else {
+        alert('Cargue la base de datos antes de buscar pacientes.');
+      }
+      return;
+    }
+
+    showPatientResults(nhc);
+  }
+
+  function syncInputs(value, source) {
+    if (sidebarInput && source !== sidebarInput) sidebarInput.value = value;
+    if (centralInput && source !== centralInput) centralInput.value = value;
+    if (clearBtn) clearBtn.classList.toggle('hidden', !value);
+  }
+
+  function bindInput(input) {
+    if (!input || input.dataset.searchBound === 'true') return;
+    input.dataset.searchBound = 'true';
+
+    let timer = null;
+
+    input.addEventListener('input', () => {
+      const value = normalizeNHC(input.value);
+      syncInputs(value, input);
+
+      clearTimeout(timer);
+      if (value.length < 3) return;
+
+      timer = setTimeout(() => {
+        runSearch(value);
+      }, 250);
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        runSearch(input.value);
+      }
+    });
+  }
+
+  bindInput(sidebarInput);
+  bindInput(centralInput);
+
+  if (clearBtn && clearBtn.dataset.searchBound !== 'true') {
+    clearBtn.dataset.searchBound = 'true';
+    clearBtn.addEventListener('click', () => {
+      if (sidebarInput) sidebarInput.value = '';
+      if (centralInput) centralInput.value = '';
+      clearBtn.classList.add('hidden');
+
+      const searchResults = document.getElementById('searchResults');
+      const dashboardContent = document.getElementById('dashboardContent');
+      const quickViewOverlay = document.getElementById('quickViewOverlay');
+
+      if (searchResults) searchResults.classList.add('hidden');
+      if (quickViewOverlay) quickViewOverlay.classList.add('hidden');
+      if (dashboardContent) dashboardContent.classList.remove('hidden');
+      document.body.classList.remove('quick-view-open');
+    });
+  }
+
+  document.querySelector('.search-container .search-icon')?.addEventListener('click', () => {
+    if (sidebarInput) runSearch(sidebarInput.value);
+  });
+
+  document.querySelector('.input-wrapper .input-icon')?.addEventListener('click', () => {
+    if (centralInput) runSearch(centralInput.value);
+  });
+}
+
 // --- Initialization on DOM Ready ---
 document.addEventListener('DOMContentLoaded', function() {
     console.log('\uD83D\uDE80 Iniciando Hub Cl\u00ednico...');
@@ -986,6 +1083,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (centralSearch) {
         new PatientAutocomplete(centralSearch, { mainTheme: true, onSelect: function(id) { showPatientResults(id); } });
     }
+
+    // --- Búsqueda por NHC: Enter, iconos, clear, sync ---
+    initPatientSearch();
 
     // --- Pending rows indicator ---
     updatePendingRowsIndicator();
