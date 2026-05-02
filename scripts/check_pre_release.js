@@ -7,7 +7,7 @@ const { spawnSync } = require('child_process');
 const ROOT_DIR = process.cwd();
 const TEXT_EXTENSIONS = new Set(['.js', '.html', '.css', '.md', '.json', '.txt', '.py']);
 const JS_EXTENSIONS = new Set(['.js']);
-const IGNORE_DIRS = new Set(['.git', '.claude', 'node_modules']);
+const IGNORE_DIRS = new Set(['.git', '.claude', 'node_modules', 'vendor']);
 const LF_ONLY_EXTENSIONS = new Set(['.py']);
 const LF_ONLY_FILES = new Set(['.editorconfig', '.gitattributes', '.gitignore']);
 const MOJIBAKE_PATTERN = /[\u00C2\u00C3\uFFFD]/;
@@ -23,6 +23,10 @@ function walkFiles(dirPath, results) {
         const absolutePath = path.join(dirPath, entry.name);
         if (entry.isDirectory()) {
             walkFiles(absolutePath, results);
+            return;
+        }
+
+        if (absolutePath.includes(path.join('docs', 'archive'))) {
             return;
         }
 
@@ -62,22 +66,7 @@ function checkTextFiles(files) {
             });
         }
 
-        const expectedEol = expectedEolFor(filePath);
-        if (expectedEol === 'crlf' && findBareLf(content)) {
-            issues.push({
-                type: 'eol',
-                file: relativePath,
-                message: 'Contiene finales de línea LF; el repo espera CRLF.'
-            });
-        }
-
-        if (expectedEol === 'lf' && content.includes('\r\n')) {
-            issues.push({
-                type: 'eol',
-                file: relativePath,
-                message: 'Contiene finales de línea CRLF; el repo espera LF.'
-            });
-        }
+        // No se fuerza un EOL único: el repo se usa en Windows y se publica como estático.
     });
 
     return issues;

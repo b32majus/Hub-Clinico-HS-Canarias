@@ -1,141 +1,76 @@
-# Checklist E2E Clínico
+# Checklist E2E Clínico - Hub Clínico HS Canarias
 
-Última actualización: 2026-03-07.
+Usar primero `Hub_Clinico_HS_Canarias_BASE_SINTETICA_TEST.xlsx`.
 
-## Última ejecución registrada
-- Fecha: 2026-03-07
-- Medio: Playwright MCP en WSL
-- Resultado:
-  - `OK` carga del Excel maestro desde `index.html`
-  - `OK` selector de profesional tras carga de BD
-  - `OK` estado visible `BD cargada`
-  - `OK` primera visita AR con catálogos de tratamiento poblados
-  - `OK` seguimiento AR con selects de tratamiento poblados
-  - `KO`: ninguno en la smoke base ejecutada
+## 1. Carga y sesión
 
-## Objetivo
-Definir una batería manual mínima, repetible y orientada a entrega clínica para validar los flujos principales del Hub Clínico antes de una release o después de cambios con riesgo funcional.
+- Abrir `index.html` sin errores visibles.
+- Cargar Excel maestro.
+- Confirmar hojas `HS`, `Profesionales`, `Consultas` y `Farmacos_HS`.
+- Seleccionar profesional.
+- Confirmar indicador lateral de BD cargada.
 
-## Preparación común
-- Usar una copia controlada de `Hub_Clinico_Maestro.xlsx`.
-- Hacer recarga completa del navegador antes de empezar (`hard refresh`).
-- Confirmar que la BD carga sin errores visibles y que las hojas `ESPA`, `APS`, `AR`, `Fármacos` y `Profesionales` están disponibles.
-- Validar que los desplegables de fármacos muestran catálogo y no el mensaje de fallback.
-- Preparar un paciente identificable por cada patología para pruebas de seguimiento.
+## 2. Búsqueda y quick view
 
-## Salida esperada
-- Cada bloque debe quedar marcado como `OK`, `KO` o `NA`.
-- Si hay `KO`, registrar:
-  - pantalla
-  - patología
-  - pasos exactos
-  - resultado observado
-  - resultado esperado
+- Buscar NHC existente desde sidebar con Enter.
+- Buscar NHC existente desde caja central con Enter.
+- Buscar usando iconos de lupa.
+- Confirmar que quick view muestra la última visita.
+- Buscar NHC inexistente y confirmar opción de primera visita.
+- Probar botón limpiar.
 
-## 1. Carga de base de datos
-- Cargar el Excel maestro desde `index.html`.
-- Verificar que no aparece aviso amarillo persistente por cabeceras incompatibles.
-- Verificar que el estado de sesión indica BD cargada.
-- Confirmar acceso normal a primera visita, seguimiento y estadísticas.
+## 3. Primera visita HS
 
-## 2. Primera visita ESPA
-- Abrir primera visita para `ESPA`.
-- Completar identificación mínima y campos obligatorios.
-- Introducir valores clínicos básicos y biomarcadores.
-- Añadir tratamiento actual con un fármaco real del catálogo.
-- Exportar.
-- Verificar:
-  - no hay errores JS visibles
-  - se genera TXT/CSV
-  - la fila exportada contiene ID, fecha, patología y tratamiento
+- Abrir primera visita.
+- Confirmar consultas, profesionales y fármacos activos.
+- Completar datos mínimos obligatorios.
+- Registrar comorbilidades con chips.
+- Introducir lesiones por región y confirmar totales/IHS-4.
+- Marcar ecografía y comprobar que aparecen hallazgos.
+- Generar TXT.
+- Confirmar que TSV queda habilitado después del TXT.
+- Copiar TSV y validar 195 columnas.
 
-## 3. Seguimiento ESPA
-- Abrir seguimiento para un paciente ESPA existente.
-- Confirmar precarga de datos previos.
-- Modificar score principal y tratamiento.
-- Exportar.
-- Verificar:
-  - el paciente correcto queda seleccionado
-  - la visita previa se detecta
-  - el cambio queda reflejado en la exportación
+## 4. Seguimiento HS
 
-## 4. Primera visita APS
-- Abrir primera visita para `APS`.
-- Completar identificación, actividad clínica y tratamiento.
-- Registrar un valor que active cálculo relevante de score.
-- Exportar.
-- Verificar:
-  - no falla la lógica de cálculo
-  - el CSV/TXT sale con columnas esperadas
-  - el tratamiento exportado coincide con el seleccionado
+- Abrir `seguimiento.html?nhc=...`.
+- Confirmar contexto de última visita.
+- Confirmar precarga de datos estables.
+- Confirmar que lesiones, IHS-4, PROMs y decisión actual no se precargan.
+- Generar TXT y TSV.
 
-## 5. Seguimiento APS
-- Abrir seguimiento para un paciente APS existente.
-- Confirmar precarga y actualización de datos.
-- Cambiar score, decisión terapéutica y tratamiento.
-- Exportar.
-- Verificar:
-  - no se rompe la navegación por paciente
-  - los campos precargados son coherentes
-  - la visita nueva se exporta completa
+## 5. Dashboard paciente
 
-## 6. Primera visita AR
-- Abrir primera visita para `AR`.
-- Validar render de extraarticulares, Sjögren, HAQ y RAPID3.
-- Seleccionar fármacos de los desplegables.
-- Exportar.
-- Verificar:
-  - los desplegables de fármacos cargan catálogo
-  - las ayudas visuales siguen alineadas
-  - no hay regresiones tras la limpieza de estilos
+- Abrir `dashboard_paciente.html?nhc=...`.
+- Confirmar evolución IHS-4.
+- Confirmar PROMs, eventos, tratamientos y tabla de visitas.
+- Probar paciente con una sola visita.
 
-## 7. Seguimiento AR
-- Abrir seguimiento para un paciente AR existente.
-- Confirmar que el paso inicial, la precarga y los índices funcionan.
-- Modificar DAS28/CDAI/SDAI o RAPID3 según disponibilidad.
-- Exportar.
-- Verificar:
-  - el encabezado y paneles renderizan correctamente
-  - los scores se recalculan sin errores
-  - la exportación refleja la nueva visita
+## 6. Estadísticas
 
-## 8. Quick View y dashboard paciente
-- Buscar un paciente desde el dashboard/buscador.
-- Abrir quick view.
-- Navegar a `dashboard_paciente.html`.
-- Verificar:
-  - la búsqueda resuelve el paciente correcto
-  - la URL se construye bien
-  - el quick view muestra datos clave sin bloques vacíos inesperados
-  - el dashboard muestra KPIs y accesos de navegación válidos
+- Abrir estadísticas desde sesión cargada.
+- Confirmar pacientes únicos.
+- Confirmar visitas totales filtradas.
+- Confirmar primeras visitas y seguimientos.
+- Probar filtros.
+- Confirmar tabla de últimas visitas por paciente.
 
-## 9. Estadísticas
-- Abrir `estadisticas.html`.
-- Filtrar por patología.
-- Buscar por ID o nombre.
-- Ordenar por ID, nombre, fecha y métrica.
-- Verificar:
-  - la tabla responde a filtros y búsqueda
-  - la ordenación no rompe paginación
-  - la métrica visible es coherente con la patología
+## 7. Gestión
 
-## 10. Exportación y buffer de pendientes
-- Exportar una visita.
-- Simular incidencia de pegado o pérdida de clipboard.
-- Recuperar la fila desde el buffer de pendientes.
-- Marcar la fila como resuelta.
-- Recargar la página.
-- Verificar:
-  - la fila pendiente sigue disponible hasta resolverse
-  - al resolverla desaparece del estado pendiente
-  - no se pierde la capacidad de exportar una segunda visita
+- Confirmar que fármacos inactivos no aparecen como activos.
+- Confirmar que profesionales inactivos no aparecen como activos.
+- Confirmar que añadir/eliminar en pantalla es temporal salvo copia manual al Excel.
 
-## 11. Cierre mínimo de validación
-- Repetir comprobación rápida de carga de BD.
-- Confirmar que no hay mensajes engañosos de “cargue la base de datos” con la sesión activa.
-- Registrar fecha, versión probada y resultado global.
+## 8. Offline
 
-## Criterio de salida
-- Aceptable para entrega clínica interna:
-  - sin `KO` en carga de BD, exportación, seguimiento AR y catálogo de fármacos
-  - como máximo `KO` menores visuales documentados y sin impacto en exportación ni navegación
+- Bloquear red.
+- Recargar `index.html`, primera visita, seguimiento, dashboard y estadísticas.
+- Confirmar que no hay errores por CDN.
+- Confirmar que iconos y gráficos cargan desde `vendor/`.
+
+## 9. LibreOffice
+
+- Pegar TSV en hoja `HS`.
+- Confirmar una sola fila.
+- Confirmar 195 columnas alineadas.
+- Confirmar ausencia de BOM visible.

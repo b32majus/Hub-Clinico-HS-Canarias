@@ -27,14 +27,14 @@
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #008777;
+    color: #2C3E4A;
 }
 
 .management-hero__title {
     margin: 0;
     font-size: clamp(1.9rem, 3vw, 2.5rem);
     line-height: 1.05;
-    color: #17335b;
+    color: #2C3E4A;
 }
 
 .management-hero__description {
@@ -54,7 +54,7 @@
     border-radius: 18px;
     background: rgba(23, 51, 91, 0.04);
     border: 1px solid rgba(23, 51, 91, 0.1);
-    color: #17335b;
+    color: #2C3E4A;
 }
 
 .management-hero__badge-icon {
@@ -64,7 +64,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 14px;
-    background: linear-gradient(135deg, #17335b, #008777);
+    background: linear-gradient(135deg, #2C3E4A, #2C3E4A);
     color: #fff;
     box-shadow: 0 12px 22px rgba(23, 51, 91, 0.2);
 }
@@ -82,7 +82,7 @@
     margin-top: 2px;
     font-size: 1.4rem;
     font-weight: 700;
-    color: #17335b;
+    color: #2C3E4A;
 }
 
 .management-grid {
@@ -114,11 +114,11 @@
     align-items: center;
     gap: 12px;
     font-size: 1.1rem;
-    color: #17335b;
+    color: #2C3E4A;
 }
 
 .management-card__title i {
-    color: #008777;
+    color: #2C3E4A;
 }
 
 .management-card__subtitle {
@@ -136,7 +136,7 @@
     padding: 8px 12px;
     border-radius: 999px;
     background: rgba(0, 135, 119, 0.12);
-    color: #008777;
+    color: #2C3E4A;
     font-weight: 700;
     font-size: 0.9rem;
 }
@@ -195,14 +195,14 @@
 }
 
 .management-btn--primary {
-    background: linear-gradient(135deg, #008777 0%, #0f766e 100%);
+    background: linear-gradient(135deg, #2C3E4A 0%, #0f766e 100%);
     color: #fff;
     box-shadow: 0 14px 24px rgba(0, 135, 119, 0.22);
 }
 
 .management-btn--secondary {
     background: rgba(23, 51, 91, 0.06);
-    color: #17335b;
+    color: #2C3E4A;
     border: 1px solid rgba(23, 51, 91, 0.08);
 }
 

@@ -17,9 +17,9 @@
     leve: '#10B981',
     moderada: '#F59E0B',
     grave: '#EF4444',
-    primary: '#008777',
+    primary: '#2C3E4A',
     secondary: '#64748B',
-    biologic: '#8B5CF6',
+    biologic: '#6F7F91',
     surgery: '#EC4899',
     ultrasound: '#06B6D4'
   };
@@ -469,7 +469,7 @@
       datasets.push({
         label: 'DLQI',
         data: dlqiData,
-        borderColor: '#8B5CF6',
+        borderColor: '#6F7F91',
         backgroundColor: 'rgba(139, 92, 246, 0.1)',
         pointRadius: 5, tension: 0.3, fill: true, yAxisID: 'y'
       });

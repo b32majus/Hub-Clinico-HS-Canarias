@@ -1,10 +1,10 @@
 /* ========================================
-   ARCHIVO CSS CONSOLIDADO PARA PRIMERA VISITA
-   Combina: style_form_espa.css + elementos relevantes de style_premium.css + optimizaciones profesionales
+   ARCHIVO CSS CONSOLIDADO PARA PRIMERA VISITA HS
+   Estilo clínico local-first adaptado a Hidradenitis Supurativa
    ======================================== */
 
 :root {
-    --primary-blue: #008777;
+    --primary-blue: #2C3E4A;
     --success-green: #2ecc71;
     --warning-yellow: #f1c40f;
     --danger-red: #dc3545;
@@ -17,7 +17,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: "Segoe UI", "Aptos", "Helvetica Neue", sans-serif;
     background-color: #f0f2f5;
     color: #333;
     margin: 0;
@@ -65,7 +65,7 @@ body:has(.hub-shell) {
 }
 
 .form-header h1 .highlight {
-    color: #008777;
+    color: #2C3E4A;
 }
 
 .form-header .subtitle {
@@ -79,7 +79,7 @@ body:has(.hub-shell) {
     position: fixed;
     top: 20px;
     left: 20px;
-    background: linear-gradient(135deg, #008777 0%, #006B5E 100%);
+    background: linear-gradient(135deg, #2C3E4A 0%, #20313B 100%);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -98,7 +98,7 @@ body:has(.hub-shell) {
 .back-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    background: linear-gradient(135deg, #006B5E 0%, #008777 100%);
+    background: linear-gradient(135deg, #20313B 0%, #2C3E4A 100%);
 }
 
 /* Sección de Datos del Paciente */
@@ -143,7 +143,7 @@ body:has(.hub-shell) {
 }
 
 .diagnostic-title i {
-    color: #008777;
+    color: #2C3E4A;
     font-size: 1.1em;
 }
 
@@ -288,7 +288,7 @@ body:has(.hub-shell) {
     border: 1px solid #ced4da;
     border-radius: 8px;
     font-size: 0.9em;
-    font-family: 'Inter', sans-serif;
+    font-family: "Segoe UI", "Aptos", "Helvetica Neue", sans-serif;
     color: #495057;
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -298,7 +298,7 @@ body:has(.hub-shell) {
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-    border-color: #008777;
+    border-color: #2C3E4A;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
     outline: none;
 }
@@ -376,7 +376,7 @@ body:has(.hub-shell) {
 }
 
 .form-group-checkbox input[type="checkbox"]:hover {
-    border-color: #008777;
+    border-color: #2C3E4A;
 }
 
 .form-group-checkbox input[type="checkbox"]::before {
@@ -386,13 +386,13 @@ body:has(.hub-shell) {
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
     transform: scale(0);
     transition: 120ms transform ease-in-out;
-    box-shadow: inset 1em 1em #008777;
-    background-color: #008777;
+    box-shadow: inset 1em 1em #2C3E4A;
+    background-color: #2C3E4A;
     border-radius: 1px;
 }
 
 .form-group-checkbox input[type="checkbox"]:checked {
-    border-color: #008777;
+    border-color: #2C3E4A;
     background-color: #e9f5f9;
 }
 
@@ -419,7 +419,7 @@ body:has(.hub-shell) {
     gap: 10px;
 }
 
-/* Tóxicos — eliminado (legacy reumatología) */
+/* Tóxicos — eliminado del flujo HS v1 */
 
 /* Tratamientos */
 .treatments-section {
@@ -442,7 +442,7 @@ body:has(.hub-shell) {
 .treatment-item input {
     margin-bottom: 0;
     color: #495057;
-    font-family: 'Inter', sans-serif;
+    font-family: "Segoe UI", "Aptos", "Helvetica Neue", sans-serif;
 }
 
 .treatment-item .remove-btn {
@@ -538,7 +538,7 @@ body:has(.hub-shell) {
     border: 1px solid #ced4da;
     border-radius: 8px;
     font-size: 0.9em;
-    font-family: 'Inter', sans-serif;
+    font-family: "Segoe UI", "Aptos", "Helvetica Neue", sans-serif;
     color: #495057;
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -564,7 +564,7 @@ body:has(.hub-shell) {
     margin-bottom: 20px;
 }
 
-/* CRITERIOS DIAGNÓSTICOS - ASAS (EspA) */
+/* Bloques clínicos heredados no activos en HS */
 .asas-criterios-box {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
@@ -625,7 +625,7 @@ body:has(.hub-shell) {
     color: #e67e22;
 }
 
-/* CRITERIOS CASPAR (APs) */
+/* Bloques clínicos heredados no activos en HS */
 .caspar-info-box {
     background: linear-gradient(135deg, #e3f2fd 0%, #f1f8ff 100%);
     padding: 15px 20px;
@@ -807,7 +807,7 @@ body:has(.hub-shell) {
 
 .plan-date-input:focus {
     outline: none;
-    border-color: #008777;
+    border-color: #2C3E4A;
     box-shadow: 0 0 0 3px rgba(0, 135, 119, 0.15);
 }
 
@@ -852,7 +852,7 @@ body:has(.hub-shell) {
 }
 
 .primary-btn {
-    background-color: #008777;
+    background-color: #2C3E4A;
     color: white;
 }
 
@@ -1032,7 +1032,7 @@ body:has(.hub-shell) {
 
 .treatment-select-improved:focus {
     outline: none;
-    border-color: #008777;
+    border-color: #2C3E4A;
     box-shadow: 0 0 0 3px rgba(0, 135, 119, 0.15);
 }
 
@@ -1055,7 +1055,7 @@ body:has(.hub-shell) {
 
 .treatment-dose-input-improved:not(:disabled):focus {
     outline: none;
-    border-color: #008777;
+    border-color: #2C3E4A;
     box-shadow: 0 0 0 3px rgba(0, 135, 119, 0.15);
     background: #fff;
     color: #1e293b;
@@ -1102,7 +1102,7 @@ body:has(.hub-shell) {
 
 .plan-date-input-improved:focus {
     outline: none;
-    border-color: #008777;
+    border-color: #2C3E4A;
     box-shadow: 0 0 0 3px rgba(0, 135, 119, 0.15);
 }
 
@@ -1210,7 +1210,7 @@ body:has(.hub-shell) {
 }
 
 .pruebas-apartado h5 i {
-    color: #008777;
+    color: #2C3E4A;
 }
 
 /* Apartados de Índices */
@@ -1233,12 +1233,12 @@ body:has(.hub-shell) {
 }
 
 .indices-apartado h5 i {
-    color: #006B5E;
+    color: #20313B;
 }
 
 /* Nota informativa */
 .info-note {
-    background-color: #E6F4F1;
+    background-color: #EDF3EA;
     border: 1px solid #B2DFDB;
     border-radius: 6px;
     padding: 8px 12px;
@@ -1251,7 +1251,7 @@ body:has(.hub-shell) {
 }
 
 .info-note i {
-    color: #008777;
+    color: #2C3E4A;
 }
 
 .info-note--sm {
@@ -1280,7 +1280,7 @@ body:has(.hub-shell) {
 .scale-hint {
     margin-top: 6px;
     padding: 6px 10px;
-    background: #E6F4F1;
+    background: #EDF3EA;
     border-radius: 6px;
     font-size: 0.9em;
 }
@@ -1381,7 +1381,7 @@ body:has(.hub-shell) {
 }
 
 .region-card:hover {
-    border-color: #008777;
+    border-color: #2C3E4A;
     box-shadow: 0 2px 8px rgba(0, 135, 119, 0.12);
 }
 
@@ -1419,7 +1419,7 @@ body:has(.hub-shell) {
 }
 
 .region-input-group input[type="number"]:focus {
-    border-color: #008777;
+    border-color: #2C3E4A;
     box-shadow: 0 0 0 2px rgba(0, 135, 119, 0.15);
     outline: none;
 }
@@ -1548,29 +1548,29 @@ body:has(.hub-shell) {
     user-select: none;
     text-align: center;
     width: 100%;
-    font-family: 'Inter', sans-serif;
+    font-family: "Segoe UI", "Aptos", "Helvetica Neue", sans-serif;
 }
 
 .comorbidity-chip:hover {
-    border-color: #008777;
+    border-color: #2C3E4A;
     background: #f0fdf4;
 }
 
 .comorbidity-chip.active {
-    background: #008777;
-    border-color: #008777;
+    background: #2C3E4A;
+    border-color: #2C3E4A;
     color: #ffffff;
     font-weight: 600;
 }
 
 .comorbidity-chip.active:hover {
-    background: #006B5E;
-    border-color: #006B5E;
+    background: #20313B;
+    border-color: #20313B;
 }
 
 .comorbidity-chip[aria-pressed="true"] {
-    background: #008777;
-    border-color: #008777;
+    background: #2C3E4A;
+    border-color: #2C3E4A;
     color: #ffffff;
 }
 
@@ -1628,7 +1628,7 @@ body:has(.hub-shell) {
 }
 
 .region-matrix input[type="number"]:focus {
-    border-color: #008777;
+    border-color: #2C3E4A;
     box-shadow: 0 0 0 2px rgba(0, 135, 119, 0.15);
     outline: none;
 }

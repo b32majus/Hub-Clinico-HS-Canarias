@@ -1,95 +1,81 @@
-﻿# HUB Clínico Badajoz - Arquitectura e Implementación
+# Hub Clínico HS Canarias - Arquitectura e Implementación
 
-Documento de memoria técnica para entender cómo está codificada la app, qué módulos existen y cómo fluye la información en el entorno hospitalario actual.
+Documento de memoria técnica para entender cómo está codificada la app, qué módulos existen y cómo fluye la información en el entorno HUC.
 
-## 1) Restricciones de diseño
+## 1. Restricciones de diseño
+
 - App local-first, sin backend remoto.
 - Sin instalación obligatoria.
 - Ejecución como estáticos HTML/CSS/JS.
-- Persistencia operativa en Excel compartido (`Hub_Clinico_Maestro.xlsx`).
-- Compatibilidad con flujos STIC (sin dependencias de infraestructura compleja).
+- Persistencia operativa en Excel local o compartido: `Hub_Clinico_HS_Canarias.xlsx`.
+- Compatibilidad con apertura directa por `file://` y publicación estática.
+- Dependencias críticas embebidas en `vendor/`.
 
-## 2) Arquitectura de ejecución
-- Patrón global por namespace `HubTools` (sin imports ES modules en runtime).
-- Coordinadores por página en `scripts/`.
+## 2. Arquitectura de ejecución
+
+- Patrón global por namespace `HubTools`.
 - Módulos funcionales en `modules/`.
+- Scripts ligeros por pantallas de gestión en `scripts/`.
+- Sin framework, bundler ni servidor.
 
 Namespaces principales:
-- `HubTools.form` -> validación, adaptación por patología, recopilación/prellenado.
-- `HubTools.scores` -> cálculos clínicos.
-- `HubTools.homunculus` -> homúnculo interactivo NAD/NAT/dactilitis.
-- `HubTools.data` -> carga Excel, normalización y consultas.
-- `HubTools.export` -> TXT/CSV.
-- `HubTools.utils` -> utilidades transversales.
 
-## 3) Estructura funcional de pantallas
-- `index.html` + `script.js`: dashboard principal y quick view.
-- `primera_visita.html` + `scripts/script_primera_visita.js`.
-- `seguimiento.html` + `scripts/script_seguimiento.js`.
-- `dashboard_paciente.html` + `scripts/script_dashboard.js`.
-- `estadisticas.html` + `scripts/script_estadisticas.js`.
+- `HubTools.form`: validación, recopilación, precarga de seguimiento y control del formulario HS.
+- `HubTools.scoresHS`: cálculo IHS-4 clínico/ecográfico y categorización.
+- `HubTools.data`: carga Excel, rehidratación desde `sessionStorage`, búsquedas y catálogos.
+- `HubTools.export`: generación de TXT clínico y TSV estructurado.
+- `HubTools.normalizer`: normalización de campos HS.
+- `HubTools.utils`: utilidades transversales.
 
-## 4) Flujo de datos real
-1. Usuario carga `Hub_Clinico_Maestro.xlsx`.
-2. `dataManager.loadDatabase()` parsea hojas (`ESPA`, `APS`, `AR`, `Fármacos`, `Profesionales`).
-3. Se guarda estado en memoria y cache local (`localStorage`) para navegación entre páginas.
-4. Formularios generan:
-   - TXT para historia clínica.
-   - CSV de una fila para pegar en hoja de patología.
-5. Dashboards consumen estado cargado, no el archivo en tiempo real.
+## 3. Pantallas
 
-## 5) Regla operativa de actualización
-La sesión trabaja con una copia cargada de la BD.
-- Si otro profesional añade filas al Excel compartido, no se reflejan automáticamente.
-- Requiere recarga manual de BD en la app para actualizar buscador/dashboards/estadísticas.
+- `index.html` + `script.js`: inicio, carga de BD, selección de profesional, búsqueda y quick view.
+- `primera_visita.html` + `modules/formControllerHS.js`: primera visita HS.
+- `seguimiento.html` + `modules/formControllerHS.js`: visita de seguimiento HS con contexto de última visita.
+- `dashboard_paciente.html` + `modules/dashboardHS.js`: evolución longitudinal individual.
+- `estadisticas.html` + `modules/statsHS.js`: cuadro poblacional y actividad asistencial.
+- `manage_drugs.html` + `scripts/script_manage_drugs.js`: catálogo temporal de fármacos HS.
+- `manage_professionals.html` + `scripts/script_manage_professionals.js`: catálogo temporal de profesionales.
 
-## 6) Implementación por patología
-### ESPA y APS
-- Soporte completo de primera/seguimiento.
-- Precarga en seguimiento de datos estables.
-- Métricas y dashboard poblacional operativos.
+## 4. Flujo de datos real
 
-### AR
-- Integración completa primera/seguimiento en la misma hoja `AR`.
-- Exportación AR alineada a estructura extendida.
-- Dashboard principal, dashboard paciente y estadísticas con AR.
-- Filtros/índices AR (DAS28_CRP, DAS28_ESR, CDAI, SDAI, RAPID3).
+1. El usuario carga `Hub_Clinico_HS_Canarias.xlsx`.
+2. `dataManager.loadDatabase()` parsea las hojas `HS`, `Profesionales`, `Consultas` y `Farmacos_HS`.
+3. La sesión se guarda temporalmente en `sessionStorage`.
+4. Los formularios generan primero TXT para historia clínica.
+5. Tras generar TXT, se habilita TSV de una sola fila para pegar en la hoja `HS`.
+6. Dashboards y estadísticas consumen la copia de BD cargada en la sesión.
 
-## 7) Precarga en seguimiento (estado actual)
-Entrada: `scripts/script_seguimiento.js` -> `buildPrefillPayload()`.
-Aplicación al DOM: `modules/formController.js` -> `prefillSeguimientoForm()`.
+## 5. Contrato de datos
+
+- Hoja clínica única: `HS`.
+- Una fila representa una visita, no un paciente.
+- Identificador principal: `NHC`.
+- Tipo de visita: `Primera_Visita` o `Seguimiento`.
+- Exportación estructurada: `HS_EXPORT_HEADERS`, 195 columnas, sin cabecera y separado por tabuladores.
+
+## 6. Precarga en seguimiento
 
 Se precargan datos estables:
-- ID, nombre, diagnóstico.
-- Tratamiento actual y fecha de inicio.
+
+- NHC, centro, consulta y profesional.
+- Datos basales disponibles.
 - Comorbilidades.
-- Manifestaciones extraarticulares (mapas SI/NO).
-- Biomarcadores (HLA-B27, FR, aPCC y ANA para AR).
-- Peso/talla/IMC cuando existen en última visita.
+- Tratamiento actual y fecha de inicio.
 
-No se precargan datos dinámicos:
-- Índices de actividad, PROs, anamnesis dinámica y recuentos clínicos de visita actual.
+No se precargan datos dinámicos de la visita actual:
 
-## 8) Contrato de datos y codificación
-Referencia canónica:
-- `docs/CONTRATO_DATOS_UNIFICADO.md`
-- `docs/template_ar_excel.md`
+- Recuento de lesiones.
+- IHS-4.
+- PROMs.
+- Decisión terapéutica actual.
+- Cirugía/comité actual.
 
-Convenciones de valor:
-- `SI`, `NO`, `ND`, `NA`, vacío (`""`) según campo y aplicabilidad.
+## 7. Riesgos conocidos
 
-## 9) Riesgos y deuda técnica conocida
-- Riesgo de desalineación por edición manual de Excel.
-- Dependencia de nomenclatura homogénea de fármacos/profesionales.
-- Necesidad de disciplina de recarga de BD en sesiones largas.
-- Mantener vigilancia de codificación UTF-8 para evitar mojibake en UI.
+- La sesión trabaja con una copia cargada de la BD; si el Excel cambia fuera de la app hay que recargarlo.
+- `sessionStorage` puede limitarse con bases muy grandes; la app avisa si la caché queda limitada.
+- La escritura en Excel depende del pegado manual correcto de la fila TSV.
+- Cualquier cambio de cabeceras debe actualizar `modules/hsConfig.js`, el Excel y `docs/CONTRATO_DATOS_HS.md`.
 
-## 10) Checklist de cambios futuros
-Cuando se modifique una funcionalidad clínica:
-1. Captura/validación (`formController`).
-2. Exportación (`exportManager`).
-3. Lectura/normalización (`dataManager`).
-4. Visualización (`script_dashboard`, `script_estadisticas`, quick view).
-5. Documentación (`README`, contrato y estado de implementación).
-
-Última actualización: 2026-03-05.
+Última actualización: 2026-05-02.

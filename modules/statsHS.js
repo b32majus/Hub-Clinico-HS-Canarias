@@ -20,9 +20,9 @@
     leve: '#10B981',
     moderada: '#F59E0B',
     grave: '#EF4444',
-    primary: '#008777',
+    primary: '#2C3E4A',
     secondary: '#64748B',
-    biologic: '#8B5CF6',
+    biologic: '#6F7F91',
     surgery: '#EC4899',
     ultrasound: '#06B6D4',
     hurley1: '#3B82F6',
@@ -251,10 +251,11 @@
   // ============================================================
   // CÁLCULO DE ESTADÍSTICAS
   // ============================================================
-  function calculateStats(records) {
+  function calculateStats(records, visitRecords) {
+    var activityRecords = Array.isArray(visitRecords) ? visitRecords : records;
     var stats = {
       totalPacientes: records.length,
-      totalVisitas: allRecords.length,
+      totalVisitas: activityRecords.length,
       primerasVisitas: 0,
       seguimientos: 0,
       ihs4Grave: 0,
@@ -273,12 +274,19 @@
       visitasPorMes: {}
     };
 
-    records.forEach(function (r) {
+    activityRecords.forEach(function (r) {
       // Tipo de visita
       var tipo = getField(r, 'Tipo_Visita', 'tipoVisita') || '';
       if (tipo === 'Primera_Visita') stats.primerasVisitas++;
       else stats.seguimientos++;
 
+      // Visitas por mes
+      var fechaVisita = parseDate(getField(r, 'Fecha_Visita', 'fechaVisita'));
+      var mesKey = fechaVisita.getFullYear() + '-' + String(fechaVisita.getMonth() + 1).padStart(2, '0');
+      stats.visitasPorMes[mesKey] = (stats.visitasPorMes[mesKey] || 0) + 1;
+    });
+
+    records.forEach(function (r) {
       // IHS-4
       var ihs4 = toNum(getField(r, 'IHS4_Clinico', 'ihs4Clinico'));
       if (ihs4 !== null) {
@@ -354,11 +362,6 @@
       // Origen
       var origen = getField(r, 'Origen_Paciente', 'origenPaciente') || 'No especificado';
       stats.origenDist[origen] = (stats.origenDist[origen] || 0) + 1;
-
-      // Visitas por mes
-      var fechaVisita = parseDate(getField(r, 'Fecha_Visita', 'fechaVisita'));
-      var mesKey = fechaVisita.getFullYear() + '-' + String(fechaVisita.getMonth() + 1).padStart(2, '0');
-      stats.visitasPorMes[mesKey] = (stats.visitasPorMes[mesKey] || 0) + 1;
     });
 
     // Medias y medianas
@@ -384,9 +387,10 @@
   function updateDashboard() {
     var filters = getActiveFilters();
     filteredRecords = applyStatsFilters(latestPerPatient, filters);
+    var filteredVisitRecords = applyStatsFilters(allRecords, filters);
     currentPage = 1;
 
-    var stats = calculateStats(filteredRecords);
+    var stats = calculateStats(filteredRecords, filteredVisitRecords);
 
     renderStatsKPIs(stats);
     renderStatsCharts(stats, filteredRecords);
@@ -619,7 +623,7 @@
       datasets.push({
         label: 'DLQI (media)',
         data: stats.dlqiValues,
-        borderColor: '#8B5CF6',
+        borderColor: '#6F7F91',
         backgroundColor: 'rgba(139, 92, 246, 0.1)',
         fill: true,
         tension: 0.3,

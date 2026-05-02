@@ -138,7 +138,7 @@ Todos los flujos principales del Hub Clínico HS Canarias han sido validados man
 
 ## Conclusión
 
-El Hub Clínico HS Canarias v1.0.0 está **funcionalmente validado** para uso local. Todos los flujos críticos operan correctamente con la base sintética de 24 pacientes. No quedan referencias a reumatología en código activo.
+El Hub Clínico HS Canarias v1.0.0 está **funcionalmente validado** para uso local. Todos los flujos críticos operan correctamente con la base sintética de 24 pacientes. No quedan referencias clínicas heredadas en código activo.
 
 **Próximos pasos sugeridos:**
 - Validación con datos reales del HUC

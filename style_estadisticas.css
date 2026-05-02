@@ -1,6 +1,6 @@
 /* ============================================
    ESTADÍSTICAS DEL SERVICIO - DASHBOARD PREMIUM
-   Hub Clínico Reumatología v2.0
+   Hub Clínico HS Canarias v1.0
    ============================================ */
 
 /* === VARIABLES CSS - SISTEMA DE COLORES === */
@@ -23,7 +23,7 @@
     --color-high-activity-dark: #DC2626;
 
     /* Colores de Tratamiento */
-    --color-biologic: #8B5CF6;
+    --color-biologic: #6F7F91;
     --color-biologic-light: #EDE9FE;
     --color-fame: #06B6D4;
     --color-fame-light: #CFFAFE;
@@ -33,8 +33,8 @@
     --color-other-treatment-light: #F3F4F6;
 
     /* Colores de UI */
-    --color-primary: #008777;
-    --color-primary-hover: #006B5E;
+    --color-primary: #2C3E4A;
+    --color-primary-hover: #20313B;
     --color-primary-light: #E8F5EE;
     --color-secondary: #64748B;
     --color-secondary-hover: #475569;
