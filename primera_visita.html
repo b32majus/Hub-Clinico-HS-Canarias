@@ -79,9 +79,18 @@
         <main class="main-content">
             <div class="form-container">
                 <header class="form-header">
-                    <h1>HUB CLÍNICO — PRIMERA VISITA <span class="highlight">Hidradenitis Supurativa</span></h1>
+                    <h1 id="visitModeTitle">HUB CLÍNICO — PRIMERA VISITA <span class="highlight">Hidradenitis Supurativa</span></h1>
                     <p class="subtitle">Hospital Universitario de Canarias · CIE-10: L73.2</p>
                 </header>
+
+                <!-- ═══════ PANEL DE CONTEXTO — Última visita (solo lectura) ═══════ -->
+                <section class="last-visit-context" id="lastVisitContext" style="display:none;">
+                    <h2 class="section-title section-title--context"><i class="fas fa-history"></i> Contexto de Última
+                        Visita</h2>
+                    <div class="context-grid" id="contextGrid">
+                        <!-- Renderizado dinámicamente por formControllerHS -->
+                    </div>
+                </section>
 
                 <!-- ═══════ BLOQUE 0 — Identificación y contexto ═══════ -->
                 <section class="patient-info-section">

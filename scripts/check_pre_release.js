@@ -7,10 +7,25 @@ const { spawnSync } = require('child_process');
 const ROOT_DIR = process.cwd();
 const TEXT_EXTENSIONS = new Set(['.js', '.html', '.css', '.md', '.json', '.txt', '.py']);
 const JS_EXTENSIONS = new Set(['.js']);
+const RUNTIME_EXTENSIONS = new Set(['.js', '.html', '.css']);
 const IGNORE_DIRS = new Set(['.git', '.claude', 'node_modules', 'vendor']);
 const LF_ONLY_EXTENSIONS = new Set(['.py']);
 const LF_ONLY_FILES = new Set(['.editorconfig', '.gitattributes', '.gitignore']);
 const MOJIBAKE_PATTERN = /[\u00C2\u00C3\uFFFD]/;
+const EXTERNAL_DEPENDENCY_PATTERNS = [
+    {
+        regex: /<(script|link)\b[^>]*(?:src|href)\s*=\s*["'](?:https?:)?\/\/[^"']+["']/ig,
+        message: 'Referencia remota en script/link.'
+    },
+    {
+        regex: /@import\s+url\(\s*["']?(?:https?:)?\/\/[^)"'\s]+["']?\s*\)/ig,
+        message: 'Import CSS remoto.'
+    },
+    {
+        regex: /url\(\s*["']?(?:https?:)?\/\/[^)"'\s]+["']?\s*\)/ig,
+        message: 'Recurso CSS remoto.'
+    }
+];
 
 function walkFiles(dirPath, results) {
     const entries = fs.readdirSync(dirPath, { withFileTypes: true });
@@ -95,6 +110,36 @@ function checkJavaScriptSyntax(files) {
     return issues;
 }
 
+function lineNumberFromIndex(text, index) {
+    return text.slice(0, index).split('\n').length;
+}
+
+function checkExternalDependencies(files) {
+    const issues = [];
+
+    files
+        .filter((filePath) => RUNTIME_EXTENSIONS.has(path.extname(filePath).toLowerCase()))
+        .forEach((filePath) => {
+            const content = fs.readFileSync(filePath, 'utf8');
+            const relativePath = toRelative(filePath);
+
+            EXTERNAL_DEPENDENCY_PATTERNS.forEach(({ regex, message }) => {
+                regex.lastIndex = 0;
+                let match = null;
+
+                while ((match = regex.exec(content)) !== null) {
+                    issues.push({
+                        type: 'external-dependency',
+                        file: relativePath,
+                        message: message + ' Línea ' + lineNumberFromIndex(content, match.index) + '.'
+                    });
+                }
+            });
+        });
+
+    return issues;
+}
+
 function printIssues(title, issues) {
     if (!issues.length) {
         console.log('[OK] ' + title);
@@ -113,12 +158,14 @@ function main() {
 
     const textIssues = checkTextFiles(files);
     const syntaxIssues = checkJavaScriptSyntax(files);
+    const externalDependencyIssues = checkExternalDependencies(files);
 
     printIssues('Sintaxis JavaScript', syntaxIssues);
     printIssues('Codificación / mojibake', textIssues.filter((issue) => issue.type === 'mojibake'));
+    printIssues('Dependencias externas (offline)', externalDependencyIssues);
     printIssues('Finales de línea', textIssues.filter((issue) => issue.type === 'eol'));
 
-    const totalIssues = textIssues.length + syntaxIssues.length;
+    const totalIssues = textIssues.length + syntaxIssues.length + externalDependencyIssues.length;
     console.log('');
     console.log('Archivos revisados: ' + files.length);
     console.log('Incidencias: ' + totalIssues);

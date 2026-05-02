@@ -598,6 +598,29 @@
     }
   }
 
+  function resolveFormModeFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const mode = (params.get('mode') || '').toLowerCase();
+    if (mode === 'followup' || mode === 'seguimiento') {
+      return 'followup';
+    }
+    if (mode === 'first' || mode === 'primera') {
+      return 'first';
+    }
+    return null;
+  }
+
+  function applyModePresentation(mode) {
+    const titleEl = document.getElementById('visitModeTitle');
+    if (titleEl) {
+      titleEl.innerHTML = mode === 'followup'
+        ? 'HUB CLÍNICO — VISITA DE SEGUIMIENTO <span class="highlight">Hidradenitis Supurativa</span>'
+        : 'HUB CLÍNICO — PRIMERA VISITA <span class="highlight">Hidradenitis Supurativa</span>';
+    }
+
+    setVal('Tipo_Visita', mode === 'followup' ? 'Seguimiento' : 'Primera_Visita');
+  }
+
   // ─── Fecha por defecto ─────────────────────────────────────────────────
   function initDefaultDate() {
     const today = new Date().toISOString().slice(0, 10);
@@ -771,6 +794,7 @@
 
     initDefaultDate();
     initNHCFromURL();
+    applyModePresentation(mode);
 
     // ITERACIÓN 2: Chips en vez de grid de selects
     renderComorbidityChips();
@@ -857,8 +881,9 @@
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
       const initForm = () => {
+        const modeFromQuery = resolveFormModeFromURL();
         const isSeguimiento = window.location.pathname.includes('seguimiento');
-        initHSForm({ mode: isSeguimiento ? 'followup' : 'first' });
+        initHSForm({ mode: modeFromQuery || (isSeguimiento ? 'followup' : 'first') });
       };
       
       if (typeof HubTools?.data?.isLoaded !== 'undefined' && HubTools.data.isLoaded) {

@@ -217,6 +217,15 @@ function updateDbStatus() {
 function initSidebar() {
     // Detectar p\u00e1gina actual y marcar nav-link activo
     var currentPage = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    var mode = '';
+    try {
+        mode = new URLSearchParams(window.location.search).get('mode') || '';
+    } catch (error) {
+        mode = '';
+    }
+    if (currentPage === 'primera_visita.html' && mode.toLowerCase() === 'followup') {
+        currentPage = 'seguimiento.html';
+    }
     document.querySelectorAll('.nav-link').forEach(function(link) {
         var href = (link.getAttribute('href') || '').toLowerCase();
         link.classList.toggle('active', href === currentPage);
@@ -487,11 +496,6 @@ function ensureQuickViewElements() {
     }
 
     return createQuickViewOverlay();
-}
-
-function getMockPatientBundle(nhc) {
-    // No se usan pacientes mock en HS v1
-    return null;
 }
 
 function mapRecordToPatientSummary(record, history) {
