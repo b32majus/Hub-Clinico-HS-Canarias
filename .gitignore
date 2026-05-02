@@ -2,6 +2,9 @@
 .claude/
 .claude/settings.local.json
 
+# OpenCode local settings
+.opencode/
+
 # Python cache
 __pycache__/
 *.py[cod]
@@ -31,7 +34,12 @@ nul
 *.tmp
 *.log
 
-# NO ignorar archivos de datos críticos
-!Hub_Clinico_Maestro.xlsx
-!create_excel.py
-!generate_mock_data.py
+# Test artifacts
+test_screenshots/
+
+# Excel files — no trackear ninguno
+*.xlsx
+
+# Python scripts — solo los generadores críticos
+*.py
+!create_excel_hs.py

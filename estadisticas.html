@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadísticas del Servicio - Hub Clínico</title>
+    <title>Estadísticas HS - Hub Clínico HS Canarias</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260307t">
-    <link rel="stylesheet" href="style_estadisticas.css?v=20260306l">
+    <link rel="stylesheet" href="style.css?v=20260502b">
+    <link rel="stylesheet" href="style_estadisticas.css?v=20260502b">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 </head>
 
 <body>
@@ -20,7 +19,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-circle"><span class="logo-text">HC</span></div>
-                <h1 class="sidebar-title">Hub Clínico<br>Reumatología</h1>
+                <h1 class="sidebar-title">Hub Clínico<br>HS Canarias</h1>
             </div>
 
             <div class="user-block">
@@ -32,7 +31,7 @@
             </div>
 
             <div class="search-container">
-                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por ID..." autocomplete="off">
+                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por NHC..." autocomplete="off">
                 <i class="fas fa-search search-icon" aria-hidden="true"></i>
                 <button type="button" class="clear-search hidden" id="clearPatientSearch" aria-label="Limpiar búsqueda">
                     <i class="fas fa-times-circle"></i>
@@ -44,22 +43,17 @@
                 <h3 class="nav-title">Consulta</h3>
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link" data-nav-link><i class="fas fa-home"></i>Inicio</a></li>
-                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i
-                                class="fas fa-plus-circle"></i>Nueva Visita</a></li>
-                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i
-                                class="fas fa-clipboard-list"></i>Visita de Seguimiento</a></li>
+                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i class="fas fa-plus-circle"></i>Nueva Visita</a></li>
+                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i class="fas fa-clipboard-list"></i>Visita de Seguimiento</a></li>
                 </ul>
             </div>
 
             <div class="nav-section">
                 <h3 class="nav-title">Gestión</h3>
                 <ul class="nav-list">
-                    <li><a href="estadisticas.html" class="nav-link" data-nav-link><i
-                                class="fas fa-chart-bar"></i>Estadísticas</a></li>
-                    <li><a href="manage_drugs.html" class="nav-link" data-nav-link><i
-                                class="fas fa-pills"></i>Fármacos</a></li>
-                    <li><a href="manage_professionals.html" class="nav-link" data-nav-link><i
-                                class="fas fa-users"></i>Profesionales</a></li>
+                    <li><a href="estadisticas.html" class="nav-link" data-nav-link><i class="fas fa-chart-bar"></i>Estadísticas</a></li>
+                    <li><a href="manage_drugs.html" class="nav-link" data-nav-link><i class="fas fa-pills"></i>Fármacos</a></li>
+                    <li><a href="manage_professionals.html" class="nav-link" data-nav-link><i class="fas fa-users"></i>Profesionales</a></li>
                 </ul>
             </div>
 
@@ -71,13 +65,13 @@
                     <span class="db-status-indicator__time" id="dbStatusTime"></span>
                 </div>
             </div>
-            <div class="sidebar-footer">v. 2.0.0</div>
+            <div class="sidebar-footer">v. 1.0.0</div>
         </aside>
 
         <main class="main-content dashboard-poblacional">
-            <h1 class="page-title"><i class="fas fa-chart-line"></i> Estadísticas del Servicio</h1>
+            <h1 class="page-title"><i class="fas fa-chart-line"></i> Estadísticas HS Canarias</h1>
 
-            <!-- Panel de Filtros Rediseñado -->
+            <!-- Panel de Filtros -->
             <section class="filters-panel collapsible-section">
                 <div class="collapsible-header" id="filtersHeader">
                     <h2 class="card-title">
@@ -94,31 +88,22 @@
                         <button class="filter-tab active" data-tab="periodo" role="tab" aria-selected="true">
                             <i class="fas fa-calendar-alt"></i>
                             <span>Periodo</span>
-                            <span class="filter-tab-badge" id="badge-periodo" style="display: none;">0</span>
-                        </button>
-                        <button class="filter-tab" data-tab="demograficos" role="tab" aria-selected="false">
-                            <i class="fas fa-users"></i>
-                            <span>Demografía</span>
-                            <span class="filter-tab-badge" id="badge-demograficos" style="display: none;">0</span>
                         </button>
                         <button class="filter-tab" data-tab="clinicos" role="tab" aria-selected="false">
                             <i class="fas fa-heartbeat"></i>
                             <span>Clínicos</span>
-                            <span class="filter-tab-badge" id="badge-clinicos" style="display: none;">0</span>
                         </button>
                         <button class="filter-tab" data-tab="terapeuticos" role="tab" aria-selected="false">
                             <i class="fas fa-pills"></i>
                             <span>Terapéuticos</span>
-                            <span class="filter-tab-badge" id="badge-terapeuticos" style="display: none;">0</span>
                         </button>
-                        <button class="filter-tab" data-tab="historicos" role="tab" aria-selected="false">
-                            <i class="fas fa-history"></i>
-                            <span>Históricos</span>
-                            <span class="filter-tab-badge" id="badge-historicos" style="display: none;">0</span>
+                        <button class="filter-tab" data-tab="procedimientos" role="tab" aria-selected="false">
+                            <i class="fas fa-procedures"></i>
+                            <span>Procedimientos</span>
                         </button>
                     </div>
 
-                    <!-- Contenido Tab: Periodo -->
+                    <!-- Tab: Periodo -->
                     <div class="filter-tab-content active" id="tab-periodo" role="tabpanel">
                         <div class="filters-grid">
                             <div class="filter-group-category">
@@ -138,191 +123,109 @@
                                     <button type="button" class="date-preset-btn" data-preset="all">Todo</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Contenido Tab: Demografía -->
-                    <div class="filter-tab-content" id="tab-demograficos" role="tabpanel">
-                        <div class="filters-grid">
                             <div class="filter-group-category">
-                                <h3><i class="fas fa-disease"></i> Patología</h3>
+                                <h3><i class="fas fa-user-md"></i> Profesional y Consulta</h3>
                                 <div class="filter-group">
-                                    <label for="filterPathology">Tipo de Patología:</label>
-                                    <select id="filterPathology" class="select-field select-modern">
-                                        <option value="Todos">Todas las patologías</option>
-                                        <option value="AR">Artritis Reumatoide (AR)</option>
-                                        <option value="ESPA">Espondiloartritis Axial (ESPA)</option>
-                                        <option value="APS">Artritis Psoriásica (APS)</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="filter-group-category">
-                                <h3><i class="fas fa-user"></i> Datos del Paciente</h3>
-                                <div class="filter-group">
-                                    <label for="filterSex">Sexo:</label>
-                                    <select id="filterSex" class="select-field select-modern">
+                                    <label for="filterProfesional">Profesional:</label>
+                                    <select id="filterProfesional" class="select-field select-modern">
                                         <option value="Todos">Todos</option>
-                                        <option value="Hombre">Hombre</option>
-                                        <option value="Mujer">Mujer</option>
                                     </select>
                                 </div>
                                 <div class="filter-group">
-                                    <label for="filterAgeFrom">Edad desde:</label>
-                                    <input type="number" id="filterAgeFrom" class="input-field" placeholder="Ej: 18"
-                                        min="0" max="120">
+                                    <label for="filterConsulta">Consulta:</label>
+                                    <select id="filterConsulta" class="select-field select-modern">
+                                        <option value="Todos">Todas</option>
+                                    </select>
                                 </div>
                                 <div class="filter-group">
-                                    <label for="filterAgeTo">Edad hasta:</label>
-                                    <input type="number" id="filterAgeTo" class="input-field" placeholder="Ej: 80"
-                                        min="0" max="120">
+                                    <label for="filterOrigen">Origen del paciente:</label>
+                                    <select id="filterOrigen" class="select-field select-modern">
+                                        <option value="Todos">Todos</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Contenido Tab: Clínicos -->
+                    <!-- Tab: Clínicos -->
                     <div class="filter-tab-content" id="tab-clinicos" role="tabpanel">
                         <div class="filters-grid">
                             <div class="filter-group-category">
-                                <h3><i class="fas fa-vial"></i> Biomarcadores</h3>
+                                <h3><i class="fas fa-chart-bar"></i> Severidad IHS-4</h3>
                                 <div class="filter-group">
-                                    <label for="filterBiomarker">Estado del Biomarcador:</label>
-                                    <select id="filterBiomarker" class="select-field select-modern">
-                                        <option value="Todos">Todos los estados</option>
-                                        <option value="HLA-B27_Positive">HLA-B27 Positivo</option>
-                                        <option value="HLA-B27_Negative">HLA-B27 Negativo</option>
-                                        <option value="FR_Positive">Factor Reumatoide Positivo</option>
-                                        <option value="FR_Negative">Factor Reumatoide Negativo</option>
-                                        <option value="aPCC_Positive">Anti-CCP Positivo</option>
-                                        <option value="aPCC_Negative">Anti-CCP Negativo</option>
+                                    <label for="filterSeveridad">Categoría:</label>
+                                    <select id="filterSeveridad" class="select-field select-modern">
+                                        <option value="Todos">Todas</option>
+                                        <option value="Leve">Leve (0-3)</option>
+                                        <option value="Moderada">Moderada (4-10)</option>
+                                        <option value="Grave">Grave (>10)</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="filter-group-category">
-                                <h3><i class="fas fa-chart-bar"></i> Índices de Actividad</h3>
+                                <h3><i class="fas fa-layer-group"></i> Estadio Hurley</h3>
                                 <div class="filter-group">
-                                    <label for="filterActivityIndex">Índice a evaluar:</label>
-                                    <select id="filterActivityIndex" class="select-field select-modern">
-                                        <option value="BASDAI">BASDAI</option>
-                                        <option value="ASDAS">ASDAS</option>
-                                        <option value="HAQ">HAQ-DI</option>
-                                        <option value="DAS28_CRP">DAS28-CRP</option>
-                                        <option value="DAS28_ESR">DAS28-ESR</option>
-                                        <option value="CDAI">CDAI</option>
-                                        <option value="SDAI">SDAI</option>
-                                        <option value="RAPID3">RAPID3</option>
-                                        <option value="PCR">PCR</option>
-                                        <option value="VSG">VSG</option>
+                                    <label for="filterHurley">Hurley:</label>
+                                    <select id="filterHurley" class="select-field select-modern">
+                                        <option value="Todos">Todos</option>
+                                        <option value="I">I (abscesos aislados)</option>
+                                        <option value="II">II (abscesos recurrentes)</option>
+                                        <option value="III">III (difusa)</option>
                                     </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label for="filterActivityState">Estado de Actividad:</label>
-                                    <select id="filterActivityState" class="select-field select-modern">
-                                        <option value="Todos">Todos los estados</option>
-                                        <option value="Remision">Remisión</option>
-                                        <option value="Baja Actividad">Baja Actividad</option>
-                                        <option value="Moderada Actividad">Actividad Moderada</option>
-                                        <option value="Alta Actividad">Alta Actividad</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="filter-group-category">
-                                <h3><i class="fas fa-thermometer-half"></i> Escalas EVA</h3>
-                                <div class="filter-group range-slider-group">
-                                    <label for="filterEVADolor">
-                                        EVA Dolor (máximo):
-                                        <span class="range-slider-value" id="evaDolorValue">10</span>
-                                    </label>
-                                    <input type="range" id="filterEVADolor" class="range-slider" min="0" max="10"
-                                        value="10">
-                                </div>
-                                <div class="filter-group range-slider-group">
-                                    <label for="filterEVAGlobal">
-                                        EVA Global (máximo):
-                                        <span class="range-slider-value" id="evaGlobalValue">10</span>
-                                    </label>
-                                    <input type="range" id="filterEVAGlobal" class="range-slider" min="0" max="10"
-                                        value="10">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Contenido Tab: Terapéuticos -->
+                    <!-- Tab: Terapéuticos -->
                     <div class="filter-tab-content" id="tab-terapeuticos" role="tabpanel">
                         <div class="filters-grid">
                             <div class="filter-group-category">
-                                <h3><i class="fas fa-syringe"></i> Tipo de Tratamiento</h3>
+                                <h3><i class="fas fa-prescription-bottle-alt"></i> Tratamiento Actual</h3>
                                 <div class="filter-group">
-                                    <label for="filterTtoType">Categoría:</label>
-                                    <select id="filterTtoType" class="select-field select-modern">
-                                        <option value="Todos">Todos los tratamientos</option>
-                                        <option value="FAMEs">FAMEs convencionales</option>
-                                        <option value="Biológicos">Biológicos / Diana</option>
-                                        <option value="Sistémicos">Sistémicos</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="filter-group-category">
-                                <h3><i class="fas fa-prescription-bottle-alt"></i> Fármaco Específico</h3>
-                                <div class="filter-group">
-                                    <label for="filterTtoSpecific">Medicamento:</label>
-                                    <select id="filterTtoSpecific" class="select-field select-modern">
-                                        <option value="Todos">Todos los fármacos</option>
+                                    <label for="filterTratamiento">Fármaco:</label>
+                                    <select id="filterTratamiento" class="select-field select-modern">
+                                        <option value="Todos">Todos</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Contenido Tab: Históricos -->
-                    <div class="filter-tab-content" id="tab-historicos" role="tabpanel">
+                    <!-- Tab: Procedimientos -->
+                    <div class="filter-tab-content" id="tab-procedimientos" role="tabpanel">
                         <div class="filters-grid">
                             <div class="filter-group-category">
-                                <h3><i class="fas fa-notes-medical"></i> Comorbilidades</h3>
+                                <h3><i class="fas fa-procedures"></i> Cirugía</h3>
                                 <div class="filter-group">
-                                    <label for="filterComorbidity">Condición asociada:</label>
-                                    <select id="filterComorbidity" class="select-field select-modern">
-                                        <option value="Todos">Todas las comorbilidades</option>
-                                        <option value="HTA">Hipertensión Arterial</option>
-                                        <option value="DM">Diabetes Mellitus</option>
-                                        <option value="DLP">Dislipidemia</option>
-                                        <option value="ECV">Enfermedad Cardiovascular</option>
-                                        <option value="Gastritis">Gastritis/Úlcera</option>
-                                        <option value="Obesidad">Obesidad</option>
-                                        <option value="Osteoporosis">Osteoporosis</option>
-                                        <option value="Gota">Gota</option>
+                                    <label for="filterCirugia">Estado:</label>
+                                    <select id="filterCirugia" class="select-field select-modern">
+                                        <option value="Todos">Todos</option>
+                                        <option value="Sí">Sí</option>
+                                        <option value="No">No</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="filter-group-category">
-                                <h3><i class="fas fa-eye"></i> Manifestaciones Extra-articulares</h3>
+                                <h3><i class="fas fa-wave-square"></i> Ecografía</h3>
                                 <div class="filter-group">
-                                    <label for="filterExtraArticular">Manifestación:</label>
-                                    <select id="filterExtraArticular" class="select-field select-modern">
-                                        <option value="Todos">Todas las manifestaciones</option>
-                                        <option value="Digestiva">Afectación Digestiva (EII)</option>
-                                        <option value="Uveitis">Uveítis</option>
-                                        <option value="Psoriasis">Psoriasis</option>
+                                    <label for="filterEcografia">Realizada:</label>
+                                    <select id="filterEcografia" class="select-field select-modern">
+                                        <option value="Todos">Todos</option>
+                                        <option value="Sí">Sí</option>
+                                        <option value="No">No</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="filter-group-category">
-                                <h3><i class="fas fa-exclamation-triangle"></i> Eventos Adversos</h3>
-                                <div class="filter-group checkbox-group">
-                                    <input type="checkbox" id="filterAdverseEffect">
-                                    <label for="filterAdverseEffect">Solo pacientes con efecto adverso reportado</label>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Acciones de Filtro -->
+                    <!-- Acciones -->
                     <div class="filter-actions">
                     </div>
                 </div>
 
-                <!-- Barra de Filtros Activos (fuera del collapsible para que sea visible aunque el panel esté cerrado) -->
+                <!-- Barra de Filtros Activos -->
                 <div class="active-filters-bar" id="activeFiltersBar" style="display: none;">
                     <span class="active-filters-label">Filtros activos:</span>
                     <div id="activeFiltersChips"></div>
@@ -332,122 +235,135 @@
                 </div>
             </section>
 
-            <!-- Panel de KPIs Mejorado -->
+            <!-- Panel de KPIs -->
             <section class="dashboard-kpis-panel" id="kpisPanel">
                 <div class="kpi-card kpi-card--info">
                     <div class="kpi-icon"><i class="fas fa-users"></i></div>
-                    <span class="kpi-label">Total Pacientes</span>
-                    <span id="kpiTotalPatients" class="kpi-value">0</span>
-                    <span class="kpi-trend kpi-trend--neutral" id="kpiTotalTrend">
-                        <i class="fas fa-minus"></i> Sin cambios
-                    </span>
+                    <span class="kpi-label">Pacientes Únicos</span>
+                    <span id="kpiTotalPacientes" class="kpi-value">0</span>
                 </div>
                 <div class="kpi-card kpi-card--success">
-                    <div class="kpi-icon"><i class="fas fa-check-circle"></i></div>
-                    <span class="kpi-label" id="kpiRemissionLabel">En Remisión</span>
-                    <span id="kpiRemissionPercent" class="kpi-value">0%</span>
-                    <span class="kpi-trend kpi-trend--up" id="kpiRemissionTrend">
-                        <i class="fas fa-arrow-up"></i> +0%
-                    </span>
+                    <div class="kpi-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <span class="kpi-label">Visitas Totales</span>
+                    <span id="kpiTotalVisitas" class="kpi-value">0</span>
+                </div>
+                <div class="kpi-card kpi-card--info">
+                    <div class="kpi-icon"><i class="fas fa-plus-circle"></i></div>
+                    <span class="kpi-label">Primeras Visitas</span>
+                    <span id="kpiPrimerasVisitas" class="kpi-value">0</span>
+                </div>
+                <div class="kpi-card kpi-card--info">
+                    <div class="kpi-icon"><i class="fas fa-redo"></i></div>
+                    <span class="kpi-label">Seguimientos</span>
+                    <span id="kpiSeguimientos" class="kpi-value">0</span>
                 </div>
                 <div class="kpi-card kpi-card--danger">
                     <div class="kpi-icon"><i class="fas fa-exclamation-circle"></i></div>
-                    <span class="kpi-label" id="kpiHighActivityLabel">Alta Actividad</span>
-                    <span id="kpiHighActivityPercent" class="kpi-value">0%</span>
-                    <span class="kpi-trend kpi-trend--down" id="kpiHighActivityTrend">
-                        <i class="fas fa-arrow-down"></i> -0%
-                    </span>
+                    <span class="kpi-label">IHS-4 Grave</span>
+                    <span id="kpiIHS4Grave" class="kpi-value">0</span>
                 </div>
-                <div class="kpi-card kpi-card--purple">
+                <div class="kpi-card kpi-card--biologic">
                     <div class="kpi-icon"><i class="fas fa-syringe"></i></div>
-                    <span class="kpi-label">Tto. Biológico</span>
-                    <span id="kpiBiologicPercent" class="kpi-value">0%</span>
-                    <span class="kpi-trend kpi-trend--neutral" id="kpiBiologicTrend">
-                        <i class="fas fa-minus"></i> Estable
-                    </span>
+                    <span class="kpi-label">Con Biológico</span>
+                    <span id="kpiBiologicos" class="kpi-value">0</span>
+                </div>
+                <div class="kpi-card kpi-card--warning">
+                    <div class="kpi-icon"><i class="fas fa-procedures"></i></div>
+                    <span class="kpi-label">Derivados Cirugía</span>
+                    <span id="kpiCirugia" class="kpi-value">0</span>
+                </div>
+                <div class="kpi-card kpi-card--info">
+                    <div class="kpi-icon"><i class="fas fa-wave-square"></i></div>
+                    <span class="kpi-label">Con Ecografía</span>
+                    <span id="kpiEcografia" class="kpi-value">0</span>
                 </div>
                 <div class="kpi-card kpi-card--warning">
                     <div class="kpi-icon"><i class="fas fa-chart-line"></i></div>
-                    <span class="kpi-label" id="kpiActivityLabel">BASDAI Medio</span>
-                    <span id="kpiAvgActivity" class="kpi-value">0.0</span>
-                    <span class="kpi-trend kpi-trend--down" id="kpiActivityTrend">
-                        <i class="fas fa-arrow-down"></i> -0.0
-                    </span>
+                    <span class="kpi-label">Media IHS-4</span>
+                    <span id="kpiIHS4Media" class="kpi-value">—</span>
                 </div>
-                <div class="kpi-card kpi-card--info" id="kpiAsdasCard" style="display: none;">
-                    <div class="kpi-icon"><i class="fas fa-wave-square"></i></div>
-                    <span class="kpi-label">ASDAS Medio</span>
-                    <span id="kpiAvgAsdas" class="kpi-value">-</span>
-                    <span class="kpi-trend kpi-trend--neutral" id="kpiAsdasTrend">
-                        <i class="fas fa-minus"></i> Sin datos
-                    </span>
+                <div class="kpi-card kpi-card--info">
+                    <div class="kpi-icon"><i class="fas fa-clipboard-check"></i></div>
+                    <span class="kpi-label">Mediana DLQI</span>
+                    <span id="kpiDLQIMediana" class="kpi-value">Sin datos</span>
                 </div>
-                <!-- Métricas adicionales por patología -->
-                <div class="additional-metrics-container" id="additionalMetrics"></div>
             </section>
 
             <!-- Panel de Visualizaciones -->
             <section class="dashboard-visuals-panel" id="chartsPanel">
                 <div class="dashboard-card chart-card">
-                    <h2 class="card-title"><i class="fas fa-chart-pie"></i> Estado de Actividad de la Cohorte</h2>
+                    <h2 class="card-title"><i class="fas fa-chart-pie"></i> Distribución Severidad IHS-4</h2>
                     <div class="chart-container">
-                        <canvas id="activityDonutChart"></canvas>
+                        <canvas id="severidadChart"></canvas>
                     </div>
                 </div>
                 <div class="dashboard-card chart-card">
-                    <h2 class="card-title"><i class="fas fa-pills"></i> Distribución de Tratamientos</h2>
+                    <h2 class="card-title"><i class="fas fa-layer-group"></i> Distribución Hurley</h2>
                     <div class="chart-container">
-                        <canvas id="treatmentDistChart"></canvas>
+                        <canvas id="hurleyChart"></canvas>
                     </div>
                 </div>
                 <div class="dashboard-card chart-card">
-                    <h2 class="card-title"><i class="fas fa-heartbeat"></i> Top 10 Comorbilidades</h2>
+                    <h2 class="card-title"><i class="fas fa-pills"></i> Tratamientos Actuales (Top 10)</h2>
                     <div class="chart-container">
-                        <canvas id="comorbidityChart"></canvas>
+                        <canvas id="tratamientoChart"></canvas>
                     </div>
                 </div>
                 <div class="dashboard-card chart-card">
-                    <h2 class="card-title"><i class="fas fa-project-diagram"></i> Correlación de Índices</h2>
-                    <div class="correlation-controls">
-                        <label for="scatterX">Eje X:</label>
-                        <select id="scatterX" class="select-field select-modern"></select>
-                        <label for="scatterY">Eje Y:</label>
-                        <select id="scatterY" class="select-field select-modern"></select>
-                    </div>
+                    <h2 class="card-title"><i class="fas fa-map-marker-alt"></i> Origen de Derivación</h2>
                     <div class="chart-container">
-                        <canvas id="correlationScatterChart"></canvas>
+                        <canvas id="origenChart"></canvas>
+                    </div>
+                </div>
+                <div class="dashboard-card chart-card">
+                    <h2 class="card-title"><i class="fas fa-procedures"></i> Cirugía: Realizada / Pendiente / No</h2>
+                    <div class="chart-container">
+                        <canvas id="cirugiaChart"></canvas>
+                    </div>
+                </div>
+                <div class="dashboard-card chart-card">
+                    <h2 class="card-title"><i class="fas fa-calendar"></i> Evolución Temporal de Visitas</h2>
+                    <div class="chart-container">
+                        <canvas id="visitasEvolucionChart"></canvas>
+                    </div>
+                </div>
+                <div class="dashboard-card chart-card">
+                    <h2 class="card-title"><i class="fas fa-user-edit"></i> PROMs Agregados (DLQI y EVA Dolor)</h2>
+                    <div class="chart-container">
+                        <canvas id="promsStatsChart"></canvas>
                     </div>
                 </div>
             </section>
 
-            <!-- Tabla de Pacientes Mejorada -->
+            <!-- Tabla de Pacientes -->
             <section class="dashboard-card export-table-panel">
                 <div class="table-header">
                     <h2 class="card-title"><i class="fas fa-table"></i> Pacientes de la Cohorte</h2>
                     <div class="table-controls">
                         <div class="table-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" id="tableSearchInput" class="input-field"
-                                placeholder="Buscar en la tabla...">
+                            <input type="text" id="statsTableSearch" class="input-field" placeholder="Buscar en la tabla...">
                         </div>
-                        <button id="exportCohortBtn" class="button primary-button">
+                        <button id="exportStatsBtn" class="button primary-button">
                             <i class="fas fa-file-csv"></i> Exportar CSV
                         </button>
                     </div>
                 </div>
                 <div id="exportTableContainer" class="responsive-table-container">
-                    <table class="data-table" id="cohortTable">
+                    <table class="data-table" id="statsTable">
                         <thead>
                             <tr>
-                                <th data-sort="ID_Paciente">ID <i class="fas fa-sort"></i></th>
-                                <th data-sort="Nombre">Nombre <i class="fas fa-sort"></i></th>
-                                <th data-sort="pathology">Patología <i class="fas fa-sort"></i></th>
+                                <th data-sort="NHC">NHC <i class="fas fa-sort"></i></th>
                                 <th data-sort="Fecha_Visita">Última Visita <i class="fas fa-sort"></i></th>
-                                <th data-sort="BASDAI">BASDAI <i class="fas fa-sort"></i></th>
-                                <th data-sort="Tratamiento_Actual">Tratamiento <i class="fas fa-sort"></i></th>
+                                <th data-sort="IHS4">IHS-4 <i class="fas fa-sort"></i></th>
+                                <th data-sort="Categoria">Categoría <i class="fas fa-sort"></i></th>
+                                <th data-sort="Hurley">Hurley <i class="fas fa-sort"></i></th>
+                                <th data-sort="Tratamiento">Tratamiento <i class="fas fa-sort"></i></th>
+                                <th data-sort="Cirugia">Cirugía <i class="fas fa-sort"></i></th>
+                                <th data-sort="Proxima_Revision">Próxima Revisión <i class="fas fa-sort"></i></th>
                             </tr>
                         </thead>
-                        <tbody id="cohortTableBody">
+                        <tbody id="statsTableBody">
                         </tbody>
                     </table>
                 </div>
@@ -467,20 +383,16 @@
         </main>
     </div>
 
-    <script src="modules/hubTools.js?v=20260306l"></script>
-    <script src="modules/utils.js?v=20260306l"></script>
-    <script src="modules/customSelect.js?v=20260307a"></script>
-    <script src="modules/fieldNormalizer.js?v=20260306l"></script>
-    <script src="modules/mockPatients.js?v=20260306l"></script>
-    <script src="modules/scoreCalculators.js?v=20260306l"></script>
-    <script src="modules/homunculus.js?v=20260306l"></script>
-    <script src="modules/exportManager.js?v=20260306l"></script>
-    <script src="modules/formController.js?v=20260307m"></script>
-    <script src="modules/dataManager.js?v=20260307s"></script>
+    <script src="modules/hubTools.js?v=20260502b"></script>
+    <script src="modules/utils.js?v=20260502b"></script>
+    <script src="modules/customSelect.js?v=20260502b"></script>
+    <script src="modules/fieldNormalizer.js?v=20260502b"></script>
+    <script src="modules/scoresHS.js?v=20260502b"></script>
+    <script src="modules/hsConfig.js?v=20260502b"></script>
+    <script src="modules/dataManager.js?v=20260502b"></script>
 
-    <!-- Scripts globales y coordinadores -->
-    <script src="script.js?v=20260307t"></script>
-    <script src="scripts/script_estadisticas.js?v=20260307n"></script>
+    <script src="script.js?v=20260502b"></script>
+    <script src="modules/statsHS.js?v=20260502b"></script>
 </body>
 
 </html>

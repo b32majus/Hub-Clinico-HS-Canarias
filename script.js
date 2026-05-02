@@ -2,17 +2,6 @@
 
 let quickViewMount = null;
 
-const PATHOLOGY_LABELS = {
-    espa: 'Espondiloartritis axial',
-    aps: 'Artritis psoriásica',
-    ar: 'Artritis Reumatoide'
-};
-
-function labelForPathology(code) {
-    const normalized = (code || '').toString().toLowerCase();
-    return PATHOLOGY_LABELS[normalized] || (normalized ? normalized.toUpperCase() : 'Sin diagnóstico');
-}
-
 function coalesce(...values) {
     for (const value of values) {
         if (value !== undefined && value !== null && value !== '') {
@@ -42,17 +31,9 @@ function formatDisplayDate(value) {
     return value;
 }
 
-function inferPathologyFromPatientId(id) {
-    var normalized = (id || '').toString().trim().toLowerCase();
-    if (normalized.startsWith('esp')) return 'espa';
-    if (normalized.startsWith('aps')) return 'aps';
-    if (normalized.startsWith('ar')) return 'ar';
-    return '';
-}
-
 function normalizeRecord(record, extra) {
-    if (typeof HubTools?.normalizer?.normalizeRecord === 'function') {
-        return HubTools.normalizer.normalizeRecord(record, extra);
+    if (typeof HubTools?.normalizer?.normalizeRecordHS === 'function') {
+        return HubTools.normalizer.normalizeRecordHS(record, extra);
     }
     return { ...(record || {}), ...(extra || {}) };
 }
@@ -83,7 +64,7 @@ function updatePendingRowsIndicator() {
     const countEl = indicator.querySelector('#pendingRowsCount');
     const hintEl = indicator.querySelector('#pendingRowsHint');
     if (countEl) countEl.textContent = String(rows.length);
-    if (hintEl) hintEl.textContent = rows.length ? ('Última: ' + rows[0].sheet + ' · ' + ((rows[0].pathology || '').toUpperCase())) : 'Sin pendientes';
+    if (hintEl) hintEl.textContent = rows.length ? ('Última: ' + rows[0].sheet) : 'Sin pendientes';
     indicator.classList.toggle('hidden', rows.length === 0);
 }
 
@@ -416,12 +397,12 @@ function renderQuickViewMetric(label, value) {
     return '<div class="quick-view-metric-card"><div class="quick-view-metric-card__label">' + label + '</div><div class="quick-view-metric-card__value">' + value + '</div></div>';
 }
 
-function renderQuickViewEmptyState(id) {
-    return '<div class="quick-view-empty-card"><i class="fas fa-search quick-view-empty-card__icon" aria-hidden="true"></i><p class="quick-view-empty-card__text">No se encontraron resultados para el ID proporcionado (' + id + ').</p><p class="quick-view-empty-card__subtext">¿Desea crear una nueva historia clínica para este paciente?</p><a href="primera_visita.html?id=' + id + '" class="action-btn primary-btn quick-view-link-btn"><i class="fas fa-plus-circle quick-view-inline-icon" aria-hidden="true"></i>Crear Nueva Historia Clínica</a></div>';
+function renderQuickViewEmptyState(nhc) {
+    return '<div class="quick-view-empty-card"><i class="fas fa-search quick-view-empty-card__icon" aria-hidden="true"></i><p class="quick-view-empty-card__text">No se encontraron resultados para el NHC proporcionado (' + nhc + ').</p><p class="quick-view-empty-card__subtext">¿Desea crear una nueva historia clínica para este paciente?</p><a href="primera_visita.html?nhc=' + nhc + '" class="action-btn primary-btn quick-view-link-btn"><i class="fas fa-plus-circle quick-view-inline-icon" aria-hidden="true"></i>Crear Nueva Historia Clínica</a></div>';
 }
 
-function renderQuickViewNewPatient(id) {
-    return '<div class="quick-view-empty-card"><div class="quick-view-empty-card__hero"><i class="fas fa-user-plus quick-view-empty-card__icon quick-view-empty-card__icon--primary" aria-hidden="true"></i><h3 class="quick-view-empty-card__title">Nuevo Paciente</h3><p class="quick-view-empty-card__text quick-view-empty-card__text--tight">Se procederá a crear una nueva historia clínica</p></div><div class="quick-view-patient-chip"><div class="quick-view-patient-chip__row"><i class="fas fa-id-card quick-view-patient-chip__icon" aria-hidden="true"></i><div class="quick-view-patient-chip__content"><div class="quick-view-patient-chip__label">ID del Paciente</div><div class="quick-view-patient-chip__value">' + id + '</div></div></div></div><div class="quick-view-empty-card__actions"><a href="primera_visita.html?id=' + id + '" class="action-btn primary-btn quick-view-link-btn quick-view-link-btn--spaced"><i class="fas fa-plus-circle quick-view-inline-icon" aria-hidden="true"></i>Crear Primera Visita</a><button type="button" class="quick-view-secondary-btn" id="quickViewCancelNewPatient"><i class="fas fa-times-circle quick-view-inline-icon" aria-hidden="true"></i>Cancelar</button></div></div>';
+function renderQuickViewNewPatient(nhc) {
+    return '<div class="quick-view-empty-card"><div class="quick-view-empty-card__hero"><i class="fas fa-user-plus quick-view-empty-card__icon quick-view-empty-card__icon--primary" aria-hidden="true"></i><h3 class="quick-view-empty-card__title">Nuevo Paciente</h3><p class="quick-view-empty-card__text quick-view-empty-card__text--tight">Se procederá a crear una nueva historia clínica</p></div><div class="quick-view-patient-chip"><div class="quick-view-patient-chip__row"><i class="fas fa-id-card quick-view-patient-chip__icon" aria-hidden="true"></i><div class="quick-view-patient-chip__content"><div class="quick-view-patient-chip__label">NHC del Paciente</div><div class="quick-view-patient-chip__value">' + nhc + '</div></div></div></div><div class="quick-view-empty-card__actions"><a href="primera_visita.html?nhc=' + nhc + '" class="action-btn primary-btn quick-view-link-btn quick-view-link-btn--spaced"><i class="fas fa-plus-circle quick-view-inline-icon" aria-hidden="true"></i>Crear Primera Visita</a><button type="button" class="quick-view-secondary-btn" id="quickViewCancelNewPatient"><i class="fas fa-times-circle quick-view-inline-icon" aria-hidden="true"></i>Cancelar</button></div></div>';
 }
 
 function createQuickViewOverlay() {
@@ -508,91 +489,64 @@ function ensureQuickViewElements() {
     return createQuickViewOverlay();
 }
 
-function getMockPatientBundle(id) {
-    if (typeof window.MockPatients?.getById !== 'function') {
-        return null;
-    }
-    const mock = window.MockPatients.getById(id);
-    if (!mock) {
-        return null;
-    }
-
-    const visits = Array.isArray(mock.visits) ? [...mock.visits] : [];
-    visits.sort((a, b) => new Date(b.fechaVisita) - new Date(a.fechaVisita));
-    const latestVisit = visits[0] || {};
-    const firstVisit = visits[visits.length - 1] || null;
-    const pathologyCode = (mock.pathology || mock.summary.pathology || mock.summary.diagnosticoPrimario || '').toLowerCase();
-
-    const treatmentHistory = Array.isArray(mock.treatmentHistory) ? mock.treatmentHistory.slice() : [];
-    const activeTreatment = treatmentHistory.length ? treatmentHistory[treatmentHistory.length - 1] : null;
-
-    const summary = {
-        idPaciente: mock.summary.idPaciente,
-        id: mock.summary.idPaciente,
-        nombre: mock.summary.nombre,
-        diagnostico: labelForPathology(pathologyCode),
-        diagnosticoPrimario: pathologyCode,
-        tratamientoActual: coalesce(mock.summary.tratamientoActual, latestVisit.biologicoSelect, activeTreatment?.name),
-        fechaInicioTratamiento: activeTreatment?.startDate || '',
-        ultimaVisita: latestVisit.fechaVisita || mock.summary.ultimaVisita || '',
-        evaGlobal: coalesce(latestVisit.evaGlobal, latestVisit.EVA_Global),
-        evaDolor: coalesce(latestVisit.evaDolor, latestVisit.EVA_Dolor),
-        basdai: coalesce(latestVisit.basdaiResult, latestVisit.basdai),
-        asdasCrp: coalesce(latestVisit.asdasCrpResult, latestVisit.asdasCrp)
-    };
-
-    return {
-        patient: summary,
-        history: {
-            allVisits: visits,
-            latestVisit,
-            firstVisit,
-            pathology: pathologyCode,
-            treatmentHistory,
-            keyEvents: Array.isArray(mock.keyEvents) ? mock.keyEvents.slice() : []
-        }
-    };
+function getMockPatientBundle(nhc) {
+    // No se usan pacientes mock en HS v1
+    return null;
 }
 
 function mapRecordToPatientSummary(record, history) {
     if (!record) return null;
     const normalizedRecord = normalizeRecord(record);
-    const id = normalizedRecord.idPaciente;
-    const nombre = normalizedRecord.nombrePaciente || 'Paciente sin nombre';
+    const nhc = normalizedRecord.nhc || '';
+    const nombre = normalizedRecord.nombrePaciente || normalizedRecord.Nombre_Paciente || 'Paciente sin nombre';
     const historyData = history && Array.isArray(history.allVisits) && history.allVisits.length > 0 ? history : null;
     const latestVisit = historyData ? normalizeRecord(historyData.latestVisit) : null;
     const treatmentHistory = historyData?.treatmentHistory || [];
     const activeTreatment = treatmentHistory.length ? treatmentHistory[treatmentHistory.length - 1] : null;
-    const pathologyCode = (normalizedRecord.pathology || normalizedRecord.diagnosticoPrimario || historyData?.pathology || '').toLowerCase();
+
+    // IHS-4: prefer canonical field, fall back to raw column names
+    const ihs4Clinico = coalesce(
+        normalizedRecord.ihs4Clinico,
+        record.IHS4_Clinico, record.IHS4, record.IHS_4,
+        latestVisit?.ihs4Clinico, latestVisit?.IHS4_Clinico
+    );
+    const ihs4Categoria = coalesce(
+        normalizedRecord.ihs4Categoria,
+        record.IHS4_Clinico_Categoria, record.IHS4_Categoria,
+        latestVisit?.ihs4Categoria, latestVisit?.IHS4_Clinico_Categoria
+    );
+    const hurley = coalesce(
+        normalizedRecord.hurley,
+        record.Hurley, record.Estadio_Hurley,
+        latestVisit?.hurley, latestVisit?.Hurley
+    );
+    const dlqi = coalesce(
+        record.DLQI, record.dlqi,
+        latestVisit?.DLQI, latestVisit?.dlqi
+    );
+    const evaDolor = coalesce(
+        record.Dolor_EVA, record.EVA_Dolor, record.evaDolor,
+        latestVisit?.Dolor_EVA, latestVisit?.EVA_Dolor, latestVisit?.evaDolor
+    );
 
     return {
-        idPaciente: id,
-        id,
-        nombre,
-        diagnostico: record.Diagnostico_Principal || record.diagnostico || labelForPathology(pathologyCode),
-        diagnosticoPrimario: pathologyCode || normalizedRecord.diagnosticoPrimario,
+        nhc: nhc,
+        nombre: nombre,
         tratamientoActual: coalesce(normalizedRecord.tratamientoActual, activeTreatment?.name),
         fechaInicioTratamiento: coalesce(normalizedRecord.fechaInicioTratamiento, activeTreatment?.startDate),
         ultimaVisita: coalesce(normalizedRecord.fechaVisita, latestVisit?.fechaVisita),
-        evaGlobal: coalesce(normalizedRecord.evaGlobal, latestVisit?.evaGlobal),
-        evaDolor: coalesce(normalizedRecord.evaDolor, latestVisit?.evaDolor),
-        basdai: coalesce(normalizedRecord.basdaiResult, latestVisit?.basdaiResult),
-        asdasCrp: coalesce(normalizedRecord.asdasCrpResult, latestVisit?.asdasCrpResult),
-        das28Crp: coalesce(normalizedRecord.das28CrpResult, latestVisit?.das28CrpResult),
-        das28Esr: coalesce(normalizedRecord.das28EsrResult, latestVisit?.das28EsrResult),
-        cdai: coalesce(normalizedRecord.cdaiResult, latestVisit?.cdaiResult),
-        sdai: coalesce(normalizedRecord.sdaiResult, latestVisit?.sdaiResult),
-        haq: coalesce(normalizedRecord.haqResult, latestVisit?.haqResult),
-        rapid3: coalesce(normalizedRecord.rapid3Result, latestVisit?.rapid3Result)
+        ihs4Clinico: ihs4Clinico,
+        ihs4Categoria: ihs4Categoria,
+        hurley: hurley,
+        dlqi: dlqi,
+        evaDolor: evaDolor,
+        decisionTerapeutica: coalesce(normalizedRecord.decisionTerapeutica, latestVisit?.decisionTerapeutica),
+        fechaProximaRevision: coalesce(normalizedRecord.fechaProximaRevision, latestVisit?.fechaProximaRevision)
     };
 }
 
-function navigateToDashboard(patientId, pathology) {
-    if (!patientId) return;
-    const params = new URLSearchParams({ id: patientId });
-    if (pathology) {
-        params.set('patologia', pathology);
-    }
+function navigateToDashboard(nhc) {
+    if (!nhc) return;
 
     if (quickViewMount) {
         try {
@@ -604,7 +558,7 @@ function navigateToDashboard(patientId, pathology) {
         }
     }
 
-    window.location.href = `dashboard_paciente.html?${params.toString()}`;
+    window.location.href = `dashboard_paciente.html?nhc=${encodeURIComponent(nhc)}`;
 }
 
 function renderQuickViewLayout(viewModel) {
@@ -615,8 +569,7 @@ function renderQuickViewLayout(viewModel) {
                     <div class="quick-view-eyebrow">Paciente</div>
                     <div class="quick-view-patient-name">${viewModel.patientName}</div>
                     <div class="quick-view-meta">
-                        <span><strong>ID:</strong> ${viewModel.id}</span>
-                        <span><strong>Diagnóstico:</strong> ${viewModel.pathologyLabel}</span>
+                        <span><strong>NHC:</strong> ${viewModel.nhc}</span>
                         <span><strong>Última visita:</strong> ${viewModel.lastVisit}</span>
                     </div>
                 </div>
@@ -632,8 +585,9 @@ function renderQuickViewLayout(viewModel) {
                     <div class="quick-view-clinical-list">
                         <div><strong>Tratamiento activo:</strong> ${viewModel.treatment}</div>
                         <div><strong>Inicio tratamiento:</strong> ${viewModel.treatmentStart}</div>
-                        <div><strong>Evaluación global:</strong> ${formatDisplayValue(viewModel.evaGlobal)}</div>
-                        <div><strong>${viewModel.pathologyCode === 'ar' ? 'DAS28-CRP' : 'BASDAI'}:</strong> ${formatDisplayValue(viewModel.pathologyCode === 'ar' ? viewModel.das28Crp : viewModel.basdai)}</div>
+                        <div><strong>Último IHS-4:</strong> ${formatDisplayValue(viewModel.ihs4Clinico)}</div>
+                        <div><strong>Categoría:</strong> ${formatDisplayValue(viewModel.ihs4Categoria)}</div>
+                        <div><strong>Hurley:</strong> ${formatDisplayValue(viewModel.hurley)}</div>
                     </div>
                 </div>
 
@@ -649,34 +603,34 @@ function renderQuickViewLayout(viewModel) {
                 <div class="patient-actions-card quick-view-panel-card">
                     <h3 class="quick-view-panel-card__title">Acciones rápidas</h3>
                     <div class="quick-view-actions">
-                        <a href="seguimiento.html?id=${viewModel.id}&patologia=${viewModel.pathologyCode}" class="action-btn green-btn quick-view-action-link">
+                        <a href="seguimiento.html?nhc=${viewModel.nhc}" class="action-btn green-btn quick-view-action-link">
                             <i class="fas fa-clipboard-list" aria-hidden="true"></i> Registrar Seguimiento
                         </a>
-                        <a href="primera_visita.html?id=${viewModel.id}" class="action-btn turquoise-btn quick-view-action-link">
+                        <a href="primera_visita.html?nhc=${viewModel.nhc}" class="action-btn turquoise-btn quick-view-action-link">
                             <i class="fas fa-file-alt" aria-hidden="true"></i> Revisar Primera Visita
                         </a>
                     </div>
                 </div>
                 <div class="patient-treatment-card quick-view-panel-card">
                     <h3 class="quick-view-panel-card__title">Notas adicionales</h3>
-                    <p class="quick-view-note">Consulta el dashboard completo para revisar eventos clínicos, evolución de índices y periodos terapéuticos.</p>
+                    <p class="quick-view-note">Consulta el dashboard completo para revisar eventos clínicos, evolución de IHS-4 y periodos terapéuticos.</p>
                 </div>
             </div>
         </div>
     `;
 }
 
-function resolveQuickViewPatient(id) {
+function resolveQuickViewPatient(nhc) {
     let patient = null;
     let historyData = null;
     let hasHistory = false;
     let isNewPatient = false;
 
     if (typeof HubTools?.data?.findPatientById === 'function') {
-        const record = HubTools.data.findPatientById(id);
+        const record = HubTools.data.findPatientById(nhc);
         if (record) {
             if (typeof HubTools.data.getPatientHistory === 'function') {
-                const history = HubTools.data.getPatientHistory(id);
+                const history = HubTools.data.getPatientHistory(nhc);
                 if (history && Array.isArray(history.allVisits) && history.allVisits.length > 0) {
                     historyData = history;
                     hasHistory = true;
@@ -685,7 +639,8 @@ function resolveQuickViewPatient(id) {
                         allVisits: history,
                         latestVisit: history[0],
                         firstVisit: history[history.length - 1],
-                        pathology: record.pathology || record.diagnosticoPrimario || ''
+                        treatmentHistory: [],
+                        keyEvents: []
                     };
                     hasHistory = history.length > 0;
                 } else {
@@ -697,31 +652,16 @@ function resolveQuickViewPatient(id) {
         }
     }
 
-    if (!patient) {
-        const mockBundle = getMockPatientBundle(id);
-        if (mockBundle) {
-            patient = mockBundle.patient;
-            historyData = mockBundle.history;
-            hasHistory = historyData.allVisits.length > 0;
-            isNewPatient = !hasHistory;
-        }
-    }
-
     return { patient, historyData, hasHistory, isNewPatient };
 }
 
 function buildQuickViewScores(patient) {
     return [
-        ['EVA GLOBAL', patient.evaGlobal],
-        ['EVA DOLOR', patient.evaDolor],
-        ['BASDAI', patient.basdai],
-        ['ASDAS-CRP', patient.asdasCrp],
-        ['DAS28-CRP', patient.das28Crp],
-        ['DAS28-ESR', patient.das28Esr],
-        ['CDAI', patient.cdai],
-        ['SDAI', patient.sdai],
-        ['HAQ-DI', patient.haq],
-        ['RAPID3', patient.rapid3]
+        ['IHS-4', patient.ihs4Clinico],
+        ['Categoría', patient.ihs4Categoria],
+        ['Hurley', patient.hurley],
+        ['DLQI', patient.dlqi],
+        ['EVA Dolor', patient.evaDolor]
     ]
         .filter(function(metric) {
             return metric[1] !== null && metric[1] !== undefined && metric[1] !== '';
@@ -732,25 +672,25 @@ function buildQuickViewScores(patient) {
         .join('');
 }
 
-function buildQuickViewModel(id, patient, historyData) {
-    const pathologyCode = patient.diagnosticoPrimario || historyData?.pathology || '';
-
+function buildQuickViewModel(nhc, patient, historyData) {
     return {
         patientName: patient.nombre || 'Paciente sin nombre',
-        id: id,
-        pathologyCode: pathologyCode,
-        pathologyLabel: labelForPathology(pathologyCode),
+        nhc: nhc,
         lastVisit: formatDisplayDate(patient.ultimaVisita) || 'Sin registros',
         treatment: formatDisplayValue(patient.tratamientoActual || historyData?.treatmentHistory?.slice(-1)[0]?.name),
         treatmentStart: formatDisplayDate(patient.fechaInicioTratamiento || historyData?.treatmentHistory?.slice(-1)[0]?.startDate) || 'Sin registrar',
-        evaGlobal: patient.evaGlobal,
-        basdai: patient.basdai,
-        das28Crp: patient.das28Crp,
+        ihs4Clinico: patient.ihs4Clinico,
+        ihs4Categoria: patient.ihs4Categoria,
+        hurley: patient.hurley,
+        dlqi: patient.dlqi,
+        evaDolor: patient.evaDolor,
+        decision: formatDisplayValue(patient.decisionTerapeutica),
+        proximaRevision: formatDisplayDate(patient.fechaProximaRevision) || 'Sin programar',
         scoresHTML: buildQuickViewScores(patient)
     };
 }
 
-function showPatientResults(id) {
+function showPatientResults(nhc) {
     const quickView = ensureQuickViewElements();
     if (!quickView) {
         console.warn('showPatientResults: elementos de resultados no disponibles');
@@ -770,7 +710,7 @@ function showPatientResults(id) {
         }
         searchResults.classList.remove('hidden');
     };
-    const resolvedPatient = resolveQuickViewPatient(id);
+    const resolvedPatient = resolveQuickViewPatient(nhc);
     let patient = resolvedPatient.patient;
     let historyData = resolvedPatient.historyData;
     let isNewPatient = resolvedPatient.isNewPatient;
@@ -778,19 +718,18 @@ function showPatientResults(id) {
     if (!patient) {
         if (searchResultsTitle) searchResultsTitle.textContent = 'Paciente No Encontrado';
         if (searchResultsSubtitle) searchResultsSubtitle.textContent = '';
-        resultsContent.innerHTML = renderQuickViewEmptyState(id);
+        resultsContent.innerHTML = renderQuickViewEmptyState(nhc);
         revealQuickView();
         return;
     }
 
     const patientName = patient.nombre || 'Paciente sin nombre';
-    const pathologyCode = patient.diagnosticoPrimario || historyData?.pathology || '';
 
     if (isNewPatient) {
         if (searchResultsTitle) searchResultsTitle.textContent = 'Paciente Nuevo - Iniciar Primera Visita';
-        if (searchResultsSubtitle) searchResultsSubtitle.textContent = `Paciente con ID ${id} no tiene visitas registradas. Cree una nueva historia clínica.`;
+        if (searchResultsSubtitle) searchResultsSubtitle.textContent = `Paciente con NHC ${nhc} no tiene visitas registradas. Cree una nueva historia clínica.`;
 
-        resultsContent.innerHTML = renderQuickViewNewPatient(id);
+        resultsContent.innerHTML = renderQuickViewNewPatient(nhc);
         document.getElementById('quickViewCancelNewPatient')?.addEventListener('click', () => {
             const sidebarSearch = document.getElementById('patientSearch');
             const centralSearch = document.getElementById('patientId');
@@ -799,12 +738,12 @@ function showPatientResults(id) {
         });
     } else {
         if (searchResultsTitle) searchResultsTitle.textContent = 'Paciente Encontrado - Opciones Disponibles';
-        if (searchResultsSubtitle) searchResultsSubtitle.textContent = `Mostrando datos de ${patientName} (ID: ${id})`;
-        resultsContent.innerHTML = renderQuickViewLayout(buildQuickViewModel(id, patient, historyData));
+        if (searchResultsSubtitle) searchResultsSubtitle.textContent = `Mostrando datos de ${patientName} (NHC: ${nhc})`;
+        resultsContent.innerHTML = renderQuickViewLayout(buildQuickViewModel(nhc, patient, historyData));
 
         const dashboardBtn = document.getElementById('btnVerDashboardCompleto');
         if (dashboardBtn) {
-            dashboardBtn.addEventListener('click', () => navigateToDashboard(id, pathologyCode));
+            dashboardBtn.addEventListener('click', () => navigateToDashboard(nhc));
         }
     }
 
@@ -854,29 +793,14 @@ function PatientAutocomplete(inputEl, opts) {
         return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\- ]/g, '');
     }
 
-    function badgeInfo(path) {
-        var p = (path || '').toLowerCase();
-        if (p === 'espa') return { label: 'EspA', cls: 'espa' };
-        if (p === 'aps')  return { label: 'APs',  cls: 'aps' };
-        if (p === 'ar')   return { label: 'AR',   cls: 'ar' };
-        return { label: '', cls: 'unknown' };
-    }
-
     function gatherAll() {
         var list = []; var seen = {};
         if (typeof HubTools !== 'undefined' && typeof HubTools.data !== 'undefined' && typeof HubTools.data.getAllPatients === 'function') {
             HubTools.data.getAllPatients().forEach(function(p) {
-                var id = p.ID_Paciente || p.idPaciente || p.ID;
-                if (!id || seen[id]) return;
-                seen[id] = true;
-                list.push({ id: id, name: p.Nombre_Paciente || p.nombrePaciente || p.Nombre || '', pathology: (p.pathology || p.diagnosticoPrimario || p.Diagnostico_Principal || '').toLowerCase() });
-            });
-        }
-        if (typeof window.MockPatients !== 'undefined' && typeof window.MockPatients.list === 'function') {
-            window.MockPatients.list().forEach(function(m) {
-                if (!m.idPaciente || seen[m.idPaciente]) return;
-                seen[m.idPaciente] = true;
-                list.push({ id: m.idPaciente, name: m.nombre || '', pathology: (m.pathology || m.diagnosticoPrimario || '').toLowerCase() });
+                var nhc = p.nhc || p.NHC || p.NHC_Paciente;
+                if (!nhc || seen[nhc]) return;
+                seen[nhc] = true;
+                list.push({ nhc: nhc, name: p.Nombre_Paciente || p.nombrePaciente || p.Nombre || '' });
             });
         }
         return list;
@@ -886,7 +810,7 @@ function PatientAutocomplete(inputEl, opts) {
         var t = norm(term);
         if (!t || t.length < MIN_CHARS) return [];
         return gatherAll().filter(function(p) {
-            return norm(p.id).indexOf(t) === 0 || norm(p.name).indexOf(t) !== -1;
+            return norm(p.nhc).indexOf(t) === 0 || norm(p.name).indexOf(t) !== -1;
         });
     }
 
@@ -898,14 +822,12 @@ function PatientAutocomplete(inputEl, opts) {
         currentResults = matches;
         if (!matches.length) { dropdown.classList.remove('open'); return; }
         matches.forEach(function(p, i) {
-            var b = badgeInfo(p.pathology);
             var item = document.createElement('div');
             item.className = 'patient-autocomplete__item';
             item.setAttribute('role', 'option');
             item.innerHTML =
-                '<span class="patient-autocomplete__id">' + escHtml(p.id) + '</span>' +
-                '<span class="patient-autocomplete__name">' + escHtml(p.name) + '</span>' +
-                (b.label ? '<span class="patient-autocomplete__badge patient-autocomplete__badge--' + b.cls + '">' + b.label + '</span>' : '');
+                '<span class="patient-autocomplete__id">' + escHtml(p.nhc) + '</span>' +
+                '<span class="patient-autocomplete__name">' + escHtml(p.name) + '</span>';
             item.addEventListener('click', (function(pat) { return function() { select(pat); }; })(p));
             dropdown.appendChild(item);
         });
@@ -919,9 +841,9 @@ function PatientAutocomplete(inputEl, opts) {
     }
 
     function select(patient) {
-        inputEl.value = patient.id;
+        inputEl.value = patient.nhc;
         close();
-        onSelect(patient.id);
+        onSelect(patient.nhc);
     }
 
     function close() {
@@ -1050,11 +972,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Event Listeners: Navigation Buttons ---
     var btnNueva = document.getElementById('btnNuevaVisita');
     var btnSeg   = document.getElementById('btnSeguimiento');
-    var btnDash  = document.getElementById('btnDashboardPaciente');
     var btnStats = document.getElementById('btnDashboardServicio');
     if (btnNueva) btnNueva.addEventListener('click', function() { attemptNavigation('primera_visita.html'); });
     if (btnSeg)   btnSeg.addEventListener('click', function() { attemptNavigation('seguimiento.html'); });
-    if (btnDash)  btnDash.addEventListener('click', function() { attemptNavigation('dashboard_search.html'); });
     if (btnStats) btnStats.addEventListener('click', function() { attemptNavigation('estadisticas.html'); });
 
     // --- Autocomplete: b\u00fasqueda de pacientes ---

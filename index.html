@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub Clínico - Reumatología</title>
+    <title>Hub Clínico HS Canarias</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260308c">
+    <link rel="stylesheet" href="style.css?v=20260502b">
     <!-- Cargar SheetJS para manejo de Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <!-- MÓDULOS HUBTOOLS - ORDEN CRÍTICO: hubTools.js PRIMERO -->
-    <script src="modules/hubTools.js?v=20260306l"></script>
-    <script src="modules/utils.js?v=20260306l"></script>
-    <script src="modules/customSelect.js?v=20260308b"></script>
-    <script src="modules/fieldNormalizer.js?v=20260306l"></script>
-    <script src="modules/mockPatients.js?v=20260306l"></script>
-    <script src="modules/scoreCalculators.js?v=20260306l"></script>
-    <script src="modules/homunculus.js?v=20260306l"></script>
-    <script src="modules/dataManager.js?v=20260307s"></script>
-    <script src="modules/exportManager.js?v=20260306l"></script>
+    <script src="modules/hubTools.js?v=20260502b"></script>
+    <script src="modules/utils.js?v=20260502b"></script>
+    <script src="modules/customSelect.js?v=20260502b"></script>
+    <script src="modules/fieldNormalizer.js?v=20260502b"></script>
+    <!-- <script src="modules/mockPatients.js?v=20260306l"></script> -->
+    <!-- <script src="modules/mockDashboardData.js?v=20260306l"></script> -->
+    <script src="modules/dataManager.js?v=20260502b"></script>
+    <script src="modules/hsConfig.js?v=20260502b"></script>
+    <script src="modules/scoresHS.js?v=20260502b"></script>
+    <script src="modules/exportManagerHS.js?v=20260502b"></script>
 
     <!-- Scripts globales -->
-    <script src="script.js?v=20260307t"></script>
+    <script src="script.js?v=20260502b"></script>
 </head>
 <body>
 
@@ -31,8 +32,8 @@
         <div class="session-gate__card">
             <div class="session-gate__brand">
                 <div class="logo-circle logo-circle--large"><span class="logo-text">HC</span></div>
-                <h1 class="session-gate__title">Hub Clínico<br>Reumatología</h1>
-                <p class="session-gate__hospital">Hospital Universitario de Badajoz</p>
+                <h1 class="session-gate__title">Hub Clínico<br>HS Canarias</h1>
+                <p class="session-gate__hospital">Hospital Universitario de Canarias</p>
             </div>
 
             <div class="session-gate__step" id="gateStepLoad">
@@ -62,7 +63,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-circle"><span class="logo-text">HC</span></div>
-                <h1 class="sidebar-title">Hub Clínico<br>Reumatología</h1>
+                <h1 class="sidebar-title">Hub Clínico<br>HS Canarias</h1>
             </div>
 
             <div class="user-block">
@@ -74,7 +75,7 @@
             </div>
 
             <div class="search-container">
-                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por ID..." autocomplete="off">
+                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por NHC..." autocomplete="off">
                 <i class="fas fa-search search-icon" aria-hidden="true"></i>
                 <button type="button" class="clear-search hidden" id="clearPatientSearch" aria-label="Limpiar búsqueda">
                     <i class="fas fa-times-circle"></i>
@@ -86,8 +87,8 @@
                 <h3 class="nav-title">Consulta</h3>
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link" data-nav-link><i class="fas fa-home"></i>Inicio</a></li>
-                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i class="fas fa-plus-circle"></i>Nueva Visita</a></li>
-                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i class="fas fa-clipboard-list"></i>Visita de Seguimiento</a></li>
+                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i class="fas fa-plus-circle"></i>Primera visita HS</a></li>
+                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i class="fas fa-clipboard-list"></i>Visita de seguimiento</a></li>
                 </ul>
             </div>
 
@@ -116,8 +117,8 @@
                 <header class="home-hero">
                     <div class="home-hero__content">
                         <p class="home-hero__eyebrow">Centro de control clínico</p>
-                        <p class="home-hero__hospital">Hospital Universitario de Badajoz</p>
-                        <h2 class="main-title">HUB Clínico de <span class="highlight">Reumatología</span></h2>
+                        <p class="home-hero__hospital">Hospital Universitario de Canarias</p>
+                        <h2 class="main-title">HUB Clínico de <span class="highlight">HS</span></h2>
                     </div>
                 </header>
 
@@ -147,9 +148,9 @@
 
                         <div class="inputs-section">
                             <div class="input-group">
-                                <label class="input-label" for="patientId">ID del Paciente</label>
+                                <label class="input-label" for="patientId">NHC del Paciente</label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="patientId" class="horizontal-input" placeholder="Buscar por ID..." autocomplete="off">
+                                    <input type="text" id="patientId" class="horizontal-input" placeholder="Buscar por NHC..." autocomplete="off">
                                     <i class="fas fa-search input-icon" aria-hidden="true"></i>
                                 </div>
                             </div>
@@ -165,8 +166,8 @@
                         </div>
 
                         <div class="action-buttons">
-                            <button class="action-btn turquoise-btn" id="btnNuevaVisita" data-nav-target="primera_visita.html"><i class="fas fa-plus" aria-hidden="true"></i><span>Nueva Visita</span></button>
-                            <button class="action-btn green-btn" id="btnSeguimiento" data-nav-target="seguimiento.html"><i class="fas fa-clipboard-list" aria-hidden="true"></i><span>Visita de Seguimiento</span></button>
+                            <button class="action-btn turquoise-btn" id="btnNuevaVisita" data-nav-target="primera_visita.html"><i class="fas fa-plus" aria-hidden="true"></i><span>Primera visita HS</span></button>
+                            <button class="action-btn green-btn" id="btnSeguimiento" data-nav-target="seguimiento.html"><i class="fas fa-clipboard-list" aria-hidden="true"></i><span>Visita de seguimiento</span></button>
                             <button class="action-btn purple-btn" id="btnDashboardServicio" data-nav-target="estadisticas.html"><i class="fas fa-chart-pie" aria-hidden="true"></i><span>Cuadro de Mando Servicio</span></button>
                         </div>
                     </article>

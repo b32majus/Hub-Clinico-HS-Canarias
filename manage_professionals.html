@@ -3,28 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub Clínico - Gestionar Profesionales</title>
+    <title>Hub Clínico HS Canarias - Gestión de Profesionales</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260307t">
-    <link rel="stylesheet" href="style_manage.css?v=20260307a">
+    <link rel="stylesheet" href="style.css?v=20260502c">
+    <link rel="stylesheet" href="style_manage.css?v=20260502c">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="modules/hubTools.js?v=20260306l"></script>
-    <script src="modules/utils.js?v=20260306l"></script>
-    <script src="modules/customSelect.js?v=20260307a"></script>
-    <script src="modules/fieldNormalizer.js?v=20260306l"></script>
-    <script src="modules/mockPatients.js?v=20260306l"></script>
-    <script src="modules/dataManager.js?v=20260307s"></script>
-    <script src="modules/exportManager.js?v=20260306l"></script>
-    <script src="script.js?v=20260307t"></script>
-    <script src="scripts/script_manage_professionals.js?v=20260307a"></script>
+    <script src="modules/hubTools.js?v=20260502c"></script>
+    <script src="modules/utils.js?v=20260502c"></script>
+    <script src="modules/customSelect.js?v=20260502c"></script>
+    <script src="modules/fieldNormalizer.js?v=20260502c"></script>
+    <script src="modules/dataManager.js?v=20260502c"></script>
+    <script src="modules/hsConfig.js?v=20260502c"></script>
+    <script src="modules/scoresHS.js?v=20260502c"></script>
+    <script src="modules/exportManagerHS.js?v=20260502c"></script>
+    <script src="script.js?v=20260502c"></script>
+    <script src="scripts/script_manage_professionals.js?v=20260502c"></script>
 </head>
 <body>
     <div class="hub-shell">
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-circle"><span class="logo-text">HC</span></div>
-                <h1 class="sidebar-title">Hub Clínico<br>Reumatología</h1>
+                <h1 class="sidebar-title">Hub Clínico<br>HS Canarias</h1>
             </div>
 
             <div class="user-block">
@@ -36,7 +37,7 @@
             </div>
 
             <div class="search-container">
-                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por ID..." autocomplete="off">
+                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por NHC..." autocomplete="off">
                 <i class="fas fa-search search-icon" aria-hidden="true"></i>
                 <button type="button" class="clear-search hidden" id="clearPatientSearch" aria-label="Limpiar búsqueda">
                     <i class="fas fa-times-circle"></i>
@@ -48,8 +49,8 @@
                 <h3 class="nav-title">Consulta</h3>
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link" data-nav-link><i class="fas fa-home"></i>Inicio</a></li>
-                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i class="fas fa-plus-circle"></i>Nueva Visita</a></li>
-                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i class="fas fa-clipboard-list"></i>Visita de Seguimiento</a></li>
+                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i class="fas fa-plus-circle"></i>Primera visita HS</a></li>
+                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i class="fas fa-clipboard-list"></i>Visita de seguimiento</a></li>
                 </ul>
             </div>
 
@@ -58,7 +59,7 @@
                 <ul class="nav-list">
                     <li><a href="estadisticas.html" class="nav-link" data-nav-link><i class="fas fa-chart-bar"></i>Estadísticas</a></li>
                     <li><a href="manage_drugs.html" class="nav-link" data-nav-link><i class="fas fa-pills"></i>Fármacos</a></li>
-                    <li><a href="manage_professionals.html" class="nav-link" data-nav-link><i class="fas fa-users"></i>Profesionales</a></li>
+                    <li><a href="manage_professionals.html" class="nav-link active" data-nav-link><i class="fas fa-users"></i>Profesionales</a></li>
                 </ul>
             </div>
 
@@ -76,7 +77,7 @@
             <section class="management-hero">
                 <div>
                     <p class="management-hero__eyebrow">Gestión de acceso</p>
-                    <h1 class="management-hero__title">Profesionales</h1>
+                    <h1 class="management-hero__title">Gestión de Profesionales HS Canarias</h1>
                     <p class="management-hero__description">Administra el listado de profesionales que pueden iniciar sesión y firmar registros clínicos dentro del Hub.</p>
                 </div>
                 <div class="management-hero__badge" aria-hidden="true">
@@ -93,18 +94,18 @@
                     <div class="management-card__header">
                         <div>
                             <h2 class="management-card__title"><i class="fas fa-user-plus"></i> Añadir profesional</h2>
-                            <p class="management-card__subtitle">Añade nombre completo y rol para que el perfil quede disponible en la selección de sesión y en la trazabilidad de visitas.</p>
+                            <p class="management-card__subtitle">Añade nombre completo y cargo para que el perfil quede disponible en la selección de sesión y en la trazabilidad de visitas.</p>
                         </div>
                     </div>
                     <div class="management-card__body">
                         <form id="addForm" class="management-form">
                             <div class="management-form__group">
                                 <label class="management-form__label" for="professionalName">Nombre del profesional</label>
-                                <input type="text" id="professionalName" class="input-modern" placeholder="Ej: Eugenio Chamizo" required>
+                                <input type="text" id="professionalName" class="input-modern" placeholder="Ej: Vania Lukoviek" required>
                             </div>
                             <div class="management-form__group">
-                                <label class="management-form__label" for="professionalRole">Cargo o rol</label>
-                                <input type="text" id="professionalRole" class="input-modern" placeholder="Ej: Reumatólogo/a" required>
+                                <label class="management-form__label" for="professionalRole">Cargo</label>
+                                <input type="text" id="professionalRole" class="input-modern" placeholder="Ej: Dermatología" required>
                                 <p class="management-form__help">Se mostrará en la tabla de gestión y en la lista exportable.</p>
                             </div>
                             <div class="management-form__actions">
@@ -138,7 +139,7 @@
                                 <table id="listTable" class="management-table">
                                     <thead>
                                         <tr>
-                                            <th>Nombre</th>
+                                            <th>Nombre Completo</th>
                                             <th>Cargo</th>
                                             <th>Acción</th>
                                         </tr>

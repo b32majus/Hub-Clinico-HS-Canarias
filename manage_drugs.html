@@ -3,28 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub Clínico - Gestionar Fármacos</title>
+    <title>Hub Clínico HS Canarias - Gestión de Fármacos</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260307t">
-    <link rel="stylesheet" href="style_manage.css?v=20260307a">
+    <link rel="stylesheet" href="style.css?v=20260502c">
+    <link rel="stylesheet" href="style_manage.css?v=20260502c">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="modules/hubTools.js?v=20260306l"></script>
-    <script src="modules/utils.js?v=20260306l"></script>
-    <script src="modules/customSelect.js?v=20260307a"></script>
-    <script src="modules/fieldNormalizer.js?v=20260306l"></script>
-    <script src="modules/mockPatients.js?v=20260306l"></script>
-    <script src="modules/dataManager.js?v=20260307s"></script>
-    <script src="modules/exportManager.js?v=20260306l"></script>
-    <script src="script.js?v=20260307t"></script>
-    <script src="scripts/script_manage_drugs.js?v=20260307a"></script>
+    <script src="modules/hubTools.js?v=20260502c"></script>
+    <script src="modules/utils.js?v=20260502c"></script>
+    <script src="modules/customSelect.js?v=20260502c"></script>
+    <script src="modules/fieldNormalizer.js?v=20260502c"></script>
+    <script src="modules/dataManager.js?v=20260502c"></script>
+    <script src="modules/hsConfig.js?v=20260502c"></script>
+    <script src="modules/scoresHS.js?v=20260502c"></script>
+    <script src="modules/exportManagerHS.js?v=20260502c"></script>
+    <script src="script.js?v=20260502c"></script>
+    <script src="scripts/script_manage_drugs.js?v=20260502c"></script>
 </head>
 <body>
     <div class="hub-shell">
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-circle"><span class="logo-text">HC</span></div>
-                <h1 class="sidebar-title">Hub Clínico<br>Reumatología</h1>
+                <h1 class="sidebar-title">Hub Clínico<br>HS Canarias</h1>
             </div>
 
             <div class="user-block">
@@ -36,7 +37,7 @@
             </div>
 
             <div class="search-container">
-                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por ID..." autocomplete="off">
+                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por NHC..." autocomplete="off">
                 <i class="fas fa-search search-icon" aria-hidden="true"></i>
                 <button type="button" class="clear-search hidden" id="clearPatientSearch" aria-label="Limpiar búsqueda">
                     <i class="fas fa-times-circle"></i>
@@ -48,8 +49,8 @@
                 <h3 class="nav-title">Consulta</h3>
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link" data-nav-link><i class="fas fa-home"></i>Inicio</a></li>
-                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i class="fas fa-plus-circle"></i>Nueva Visita</a></li>
-                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i class="fas fa-clipboard-list"></i>Visita de Seguimiento</a></li>
+                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i class="fas fa-plus-circle"></i>Primera visita HS</a></li>
+                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i class="fas fa-clipboard-list"></i>Visita de seguimiento</a></li>
                 </ul>
             </div>
 
@@ -57,7 +58,7 @@
                 <h3 class="nav-title">Gestión</h3>
                 <ul class="nav-list">
                     <li><a href="estadisticas.html" class="nav-link" data-nav-link><i class="fas fa-chart-bar"></i>Estadísticas</a></li>
-                    <li><a href="manage_drugs.html" class="nav-link" data-nav-link><i class="fas fa-pills"></i>Fármacos</a></li>
+                    <li><a href="manage_drugs.html" class="nav-link active" data-nav-link><i class="fas fa-pills"></i>Fármacos</a></li>
                     <li><a href="manage_professionals.html" class="nav-link" data-nav-link><i class="fas fa-users"></i>Profesionales</a></li>
                 </ul>
             </div>
@@ -76,8 +77,8 @@
             <section class="management-hero">
                 <div>
                     <p class="management-hero__eyebrow">Gestión de catálogos</p>
-                    <h1 class="management-hero__title">Fármacos</h1>
-                    <p class="management-hero__description">Mantén actualizado el catálogo terapéutico que alimenta los formularios y desplegables clínicos de la aplicación.</p>
+                    <h1 class="management-hero__title">Gestión de Fármacos HS</h1>
+                    <p class="management-hero__description">Catálogo terapéutico de Hidradenitis Suppurativa que alimenta los formularios y desplegables clínicos de la aplicación.</p>
                 </div>
                 <div class="management-hero__badge" aria-hidden="true">
                     <span class="management-hero__badge-icon"><i class="fas fa-pills"></i></span>
@@ -100,14 +101,16 @@
                         <form id="addForm" class="management-form">
                             <div class="management-form__group">
                                 <label class="management-form__label" for="drugName">Nombre del fármaco</label>
-                                <input type="text" id="drugName" class="input-modern" placeholder="Ej: Metotrexato" required>
+                                <input type="text" id="drugName" class="input-modern" placeholder="Ej: Adalimumab" required>
                             </div>
                             <div class="management-form__group">
                                 <label class="management-form__label" for="drugCategory">Categoría</label>
                                 <select id="drugCategory" class="select-modern" required>
-                                    <option value="FAME">FAME</option>
-                                    <option value="Biológico">Biológico</option>
-                                    <option value="Sistémico">Sistémico</option>
+                                    <option value="Antibiotico">Antibiótico</option>
+                                    <option value="Biologico">Biológico</option>
+                                    <option value="Topico">Tópico</option>
+                                    <option value="Sistemico_No_Biologico">Sistémico No Biológico</option>
+                                    <option value="Otros">Otros</option>
                                 </select>
                                 <p class="management-form__help">La categoría determina en qué bloque del tratamiento aparecerá el fármaco.</p>
                             </div>
@@ -142,8 +145,9 @@
                                 <table id="listTable" class="management-table">
                                     <thead>
                                         <tr>
-                                            <th>Nombre</th>
+                                            <th>Fármaco</th>
                                             <th>Categoría</th>
+                                            <th>Principio Activo</th>
                                             <th>Acción</th>
                                         </tr>
                                     </thead>

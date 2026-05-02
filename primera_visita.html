@@ -4,20 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Primera Visita - Hub Clínico Reumatológico</title>
+    <title>Primera Visita HS — Hub Clínico HS Canarias</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260307v">
-    <link rel="stylesheet" href="style_primera_visita.css?v=20260307m">
+    <link rel="stylesheet" href="style.css?v=20260502c">
+    <link rel="stylesheet" href="style_primera_visita.css?v=20260502c">
 </head>
 
 <body>
 
     <div class="hub-shell">
+        <!-- ═══════════ SIDEBAR (sin cambios estructurales) ═══════════ -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo-circle"><span class="logo-text">HC</span></div>
-                <h1 class="sidebar-title">Hub Clínico<br>Reumatología</h1>
+                <div class="logo-circle"><span class="logo-text">HS</span></div>
+                <h1 class="sidebar-title">Hub Clínico<br>HS Canarias</h1>
             </div>
 
             <div class="user-block">
@@ -29,7 +30,8 @@
             </div>
 
             <div class="search-container">
-                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por ID..." autocomplete="off">
+                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por NHC..."
+                    autocomplete="off">
                 <i class="fas fa-search search-icon" aria-hidden="true"></i>
                 <button type="button" class="clear-search hidden" id="clearPatientSearch" aria-label="Limpiar búsqueda">
                     <i class="fas fa-times-circle"></i>
@@ -37,31 +39,33 @@
             </div>
 
             <div class="sidebar-nav-area">
-            <div class="nav-section">
-                <h3 class="nav-title">Consulta</h3>
-                <ul class="nav-list">
-                    <li><a href="index.html" class="nav-link" data-nav-link><i class="fas fa-home"></i>Inicio</a></li>
-                    <li><a href="primera_visita.html" class="nav-link" data-nav-link><i
-                                class="fas fa-plus-circle"></i>Nueva Visita</a></li>
-                    <li><a href="seguimiento.html" class="nav-link" data-nav-link><i
-                                class="fas fa-clipboard-list"></i>Visita de Seguimiento</a></li>
-                </ul>
+                <div class="nav-section">
+                    <h3 class="nav-title">Consulta</h3>
+                    <ul class="nav-list">
+                        <li><a href="index.html" class="nav-link" data-nav-link><i class="fas fa-home"></i>Inicio</a>
+                        </li>
+                        <li><a href="primera_visita.html" class="nav-link active" data-nav-link><i
+                                    class="fas fa-plus-circle"></i>Primera Visita HS</a></li>
+                        <li><a href="seguimiento.html" class="nav-link" data-nav-link><i
+                                    class="fas fa-clipboard-list"></i>Visita de Seguimiento</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3 class="nav-title">Gestión</h3>
+                    <ul class="nav-list">
+                        <li><a href="estadisticas.html" class="nav-link" data-nav-link><i
+                                    class="fas fa-chart-bar"></i>Estadísticas</a></li>
+                        <li><a href="manage_drugs.html" class="nav-link" data-nav-link><i
+                                    class="fas fa-pills"></i>Fármacos</a></li>
+                        <li><a href="manage_professionals.html" class="nav-link" data-nav-link><i
+                                    class="fas fa-users"></i>Profesionales</a></li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="nav-section">
-                <h3 class="nav-title">Gestión</h3>
-                <ul class="nav-list">
-                    <li><a href="estadisticas.html" class="nav-link" data-nav-link><i
-                                class="fas fa-chart-bar"></i>Estadísticas</a></li>
-                    <li><a href="manage_drugs.html" class="nav-link" data-nav-link><i
-                                class="fas fa-pills"></i>Fármacos</a></li>
-                    <li><a href="manage_professionals.html" class="nav-link" data-nav-link><i
-                                class="fas fa-users"></i>Profesionales</a></li>
-                </ul>
-            </div>
-
-            </div>
-            <div class="db-status-indicator db-status-indicator--empty" id="dbStatusIndicator" role="status" title="Clic para cargar/recargar BD">
+            <div class="db-status-indicator db-status-indicator--empty" id="dbStatusIndicator" role="status"
+                title="Clic para cargar/recargar BD">
                 <i class="fas fa-database db-status-indicator__icon" id="dbStatusIcon"></i>
                 <div class="db-status-indicator__text">
                     <span class="db-status-indicator__label" id="dbStatusLabel">BD no cargada</span>
@@ -71,1889 +75,892 @@
             <div class="sidebar-footer">v. 1.0.0</div>
         </aside>
 
+        <!-- ═══════════ MAIN CONTENT ═══════════ -->
         <main class="main-content">
             <div class="form-container">
                 <header class="form-header">
-                    <h1>HUB CLÍNICO - PRIMERA VISITA <span class="highlight" id="patologiaHighlight">Reumatología</span>
-                    </h1>
-                    <p class="subtitle" id="patologiaSubtitle">Seleccione sospecha diagnóstica para adaptar el
-                        formulario</p>
+                    <h1>HUB CLÍNICO — PRIMERA VISITA <span class="highlight">Hidradenitis Supurativa</span></h1>
+                    <p class="subtitle">Hospital Universitario de Canarias · CIE-10: L73.2</p>
                 </header>
 
+                <!-- ═══════ BLOQUE 0 — Identificación y contexto ═══════ -->
                 <section class="patient-info-section">
-                    <h2 class="section-title"><i class="fas fa-id-card"></i> Datos del Paciente</h2>
+                    <h2 class="section-title"><i class="fas fa-id-card"></i> Identificación y Contexto</h2>
                     <div class="patient-fields">
                         <div class="form-group">
-                            <label for="idPaciente">ID Paciente:</label>
-                            <input type="text" id="idPaciente" placeholder="Ingrese ID del paciente">
+                            <label for="NHC">NHC <span class="required">*</span></label>
+                            <input type="text" id="NHC" placeholder="Número de Historia Clínica" required>
                         </div>
                         <div class="form-group">
-                            <label for="nombrePaciente">Nombre y Apellidos:</label>
-                            <input type="text" id="nombrePaciente" placeholder="Opcional">
+                            <label for="Fecha_Visita">Fecha Visita <span class="required">*</span></label>
+                            <input type="date" id="Fecha_Visita" required>
                         </div>
                         <div class="form-group">
-                            <label for="fechaVisita">Fecha de la Visita:</label>
-                            <input type="date" id="fechaVisita">
+                            <label for="Tipo_Visita">Tipo Visita</label>
+                            <input type="text" id="Tipo_Visita" value="Primera_Visita" readonly class="readonly-input">
                         </div>
                         <div class="form-group">
-                            <label for="sexoPaciente">Sexo:</label>
-                            <select id="sexoPaciente">
-                                <option value="">Seleccionar</option>
-                                <option value="Hombre">Hombre</option>
-                                <option value="Mujer">Mujer</option>
+                            <label for="Centro">Centro</label>
+                            <input type="text" id="Centro" value="Hospital Universitario de Canarias" readonly
+                                class="readonly-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="Consulta">Consulta <span class="required">*</span></label>
+                            <select id="Consulta" required>
+                                <option value="">Seleccionar...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Profesional">Profesional <span class="required">*</span></label>
+                            <select id="Profesional" required>
+                                <option value="">Seleccionar...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Origen_Paciente">Origen del Paciente</label>
+                            <select id="Origen_Paciente">
+                                <option value="">Seleccionar...</option>
+                                <option value="Derivación primaria">Derivación primaria</option>
+                                <option value="Derivación especializada">Derivación especializada</option>
+                                <option value="Urgencias">Urgencias</option>
+                                <option value="Programa de cribado">Programa de cribado</option>
                                 <option value="Otro">Otro</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="CIE10">CIE-10</label>
+                            <input type="text" id="CIE10" value="L73.2" readonly class="readonly-input">
+                        </div>
                     </div>
-
-                    <div class="diagnostic-section">
-                        <h3 class="diagnostic-title"><i class="fas fa-stethoscope"></i> Sospecha Diagnóstica</h3>
-                        <div class="diagnostic-fields">
-                            <div class="form-group">
-                                <label for="diagnosticoPrimario">Diagnóstico Primario:</label>
-                                <select id="diagnosticoPrimario">
-                                    <option value="">Seleccionar patología...</option>
-                                    <option value="espa">Espondiloartritis Axial (EspA)</option>
-                                    <option value="aps">Artritis Psoriásica (APs)</option>
-                                    <option value="ar">Artritis Reumatoide (AR)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="diagnosticoSecundario">Diagnóstico Secundario:</label>
-                                <input type="text" id="diagnosticoSecundario"
-                                    placeholder="Opcional - Especificar otros diagnósticos">
-                            </div>
-                        </div>
-
-                        <!-- BIOMARCADORES ADAPTATIVOS -->
-                        <div class="biomarkers-section">
-                            <span class="biomarkers-label">Biomarcadores:</span>
-                            <div class="biomarkers-grid">
-                                <!-- HLA-B27: Visible para EspA y APs -->
-                                <div class="biomarker-card" id="hlaB27Container" style="display: none;">
-                                    <span class="biomarker-name">HLA-B27</span>
-                                    <div class="biomarker-badges">
-                                        <button type="button" class="biomarker-badge hla-btn badge-positive"
-                                            data-value="positivo" title="Positivo">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                        <button type="button" class="biomarker-badge hla-btn badge-negative"
-                                            data-value="negativo" title="Negativo">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="biomarker-badge hla-btn badge-unknown active"
-                                            data-value="no-analizado" title="No Analizado">
-                                            <i class="fas fa-question"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- FR (Factor Reumatoide): Visible para APs -->
-                                <div class="biomarker-card" id="frContainer" style="display: none;">
-                                    <span class="biomarker-name">Factor Reumatoide (FR)</span>
-                                    <div class="biomarker-badges">
-                                        <button type="button" class="biomarker-badge hla-btn badge-positive fr-btn"
-                                            data-value="positivo" title="Positivo">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                        <button type="button" class="biomarker-badge hla-btn badge-negative fr-btn"
-                                            data-value="negativo" title="Negativo">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button"
-                                            class="biomarker-badge hla-btn badge-unknown active fr-btn"
-                                            data-value="no-analizado" title="No Analizado">
-                                            <i class="fas fa-question"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- aPCC (anti-péptido citrulinado cíclico): Visible para APs -->
-                                <div class="biomarker-card" id="apccContainer" style="display: none;">
-                                    <span class="biomarker-name">Anti-CCP (aPCC)</span>
-                                    <div class="biomarker-badges">
-                                        <button type="button" class="biomarker-badge hla-btn badge-positive apcc-btn"
-                                            data-value="positivo" title="Positivo">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                        <button type="button" class="biomarker-badge hla-btn badge-negative apcc-btn"
-                                            data-value="negativo" title="Negativo">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button"
-                                            class="biomarker-badge hla-btn badge-unknown active apcc-btn"
-                                            data-value="no-analizado" title="No Analizado">
-                                            <i class="fas fa-question"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- ANA (Anticuerpos Antinucleares): Visible para AR -->
-                                <div class="biomarker-card" id="anaContainer" style="display: none;">
-                                    <span class="biomarker-name">ANA</span>
-                                    <div class="biomarker-badges">
-                                        <button type="button" class="biomarker-badge hla-btn badge-positive ana-btn"
-                                            data-value="positivo" title="Positivo">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                        <button type="button" class="biomarker-badge hla-btn badge-negative ana-btn"
-                                            data-value="negativo" title="Negativo">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button"
-                                            class="biomarker-badge hla-btn badge-unknown active ana-btn"
-                                            data-value="no-analizado" title="No Analizado">
-                                            <i class="fas fa-question"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group" style="margin-top:12px;">
+                        <label for="Motivo_Consulta">Motivo de Consulta</label>
+                        <textarea id="Motivo_Consulta" rows="3" placeholder="Describir motivo de consulta..."></textarea>
                     </div>
                 </section>
 
+                <!-- ═══════ BLOQUE 1 — Datos basales ═══════ -->
                 <div class="collapsible-section">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-history"></i> Anamnesis</span>
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-user"></i> Datos Basales</span>
                         <i class="fas fa-chevron-down arrow"></i>
                     </button>
                     <div class="collapsible-content">
-                        <!-- INICIO SÍNTOMAS: Común a todos -->
-                        <div class="form-group">
-                            <label for="inicioSintomas">Inicio de Síntomas Musculoesqueléticos:</label>
-                            <input type="date" id="inicioSintomas">
-                        </div>
-
-                        <!-- INICIO SÍNTOMAS PSORIASIS: Solo APs -->
-                        <div class="form-group aps-only" id="inicioPsoriasisSection" style="display: none;">
-                            <label for="inicioPsoriasis">Inicio de Síntomas de Psoriasis:</label>
-                            <input type="date" id="inicioPsoriasis">
-                        </div>
-
-                        <!-- DOLOR AXIAL: EspA y APs -->
-                        <div class="anamnesis-group-container espa-aps-only" id="dolorAxialSection"
-                            style="display: none;">
-                            <div class="form-group">
-                                <label for="dolorAxial">Dolor Axial:</label>
-                                <select id="dolorAxial">
-                                    <option value="">Seleccionar</option>
-                                    <option value="inflamatorio">Inflamatorio</option>
-                                    <option value="mecanico">Mecánico</option>
-                                    <option value="mixto">Mixto</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="rigidezMatutina">Rigidez Matutina:</label>
-                                <select id="rigidezMatutina">
-                                    <option value="">Seleccionar</option>
-                                    <option value="si">Sí</option>
-                                    <option value="no">No</option>
-                                </select>
-                                <div id="duracionRigidezContainer" class="conditional-field">
-                                    <label for="duracionRigidez" class="inline-label">Duración (min):</label>
-                                    <input type="number" id="duracionRigidez" class="small-input">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="irradiacionNalgas">Irradiación a Nalgas:</label>
-                                <select id="irradiacionNalgas">
-                                    <option value="">Seleccionar</option>
-                                    <option value="no">No</option>
-                                    <option value="dcha">Derecha</option>
-                                    <option value="izq">Izquierda</option>
-                                    <option value="ambas">Ambas (Alt.)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- CLÍNICA AXIAL (PREGUNTA DIRECTA): Solo APs -->
-                        <div class="form-group aps-only" id="clinicaAxialPreguntaSection" style="display: none;">
-                            <label for="clinicaAxialPresente">¿Presenta Clínica Axial</label>
-                            <select id="clinicaAxialPresente">
-                                <option value="">Seleccionar</option>
-                                <option value="si">Sí</option>
-                                <option value="no">No</option>
-                            </select>
-                        </div>
-
-                        <!-- AFECTACIÓN PSORIASIS: Solo APs -->
-                        <div class="form-group-toggle-buttons aps-only" id="afectacionPsoriasisSection"
-                            style="display: none;">
-                            <label class="group-label">Afectación de Psoriasis:</label>
-                            <div class="toggle-button-group">
-                                <button type="button" class="toggle-btn" data-value="cuero-cabelludo">Cuero
-                                    Cabelludo</button>
-                                <button type="button" class="toggle-btn" data-value="ungueal">Ungueal</button>
-                                <button type="button" class="toggle-btn" data-value="extensora">Superficie
-                                    Extensora</button>
-                                <button type="button" class="toggle-btn" data-value="pliegues">Pliegues</button>
-                                <button type="button" class="toggle-btn" data-value="palmoplantar">Palmoplantar</button>
-                            </div>
-                        </div>
-
-                        <!-- CLÍNICA EXTRA-ARTICULAR: Adaptable -->
-                        <div class="form-group-toggle-buttons">
-                            <label class="group-label">Clínica Extra-articular:</label>
-                            <div class="toggle-button-group" id="extraarticularButtons">
-                                <button type="button" class="toggle-btn espa-aps-only" data-value="digestiva"
-                                    style="display: none;">Síntomas Digestivos (EII)</button>
-                                <button type="button" class="toggle-btn espa-aps-only" data-value="uveitis"
-                                    style="display: none;">Uveítis/Ojo Rojo</button>
-                                <button type="button" class="toggle-btn espa-only" data-value="psoriasis"
-                                    style="display: none;">Psoriasis</button>
-                            </div>
-                        </div>
-
-                        <!-- COMORBILIDADES: Adaptable -->
-                        <div class="form-group-toggle-buttons">
-                            <label class="group-label">Comorbilidades:</label>
-                            <div class="toggle-button-group">
-                                <button type="button" class="toggle-btn" data-value="hta">HTA</button>
-                                <button type="button" class="toggle-btn" data-value="dm">Diabetes</button>
-                                <button type="button" class="toggle-btn" data-value="dlp">Dislipidemia</button>
-                                <button type="button" class="toggle-btn" data-value="ecv">Evento Cardiovascular</button>
-                                <button type="button" class="toggle-btn"
-                                    data-value="gastritis">Gastritis/Úlcera</button>
-                                <button type="button" class="toggle-btn" data-value="obesidad">Obesidad</button>
-                                <button type="button" class="toggle-btn" data-value="osteoporosis">Osteoporosis</button>
-                                <button type="button" class="toggle-btn aps-only" data-value="gota"
-                                    style="display: none;">Gota/Hiperuricemia</button>
-                            </div>
-                        </div>
-
-                        <!-- TÓXICOS: Común -->
-                        <div class="form-group-nested-checkbox">
-                            <label class="block-label">Tóxicos:</label>
-                            <div class="toxic-item-wrapper">
-                                <div class="toxic-item">
-                                    <label><input type="checkbox" name="toxico" value="tabaco"> Tabaco</label>
-                                    <div class="toxic-description">
-                                        <input type="text" id="tabacoDesc"
-                                            placeholder="Descripción (cantidad y tiempo): Ej: 10 cig/día x 5 años">
-                                    </div>
-                                </div>
-                                <div class="toxic-item">
-                                    <label><input type="checkbox" name="toxico" value="alcohol"> Alcohol</label>
-                                    <div class="toxic-description">
-                                        <input type="text" id="alcoholDesc"
-                                            placeholder="Descripción (cantidad y tiempo): Ej: Consumo social">
-                                    </div>
-                                </div>
-                                <div class="toxic-item">
-                                    <label><input type="checkbox" name="toxico" value="drogas"> Otras drogas</label>
-                                    <div class="toxic-description">
-                                        <input type="text" id="drogasDesc"
-                                            placeholder="Descripción (cantidad y tiempo): Especificar">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ANTECEDENTES FAMILIARES: Común -->
-                        <div class="form-group-toggle-buttons">
-                            <label class="group-label antecedentes-familiares-label">Antecedentes Familiares:</label>
-                            <div class="toggle-button-group">
-                                <button type="button" class="toggle-btn" data-value="psoriasis">Psoriasis</button>
-                                <button type="button" class="toggle-btn"
-                                    data-value="artritis">Espondiloartritis</button>
-                                <button type="button" class="toggle-btn" data-value="eii">EII</button>
-                                <button type="button" class="toggle-btn" data-value="uveitis">Uveítis</button>
-                            </div>
-                        </div>
-
-                        <!-- TRATAMIENTOS PREVIOS: Adaptable según patología -->
-
-                        <div class="treatment-panel" id="tratamientosPreviosPanel">
-                            <label class="group-label">Tratamientos previos</label>
-                            <div class="treatment-grid">
-                                <div class="treatment-line">
-                                    <div class="treatment-label">Tratamientos sistémicos</div>
-                                    <div class="treatment-controls">
-                                        <select id="previoSistemicoSelect" class="treatment-select">
-                                            <!-- Poblado dinámicamente desde la base de datos -->
-                                        </select>
-                                        <input type="text" id="previoSistemicoDose" class="treatment-dose-input"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn" data-type="sistemico"
-                                            title="Añadir otro"><i class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="sistemicosExtras"></div>
-                                <div class="treatment-line">
-                                    <div class="treatment-label">FAMEs</div>
-                                    <div class="treatment-controls">
-                                        <select id="previoFameSelect" class="treatment-select">
-                                            <!-- Poblado dinámicamente desde la base de datos -->
-                                        </select>
-                                        <input type="text" id="previoFameDose" class="treatment-dose-input"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn" data-type="fame"
-                                            title="Añadir otro"><i class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="famesExtras"></div>
-                                <div class="treatment-line">
-                                    <div class="treatment-label">Biológicos</div>
-                                    <div class="treatment-controls">
-                                        <select id="previoBiologicoSelect" class="treatment-select">
-                                            <!-- Poblado dinámicamente desde la base de datos -->
-                                        </select>
-                                        <input type="text" id="previoBiologicoDose" class="treatment-dose-input"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn" data-type="biologico"
-                                            title="Añadir otro"><i class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="biologicosExtras"></div>
-                            </div>
-                        </div>
-
-
-                        <!-- TRATAMIENTOS PSORIASIS PREVIOS: Solo APs -->
-                        <div class="treatment-panel aps-only" id="tratamientosPsoriasisSection" style="display: none;">
-                            <label class="group-label">Tratamientos previos para Psoriasis</label>
-                            <div class="treatment-grid">
-                                <div class="treatment-line">
-                                    <div class="treatment-label">Tratamiento tópico</div>
-                                    <div class="treatment-controls">
-                                        <select id="psoriasisTopicoSelect" class="treatment-select">
-                                            <option value="No" selected>No</option>
-                                            <option value="Corticoides tópicos">Corticoides tópicos</option>
-                                            <option value="Análogos Vitamina D">Análogos Vitamina D</option>
-                                            <option value="Inhibidores calcineurina">Inhibidores calcineurina</option>
-                                            <option value="Queratolíticos">Queratolíticos</option>
-                                            <option value="Alquitrán">Alquitrán</option>
-                                            <option value="Otros">Otros</option>
-                                        </select>
-                                        <input type="text" id="psoriasisTopicoDose" class="treatment-dose-input"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn"
-                                            data-type="psoriasis-topico" title="Añadir otro"><i
-                                                class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="psoriasisTopicosExtras"></div>
-                                <div class="treatment-line">
-                                    <div class="treatment-label">Fototerapia</div>
-                                    <div class="treatment-controls">
-                                        <select id="psoriasisFototerapiaSelect" class="treatment-select">
-                                            <option value="No" selected>No</option>
-                                            <option value="UVB banda estrecha">UVB banda estrecha</option>
-                                            <option value="UVB banda ancha">UVB banda ancha</option>
-                                            <option value="PUVA">PUVA</option>
-                                            <option value="Láser excimer">Láser excimer</option>
-                                            <option value="Otros">Otros</option>
-                                        </select>
-                                        <input type="text" id="psoriasisFototerapiaDose" class="treatment-dose-input"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn"
-                                            data-type="psoriasis-fototerapia" title="Añadir otro"><i
-                                                class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="psoriasisFototerapiasExtras"></div>
-                                <div class="treatment-line">
-                                    <div class="treatment-label">Tratamiento sistémico</div>
-                                    <div class="treatment-controls">
-                                        <select id="psoriasisSistemicoSelect" class="treatment-select">
-                                            <!-- Poblado dinámicamente desde la base de datos -->
-                                        </select>
-                                        <input type="text" id="psoriasisSistemicoDose" class="treatment-dose-input"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn"
-                                            data-type="psoriasis-sistemico" title="Añadir otro"><i
-                                                class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="psoriasisSistemicosExtras"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="collapsible-section">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-stethoscope"></i> Examen Físico</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="collapsible-content">
-                        <h3>Constantes Vitales</h3>
                         <div class="form-group-grid">
                             <div class="form-group">
-                                <label for="peso">Peso (kg):</label>
-                                <input type="number" id="peso">
-                            </div>
-                            <div class="form-group">
-                                <label for="talla">Talla (cm):</label>
-                                <input type="number" id="talla">
-                            </div>
-                            <div class="form-group">
-                                <label for="imc">IMC:</label>
-                                <input type="text" id="imc" readonly class="readonly-input">
-                            </div>
-                            <div class="form-group">
-                                <label for="ta">Tensión Arterial (mmHg):</label>
-                                <input type="text" id="ta" placeholder="Sistólica/Diastólica">
-                            </div>
-                        </div>
-
-                        <h3>Exploración Articular y Axial</h3>
-                        <div class="exploration-section">
-                            <div class="homunculus-container">
-                                <h4>Homúnculo Interactivo</h4>
-                                <div class="homunculus-scores">
-                                    <span class="score-label score-nad"><i class="fas fa-hand-paper"></i> NAD: <span
-                                            id="nadScore">0</span></span>
-                                    <span class="score-label score-nat"><i class="fas fa-fire-alt"></i> NAT: <span
-                                            id="natScore">0</span></span>
-                                    <span class="score-label score-dactilitis"><i class="fas fa-fingerprint"></i>
-                                        Dactilitis: <span id="dactilitisScore">0</span></span>
-                                </div>
-                                <div class="homunculus-double-mark-box" id="doubleMarkInfo" style="display: none;">
-                                    <svg width="24" height="24" class="inline-icon">
-                                        <defs>
-                                            <pattern id="legendDoublePattern" patternUnits="userSpaceOnUse" width="8"
-                                                height="8" patternTransform="rotate(45)">
-                                                <rect x="0" y="0" width="4" height="8" fill="#ffc107" />
-                                                <rect x="4" y="0" width="4" height="8" fill="#dc3545" />
-                                            </pattern>
-                                        </defs>
-                                        <circle cx="12" cy="12" r="10" fill="url(#legendDoublePattern)" stroke="#b8860b"
-                                            stroke-width="2.5" />
-                                    </svg>
-                                    <span id="doubleMarkCount">0</span> articulación(es) con dolor E inflamación
-                                </div>
-                                <div class="homunculus-controls">
-                                    <button type="button" class="homunculus-mode-btn mode-nad" data-mode="nad">Dolor
-                                        (NAD)</button>
-                                    <button type="button" class="homunculus-mode-btn mode-nat"
-                                        data-mode="nat">Inflamación (NAT)</button>
-                                    <button type="button" class="homunculus-mode-btn mode-dactilitis"
-                                        data-mode="dactilitis">Dactilitis</button>
-                                </div>
-                                <div class="homunculus-svg-wrapper">
-                                    <svg id="humanBodySvg" viewBox="0 0 600 480" preserveAspectRatio="xMidYMid meet">
-                                        <!-- Definiciones: Patrón para doble marcado (NAD + NAT) -->
-                                        <defs>
-                                            <pattern id="doubleMarkPattern" patternUnits="userSpaceOnUse" width="8"
-                                                height="8" patternTransform="rotate(45)">
-                                                <rect x="0" y="0" width="4" height="8" fill="#ffc107" />
-                                                <rect x="4" y="0" width="4" height="8" fill="#dc3545" />
-                                            </pattern>
-                                        </defs>
-
-                                        <!-- Cuerpo Base (Trazado Anatómico) -->
-                                        <g id="bodyOutline" stroke="#999" stroke-width="1.5" fill="none">
-                                            <!-- Cabeza -->
-                                            <circle cx="300" cy="40" r="25" />
-                                            <!-- Cuello -->
-                                            <line x1="300" y1="65" x2="300" y2="90" />
-                                            <!-- Hombros -->
-                                            <line x1="250" y1="90" x2="350" y2="90" />
-                                            <!-- Brazos derecho -->
-                                            <line x1="250" y1="90" x2="245" y2="145" />
-                                            <line x1="245" y1="145" x2="240" y2="200" />
-                                            <!-- Brazos izquierdo -->
-                                            <line x1="350" y1="90" x2="355" y2="145" />
-                                            <line x1="355" y1="145" x2="360" y2="200" />
-                                            <!-- Torso -->
-                                            <path d="M270,90 L270,250 L330,250 L330,90" />
-                                            <!-- Pelvis -->
-                                            <ellipse cx="300" cy="260" rx="40" ry="15" />
-                                            <!-- Piernas derecha -->
-                                            <line x1="275" y1="270" x2="270" y2="370" />
-                                            <line x1="270" y1="370" x2="265" y2="470" />
-                                            <!-- Piernas izquierda -->
-                                            <line x1="325" y1="270" x2="330" y2="370" />
-                                            <line x1="330" y1="370" x2="335" y2="470" />
-                                            <!-- Pies derecho -->
-                                            <rect x="250" y="470" width="30" height="20" rx="5" />
-                                            <!-- Pies izquierdo -->
-                                            <rect x="320" y="470" width="30" height="20" rx="5" />
-                                        </g>
-
-                                        <!-- ARTICULACIONES DAS28 -->
-                                        <!-- Hombros (DAS28) -->
-                                        <circle cx="250" cy="90" r="14" class="body-region"
-                                            data-region-id="hombro-derecho" data-type="articulation" />
-                                        <circle cx="350" cy="90" r="14" class="body-region"
-                                            data-region-id="hombro-izquierdo" data-type="articulation" />
-
-                                        <!-- Codos (DAS28) -->
-                                        <circle cx="245" cy="145" r="12" class="body-region"
-                                            data-region-id="codo-derecho" data-type="articulation" />
-                                        <circle cx="355" cy="145" r="12" class="body-region"
-                                            data-region-id="codo-izquierdo" data-type="articulation" />
-
-                                        <!-- Muñecas (DAS28) -->
-                                        <circle cx="240" cy="200" r="11" class="body-region"
-                                            data-region-id="muneca-derecha" data-type="articulation" />
-                                        <circle cx="360" cy="200" r="11" class="body-region"
-                                            data-region-id="muneca-izquierda" data-type="articulation" />
-
-                                        <!-- Rodillas (DAS28) -->
-                                        <circle cx="270" cy="370" r="13" class="body-region"
-                                            data-region-id="rodilla-derecha" data-type="articulation" />
-                                        <circle cx="330" cy="370" r="13" class="body-region"
-                                            data-region-id="rodilla-izquierda" data-type="articulation" />
-
-                                        <!-- MANOS AMPLIADAS - Mano Derecha -->
-                                        <g id="mano-derecha">
-                                            <!-- Contorno de la mano -->
-                                            <rect x="20" y="120" width="120" height="180" rx="10" stroke="#aaa"
-                                                stroke-width="1" fill="#f9f9f9" opacity="0.5" />
-                                            <text x="80" y="110" text-anchor="middle" font-size="12" fill="#555"
-                                                font-weight="bold">Mano Derecha</text>
-
-                                            <!-- MCF (Metacarpofalángicas) Derecha - Fila superior -->
-                                            <circle cx="40" cy="150" r="8" class="body-region"
-                                                data-region-id="mcf1-derecha" data-type="articulation" />
-                                            <circle cx="65" cy="150" r="8" class="body-region"
-                                                data-region-id="mcf2-derecha" data-type="articulation" />
-                                            <circle cx="90" cy="150" r="8" class="body-region"
-                                                data-region-id="mcf3-derecha" data-type="articulation" />
-                                            <circle cx="115" cy="150" r="8" class="body-region"
-                                                data-region-id="mcf4-derecha" data-type="articulation" />
-                                            <circle cx="130" cy="155" r="7" class="body-region"
-                                                data-region-id="mcf5-derecha" data-type="articulation" />
-
-                                            <!-- Etiqueta MCF -->
-                                            <text x="80" y="140" text-anchor="middle" font-size="9"
-                                                fill="#666">MCF</text>
-
-                                            <!-- IFP (Interfalángicas Proximales) Derecha - Fila media -->
-                                            <circle cx="40" cy="190" r="7" class="body-region"
-                                                data-region-id="ifp1-derecha" data-type="articulation" />
-                                            <circle cx="65" cy="190" r="7" class="body-region"
-                                                data-region-id="ifp2-derecha" data-type="articulation" />
-                                            <circle cx="90" cy="190" r="7" class="body-region"
-                                                data-region-id="ifp3-derecha" data-type="articulation" />
-                                            <circle cx="115" cy="190" r="7" class="body-region"
-                                                data-region-id="ifp4-derecha" data-type="articulation" />
-                                            <circle cx="130" cy="195" r="6" class="body-region"
-                                                data-region-id="ifp5-derecha" data-type="articulation" />
-
-                                            <!-- Etiqueta IFP -->
-                                            <text x="80" y="180" text-anchor="middle" font-size="9"
-                                                fill="#666">IFP</text>
-
-                                            <!-- Líneas de dedos -->
-                                            <line x1="40" y1="158" x2="40" y2="183" stroke="#ccc" stroke-width="1" />
-                                            <line x1="65" y1="158" x2="65" y2="183" stroke="#ccc" stroke-width="1" />
-                                            <line x1="90" y1="158" x2="90" y2="183" stroke="#ccc" stroke-width="1" />
-                                            <line x1="115" y1="158" x2="115" y2="183" stroke="#ccc" stroke-width="1" />
-                                            <line x1="130" y1="162" x2="130" y2="189" stroke="#ccc" stroke-width="1" />
-
-                                            <!-- Números de dedos -->
-                                            <text x="40" y="215" text-anchor="middle" font-size="10"
-                                                fill="#888">5</text>
-                                            <text x="65" y="215" text-anchor="middle" font-size="10"
-                                                fill="#888">4</text>
-                                            <text x="90" y="215" text-anchor="middle" font-size="10"
-                                                fill="#888">3</text>
-                                            <text x="115" y="215" text-anchor="middle" font-size="10"
-                                                fill="#888">2</text>
-                                            <text x="130" y="215" text-anchor="middle" font-size="12" fill="#d9534f"
-                                                font-weight="bold">P</text>
-
-                                            <!-- Dactilitis - Dedos Mano Derecha -->
-                                            <rect class="body-region" data-region-id="dactilitis-dedo1-mano-derecha"
-                                                data-type="dactylitis" x="36" y="225" width="8" height="35" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo2-mano-derecha"
-                                                data-type="dactylitis" x="61" y="225" width="8" height="35" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo3-mano-derecha"
-                                                data-type="dactylitis" x="86" y="225" width="8" height="35" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo4-mano-derecha"
-                                                data-type="dactylitis" x="111" y="225" width="8" height="35" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo5-mano-derecha"
-                                                data-type="dactylitis" x="126" y="225" width="8" height="35" rx="3" />
-
-                                            <!-- Etiqueta Dactilitis -->
-                                            <text x="80" y="280" text-anchor="middle" font-size="9"
-                                                fill="#666">Dactilitis</text>
-                                        </g>
-
-                                        <!-- MANOS AMPLIADAS - Mano Izquierda -->
-                                        <g id="mano-izquierda">
-                                            <!-- Contorno de la mano -->
-                                            <rect x="460" y="120" width="120" height="180" rx="10" stroke="#aaa"
-                                                stroke-width="1" fill="#f9f9f9" opacity="0.5" />
-                                            <text x="520" y="110" text-anchor="middle" font-size="12" fill="#555"
-                                                font-weight="bold">Mano Izquierda</text>
-
-                                            <!-- MCF Izquierda -->
-                                            <circle cx="470" cy="155" r="7" class="body-region"
-                                                data-region-id="mcf5-izquierda" data-type="articulation" />
-                                            <circle cx="485" cy="150" r="8" class="body-region"
-                                                data-region-id="mcf4-izquierda" data-type="articulation" />
-                                            <circle cx="510" cy="150" r="8" class="body-region"
-                                                data-region-id="mcf3-izquierda" data-type="articulation" />
-                                            <circle cx="535" cy="150" r="8" class="body-region"
-                                                data-region-id="mcf2-izquierda" data-type="articulation" />
-                                            <circle cx="560" cy="150" r="8" class="body-region"
-                                                data-region-id="mcf1-izquierda" data-type="articulation" />
-
-                                            <!-- Etiqueta MCF -->
-                                            <text x="520" y="140" text-anchor="middle" font-size="9"
-                                                fill="#666">MCF</text>
-
-                                            <!-- IFP Izquierda -->
-                                            <circle cx="470" cy="195" r="6" class="body-region"
-                                                data-region-id="ifp5-izquierda" data-type="articulation" />
-                                            <circle cx="485" cy="190" r="7" class="body-region"
-                                                data-region-id="ifp4-izquierda" data-type="articulation" />
-                                            <circle cx="510" cy="190" r="7" class="body-region"
-                                                data-region-id="ifp3-izquierda" data-type="articulation" />
-                                            <circle cx="535" cy="190" r="7" class="body-region"
-                                                data-region-id="ifp2-izquierda" data-type="articulation" />
-                                            <circle cx="560" cy="190" r="7" class="body-region"
-                                                data-region-id="ifp1-izquierda" data-type="articulation" />
-
-                                            <!-- Etiqueta IFP -->
-                                            <text x="520" y="180" text-anchor="middle" font-size="9"
-                                                fill="#666">IFP</text>
-
-                                            <!-- Líneas de dedos -->
-                                            <line x1="470" y1="162" x2="470" y2="189" stroke="#ccc" stroke-width="1" />
-                                            <line x1="485" y1="158" x2="485" y2="183" stroke="#ccc" stroke-width="1" />
-                                            <line x1="510" y1="158" x2="510" y2="183" stroke="#ccc" stroke-width="1" />
-                                            <line x1="535" y1="158" x2="535" y2="183" stroke="#ccc" stroke-width="1" />
-                                            <line x1="560" y1="158" x2="560" y2="183" stroke="#ccc" stroke-width="1" />
-
-                                            <!-- Números de dedos -->
-                                            <text x="470" y="215" text-anchor="middle" font-size="12" fill="#d9534f"
-                                                font-weight="bold">P</text>
-                                            <text x="485" y="215" text-anchor="middle" font-size="10"
-                                                fill="#888">2</text>
-                                            <text x="510" y="215" text-anchor="middle" font-size="10"
-                                                fill="#888">3</text>
-                                            <text x="535" y="215" text-anchor="middle" font-size="10"
-                                                fill="#888">4</text>
-                                            <text x="560" y="215" text-anchor="middle" font-size="10"
-                                                fill="#888">5</text>
-
-                                            <!-- Dactilitis - Dedos Mano Izquierda -->
-                                            <rect class="body-region" data-region-id="dactilitis-dedo5-mano-izquierda"
-                                                data-type="dactylitis" x="466" y="225" width="8" height="35" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo4-mano-izquierda"
-                                                data-type="dactylitis" x="481" y="225" width="8" height="35" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo3-mano-izquierda"
-                                                data-type="dactylitis" x="506" y="225" width="8" height="35" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo2-mano-izquierda"
-                                                data-type="dactylitis" x="531" y="225" width="8" height="35" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo1-mano-izquierda"
-                                                data-type="dactylitis" x="556" y="225" width="8" height="35" rx="3" />
-
-                                            <!-- Etiqueta Dactilitis -->
-                                            <text x="520" y="280" text-anchor="middle" font-size="9"
-                                                fill="#666">Dactilitis</text>
-                                        </g>
-
-                                        <!-- PIES AMPLIADOS - Pie Derecho -->
-                                        <g id="pie-derecho">
-                                            <!-- Contorno del pie -->
-                                            <rect x="20" y="340" width="120" height="130" rx="10" stroke="#aaa"
-                                                stroke-width="1" fill="#f9f9f9" opacity="0.5" />
-                                            <text x="80" y="330" text-anchor="middle" font-size="12" fill="#555"
-                                                font-weight="bold">Pie Derecho</text>
-
-                                            <!-- Etiqueta Dactilitis de dedos -->
-                                            <text x="80" y="355" text-anchor="middle" font-size="9"
-                                                fill="#666">Dactilitis de Dedos</text>
-
-                                            <!-- Dactilitis - Dedos Pie Derecho -->
-                                            <rect class="body-region" data-region-id="dactilitis-dedo1-pie-derecho"
-                                                data-type="dactylitis" x="36" y="365" width="10" height="40" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo2-pie-derecho"
-                                                data-type="dactylitis" x="56" y="365" width="10" height="40" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo3-pie-derecho"
-                                                data-type="dactylitis" x="76" y="365" width="10" height="40" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo4-pie-derecho"
-                                                data-type="dactylitis" x="96" y="365" width="10" height="40" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo5-pie-derecho"
-                                                data-type="dactylitis" x="116" y="365" width="10" height="40" rx="3" />
-
-                                            <!-- Números de dedos -->
-                                            <text x="41" y="420" text-anchor="middle" font-size="10"
-                                                fill="#888">5</text>
-                                            <text x="61" y="420" text-anchor="middle" font-size="10"
-                                                fill="#888">4</text>
-                                            <text x="81" y="420" text-anchor="middle" font-size="10"
-                                                fill="#888">3</text>
-                                            <text x="101" y="420" text-anchor="middle" font-size="10"
-                                                fill="#888">2</text>
-                                            <text x="121" y="420" text-anchor="middle" font-size="12" fill="#d9534f"
-                                                font-weight="bold">P</text>
-
-                                            <!-- Visualización simplificada del pie -->
-                                            <ellipse cx="80" cy="445" rx="35" ry="15" stroke="#bbb" stroke-width="1"
-                                                fill="none" />
-                                            <text x="80" y="450" text-anchor="middle" font-size="8"
-                                                fill="#999">Metatarso</text>
-                                        </g>
-
-                                        <!-- PIES AMPLIADOS - Pie Izquierdo -->
-                                        <g id="pie-izquierdo">
-                                            <!-- Contorno del pie -->
-                                            <rect x="460" y="340" width="120" height="130" rx="10" stroke="#aaa"
-                                                stroke-width="1" fill="#f9f9f9" opacity="0.5" />
-                                            <text x="520" y="330" text-anchor="middle" font-size="12" fill="#555"
-                                                font-weight="bold">Pie Izquierdo</text>
-
-                                            <!-- Etiqueta Dactilitis de dedos -->
-                                            <text x="520" y="355" text-anchor="middle" font-size="9"
-                                                fill="#666">Dactilitis de Dedos</text>
-
-                                            <!-- Dactilitis - Dedos Pie Izquierdo -->
-                                            <rect class="body-region" data-region-id="dactilitis-dedo5-pie-izquierdo"
-                                                data-type="dactylitis" x="474" y="365" width="10" height="40" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo4-pie-izquierdo"
-                                                data-type="dactylitis" x="494" y="365" width="10" height="40" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo3-pie-izquierdo"
-                                                data-type="dactylitis" x="514" y="365" width="10" height="40" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo2-pie-izquierdo"
-                                                data-type="dactylitis" x="534" y="365" width="10" height="40" rx="3" />
-                                            <rect class="body-region" data-region-id="dactilitis-dedo1-pie-izquierdo"
-                                                data-type="dactylitis" x="554" y="365" width="10" height="40" rx="3" />
-
-                                            <!-- Números de dedos -->
-                                            <text x="479" y="420" text-anchor="middle" font-size="12" fill="#d9534f"
-                                                font-weight="bold">P</text>
-                                            <text x="499" y="420" text-anchor="middle" font-size="10"
-                                                fill="#888">2</text>
-                                            <text x="519" y="420" text-anchor="middle" font-size="10"
-                                                fill="#888">3</text>
-                                            <text x="539" y="420" text-anchor="middle" font-size="10"
-                                                fill="#888">4</text>
-                                            <text x="559" y="420" text-anchor="middle" font-size="10"
-                                                fill="#888">5</text>
-
-                                            <!-- Visualización simplificada del pie -->
-                                            <ellipse cx="520" cy="445" rx="35" ry="15" stroke="#bbb" stroke-width="1"
-                                                fill="none" />
-                                            <text x="520" y="450" text-anchor="middle" font-size="8"
-                                                fill="#999">Metatarso</text>
-                                        </g>
-                                    </svg>
-                                </div>
-                                <button id="clearHomunculusBtn" class="add-btn clear-btn"><i class="fas fa-eraser"></i>
-                                    Borrar Marcas</button>
-
-                                <div class="form-group dolor-periferico-description">
-                                    <label for="descripcionDolorPeriferico">Descripción del Dolor Articular
-                                        Periférico:</label>
-                                    <textarea id="descripcionDolorPeriferico" rows="3"
-                                        placeholder="Describir características del dolor (ritmo: inflamatorio/mecánico/mixto, intensidad, factores agravantes/atenuantes, etc.)"></textarea>
-                                </div>
-
-                                <!-- Leyenda de Numeración de Dedos -->
-                                <div class="digit-numbering-legend">
-                                    <div class="legend-title"><i class="fas fa-info-circle"></i> Numeración de Dedos
-                                        (Manos y Pies)</div>
-                                    <div class="legend-content">
-                                        <div class="legend-item">
-                                            <span class="legend-number legend-p">P</span> = <strong>Pulgar</strong>
-                                        </div>
-                                        <div class="legend-item">
-                                            <span class="legend-number">5</span> = <strong>Meñique</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="metrologia-container espa-aps-only" id="metrologiaSection"
-                                style="display: none;">
-                                <h4>Metrología</h4>
-                                <h5 class="metrologia-subtitle">Columna Lumbar</h5>
-                                <div class="form-group">
-                                    <label for="schober">Schöber (cm):</label>
-                                    <input type="number" id="schober" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="distanciaIntermaleolar">Distancia Intermaleolar (cm):</label>
-                                    <input type="number" id="distanciaIntermaleolar" step="0.1">
-                                </div>
-
-                                <h5 class="metrologia-subtitle">Columna Cervical</h5>
-                                <div class="form-group">
-                                    <label for="rotacionCervical">Rotación Cervical Activa (º):</label>
-                                    <input type="number" id="rotacionCervical">
-                                </div>
-                                <div class="form-group">
-                                    <label for="flexionCervical">Flexión Cervical (Mentón-Esternón, cm):</label>
-                                    <input type="number" id="flexionCervical" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="distanciaOP">Distancia Occipucio-Pared (cm):</label>
-                                    <input type="number" id="distanciaOP" step="0.1">
-                                </div>
-
-                                <h5 class="metrologia-subtitle">Columna Dorsal</h5>
-                                <div class="form-group">
-                                    <label for="distanciaTP">Distancia Trago-Pared (cm):</label>
-                                    <input type="number" id="distanciaTP" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="expansionToracica">Expansión Torácica (cm):</label>
-                                    <input type="number" id="expansionToracica" step="0.1">
-                                </div>
-                            </div>
-                        </div>
-
-                        <h3 class="entesitis-title espa-aps-only" id="entesitisTitle" style="display: none;">Entesitis
-                        </h3>
-                        <div class="entesitis-section espa-aps-only" id="entesitisSection" style="display: none;">
-                            <div class="entesitis-grid">
-                                <div class="entesitis-column">
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="aquiles-der"> Aquiles
-                                            Derecho</label>
-                                    </div>
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="fascia-der"> Fascia
-                                            Plantar Derecha</label>
-                                    </div>
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="epicondilo-lat-der">
-                                            Epicóndilo Lateral Derecho</label>
-                                    </div>
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="epicondilo-med-der">
-                                            Epicóndilo Medial Derecho</label>
-                                    </div>
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="trocanter-der"> Trocánter
-                                            Mayor Derecho</label>
-                                    </div>
-                                </div>
-                                <div class="entesitis-column">
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="aquiles-izq"> Aquiles
-                                            Izquierdo</label>
-                                    </div>
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="fascia-izq"> Fascia
-                                            Plantar Izquierda</label>
-                                    </div>
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="epicondilo-lat-izq">
-                                            Epicóndilo Lateral Izquierdo</label>
-                                    </div>
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="epicondilo-med-izq">
-                                            Epicóndilo Medial Izquierdo</label>
-                                    </div>
-                                    <div class="form-group-checkbox">
-                                        <label><input type="checkbox" name="entesitis" value="trocanter-izq"> Trocánter
-                                            Mayor Izquierdo</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="otrasEntesitis">Otras Localizaciones de Entesitis:</label>
-                                <textarea id="otrasEntesitis" rows="2"
-                                    placeholder="Especificar otras localizaciones de entesitis..."></textarea>
-                            </div>
-                        </div>
-
-                        <h3 class="other-findings-title">Otros Hallazgos</h3>
-                        <div class="other-findings-group-container">
-                            <div class="form-group-checkbox espa-aps-only" id="apofisalgiaCheckbox"
-                                style="display: none;">
-                                <label><input type="checkbox" name="apofisalgia" value="si"> Apofisalgia a la
-                                    presión</label>
-                            </div>
-                            <div class="form-group espa-aps-only" id="maniobrasSacroiliacasGroup"
-                                style="display: none;">
-                                <label for="maniobrasSacroiliacas">Maniobras Sacroilíacas:</label>
-                                <select id="maniobrasSacroiliacas">
-                                    <option value="">Seleccionar</option>
-                                    <option value="positivas">Positivas</option>
-                                    <option value="negativas">Negativas</option>
-                                    <option value="dudosas">Dudosas</option>
+                                <label for="Sexo">Sexo</label>
+                                <select id="Sexo">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Hombre">Hombre</option>
+                                    <option value="Mujer">Mujer</option>
+                                    <option value="Otro">Otro</option>
                                 </select>
                             </div>
-                            <div class="form-group espa-aps-only" id="comentariosSacroiliacasGroup"
-                                style="display: none;">
-                                <label for="comentariosSacroiliacas">Comentarios Sacroilíacas:</label>
-                                <textarea id="comentariosSacroiliacas" rows="2"
-                                    placeholder="Comentarios adicionales..."></textarea>
+                            <div class="form-group">
+                                <label for="Edad">Edad</label>
+                                <input type="number" id="Edad" min="0" max="120">
+                            </div>
+                            <div class="form-group">
+                                <label for="Anio_Nacimiento">Año Nacimiento</label>
+                                <input type="number" id="Anio_Nacimiento" min="1900" max="2026">
+                            </div>
+                            <div class="form-group">
+                                <label for="Anio_Inicio_Sintomas">Año Inicio Síntomas</label>
+                                <input type="number" id="Anio_Inicio_Sintomas" min="1900" max="2026">
+                            </div>
+                            <div class="form-group">
+                                <label for="Anio_Diagnostico">Año Diagnóstico</label>
+                                <input type="number" id="Anio_Diagnostico" min="1900" max="2026">
+                            </div>
+                            <div class="form-group">
+                                <label for="Retraso_Diagnostico_Anios">Retraso Diagnóstico (años)</label>
+                                <input type="number" id="Retraso_Diagnostico_Anios" readonly class="readonly-input">
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="hallazgosPielOjos">Hallazgos en Piel y Ojos:</label>
-                            <textarea id="hallazgosPielOjos" rows="3"
-                                placeholder="Descripción de hallazgos cutáneos o oculares"></textarea>
+                        <h3>Tabaquismo</h3>
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Antecedentes_Familiares_HS">Antecedentes Familiares HS</label>
+                                <select id="Antecedentes_Familiares_HS">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Fumador">Fumador</label>
+                                <select id="Fumador">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                            <div class="form-group conditional-field-hidden" id="Cigarros_Dia_group">
+                                <label for="Cigarros_Dia">Cigarros/día</label>
+                                <input type="number" id="Cigarros_Dia" min="0">
+                            </div>
+                            <div class="form-group conditional-field-hidden" id="Anios_Fumador_group">
+                                <label for="Anios_Fumador">Años fumador</label>
+                                <input type="number" id="Anios_Fumador" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="Exfumador">Exfumador</label>
+                                <select id="Exfumador">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h3>Antropometría</h3>
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Peso">Peso (kg)</label>
+                                <input type="number" id="Peso" min="0" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="Talla">Talla (cm)</label>
+                                <input type="number" id="Talla" min="0" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="IMC">IMC</label>
+                                <input type="number" id="IMC" readonly class="readonly-input" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════ BLOQUE 2 — Comorbilidades (chips toggle) ═══════ -->
+                <div class="collapsible-section">
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-notes-medical"></i> Comorbilidades</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </button>
+                    <div class="collapsible-content">
+                        <p class="info-note info-note--sm"><i class="fas fa-info-circle"></i> Clic para activar (SI). Sin activar = NO.</p>
+                        <div class="comorbidity-grid" id="comorbidityGrid">
+                            <!-- Generado dinámicamente por formControllerHS -->
+                        </div>
+                        <div class="form-group" style="margin-top:12px;">
+                            <label for="Comorbilidad_Otras">Otras comorbilidades</label>
+                            <input type="text" id="Comorbilidad_Otras" placeholder="Especificar...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════ BLOQUE 3 — Actividad clínica y lesiones por región (UNIFICADO) ═══════ -->
+                <div class="collapsible-section">
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-chart-line"></i> Actividad Clínica y Lesiones por Región</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </button>
+                    <div class="collapsible-content">
+                        <!-- Fila superior: Hurley, EVAs, brotes, etc. -->
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Hurley">Estadio de Hurley</label>
+                                <select id="Hurley">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="I">I</option>
+                                    <option value="II">II</option>
+                                    <option value="III">III</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Dolor_EVA">Dolor EVA (0-10)</label>
+                                <input type="number" id="Dolor_EVA" min="0" max="10" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="Prurito_EVA">Prurito EVA (0-10)</label>
+                                <input type="number" id="Prurito_EVA" min="0" max="10" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="Supuracion_EVA">Supuración EVA (0-10)</label>
+                                <input type="number" id="Supuracion_EVA" min="0" max="10" step="0.1">
+                            </div>
+                        </div>
+                        <div class="form-group-grid" style="margin-top:8px;">
+                            <div class="form-group">
+                                <label for="Brotes_Ultimos_3_Meses">Brotes últimos 3 meses</label>
+                                <input type="number" id="Brotes_Ultimos_3_Meses" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="Visitas_Urgencias_HS_Ultimos_6_Meses">Visitas Urgencias HS (últimos 6 meses)</label>
+                                <input type="number" id="Visitas_Urgencias_HS_Ultimos_6_Meses" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="Antibioticos_Ultimos_6_Meses">Antibióticos (últimos 6 meses)</label>
+                                <input type="number" id="Antibioticos_Ultimos_6_Meses" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Matriz compacta de regiones -->
+                        <h3 style="margin-top:20px;">Lesiones por región</h3>
+                        <p class="info-note info-note--sm"><i class="fas fa-info-circle"></i> Introduzca el recuento de lesiones. Totales e IHS-4 se calculan automáticamente.</p>
+                        <div class="region-matrix-wrapper" style="overflow-x:auto;">
+                            <table class="region-matrix" id="regionMatrix">
+                                <thead>
+                                    <tr>
+                                        <th>Región</th>
+                                        <th>Nódulos</th>
+                                        <th>Abscesos</th>
+                                        <th>Fístulas</th>
+                                        <th>Fístulas drenantes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="regionMatrixBody">
+                                    <!-- Generado dinámicamente por formControllerHS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- IHS-4 badge (solo visual, los totales son hidden para exportación) -->
+                        <div class="ihs4-result-box" style="margin-top:16px;">
+                            <div class="ihs4-result-box__score">
+                                <label>IHS-4 Clínico</label>
+                                <input type="number" id="IHS4_Clinico" readonly class="readonly-input ihs4-score-input">
+                            </div>
+                            <div class="ihs4-result-box__category">
+                                <label>Categoría</label>
+                                <input type="hidden" id="IHS4_Clinico_Categoria" name="IHS4_Clinico_Categoria">
+                                <span id="IHS4_Clinico_Categoria_Badge" class="ihs4-badge ihs4-badge--nd">—</span>
+                            </div>
+                        </div>
+
+                        <!-- Hidden inputs para totales (exportación) -->
+                        <input type="hidden" id="Nodulos_Total">
+                        <input type="hidden" id="Abscesos_Total">
+                        <input type="hidden" id="Fistulas_Total">
+                        <input type="hidden" id="Fistulas_Drenantes_Total">
+                    </div>
+                </div>
+
+                <!-- ═══════ BLOQUE 5 — Cicatrices y daño estructural ═══════ -->
+                <div class="collapsible-section">
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-band-aid"></i> Cicatrices y Daño
+                            Estructural</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </button>
+                    <div class="collapsible-content">
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Cicatrices">Cicatrices</label>
+                                <select id="Cicatrices">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Tuneles_Cronicos">Túneles Crónicos</label>
+                                <select id="Tuneles_Cronicos">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Limitacion_Funcional">Limitación Funcional</label>
+                                <select id="Limitacion_Funcional">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="otrasExploraciones">Otras Exploraciones (AC/AP/Abdomen):</label>
-                            <textarea id="otrasExploraciones" rows="3"
-                                placeholder="Ej: AC: rítmica, sin soplos. AP: MV conservado. Abdomen: blando, depresible, no doloroso."></textarea>
+                            <label for="Cicatrices_Descripcion">Descripción de Cicatrices</label>
+                            <textarea id="Cicatrices_Descripcion" rows="2" placeholder="Describir..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Limitacion_Funcional_Descripcion">Descripción Limitación Funcional</label>
+                            <textarea id="Limitacion_Funcional_Descripcion" rows="2"
+                                placeholder="Describir..."></textarea>
                         </div>
                     </div>
                 </div>
 
-                <!-- CRITERIOS ADAPTATIVOS -->
-                <div class="collapsible-section espa-only" id="criteriosASASSection" style="display: none;">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-flask"></i> Criterios ASAS</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="collapsible-content">
-                        <div class="asas-criterios-box">
-                            <div class="form-group-checkbox first-asas-checkbox">
-                                <label><input type="checkbox" id="lumbalgia3meses" name="lumbalgia3meses" value="si">
-                                    ¿Lumbalgia > 3 meses</label>
-                            </div>
-                            <div id="criteriosASASDetail" class="criterios-detail"
-                                style="max-height:0; opacity:0; display:none;">
-                                <div class="form-group-checkbox asas-criterio-item">
-                                    <label><input type="checkbox" class="criterio-asas" value="1"> Comienzo < a los 40
-                                            años</label>
-                                </div>
-                                <div class="form-group-checkbox asas-criterio-item">
-                                    <label><input type="checkbox" class="criterio-asas" value="2"> Comienzo
-                                        insidioso</label>
-                                </div>
-                                <div class="form-group-checkbox asas-criterio-item">
-                                    <label><input type="checkbox" class="criterio-asas" value="3"> Mejoría con
-                                        ejercicio</label>
-                                </div>
-                                <div class="form-group-checkbox asas-criterio-item">
-                                    <label><input type="checkbox" class="criterio-asas" value="4"> No mejoría con
-                                        reposo</label>
-                                </div>
-                                <div class="form-group-checkbox asas-criterio-item">
-                                    <label><input type="checkbox" class="criterio-asas" value="5"> Dolor
-                                        nocturno</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="asas-result-box">
-                            Criterios ASAS Cumplidos: <span id="numCriteriosASAS">0</span> de 5. <span
-                                id="resultadoASAS" class="result-text"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="collapsible-section aps-only" id="criteriosCASPARSection" style="display: none;">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-flask"></i> Criterios CASPAR</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="collapsible-content">
-                        <div class="caspar-info-box">
-                            <p><strong>Criterios CASPAR para Artritis Psoriásica</strong></p>
-                            <p>Requiere enfermedad inflamatoria articular (periférica, axial o entesitis) + ≥3 puntos:
-                            </p>
-                        </div>
-                        <div class="caspar-criterios-box">
-                            <div class="form-group-checkbox caspar-criterio-item">
-                                <label><input type="checkbox" class="criterio-caspar" data-points="2"> Psoriasis cutánea
-                                    actual (2 puntos)</label>
-                            </div>
-                            <div class="form-group-checkbox caspar-criterio-item">
-                                <label><input type="checkbox" class="criterio-caspar" data-points="1"> Historia personal
-                                    de psoriasis (1 punto)</label>
-                            </div>
-                            <div class="form-group-checkbox caspar-criterio-item">
-                                <label><input type="checkbox" class="criterio-caspar" data-points="1"> Historia familiar
-                                    de psoriasis (1 punto)</label>
-                            </div>
-                            <div class="form-group-checkbox caspar-criterio-item">
-                                <label><input type="checkbox" class="criterio-caspar" data-points="1"> Dactilitis actual
-                                    o pasada (1 punto)</label>
-                            </div>
-                            <div class="form-group-checkbox caspar-criterio-item">
-                                <label><input type="checkbox" class="criterio-caspar" data-points="1"> Distrofia ungueal
-                                    psoriásica (1 punto)</label>
-                            </div>
-                            <div class="form-group-checkbox caspar-criterio-item">
-                                <label><input type="checkbox" class="criterio-caspar" data-points="1"> Factor Reumatoide
-                                    negativo (1 punto)</label>
-                            </div>
-                            <div class="form-group-checkbox caspar-criterio-item">
-                                <label><input type="checkbox" class="criterio-caspar" data-points="1"> Evidencia
-                                    radiológica de formación ósea yuxtaarticular (1 punto)</label>
-                            </div>
-                        </div>
-
-                        <div class="caspar-result-box">
-                            Puntuación CASPAR: <span id="puntuacionCASPAR">0</span> puntos. <span id="resultadoCASPAR"
-                                class="result-text"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CRITERIOS ACR/EULAR 2010 (AR) -->
-                <div class="collapsible-section ar-only" id="criteriosACREULARSection" style="display: none;">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-flask"></i> Criterios ACR/EULAR
-                            2010</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="collapsible-content">
-                        <div class="caspar-info-box">
-                            <p><strong>Criterios de Clasificación ACR/EULAR 2010 para Artritis Reumatoide</strong></p>
-                            <p>Score ≥6/10 puntos = clasificación como AR definida. Solo aplicable a pacientes con al
-                                menos 1 articulación con sinovitis clínica no explicada por otra enfermedad.</p>
-                        </div>
-
-                        <div class="caspar-criterios-box">
-                            <!-- A. Afectación articular (0-5) -->
-                            <div class="acr-criterio-group">
-                                <label class="acr-criterio-label"><i class="fas fa-hand-paper"></i> A. Afectación
-                                    articular</label>
-                                <select id="acrArticulaciones" class="criterio-acr-select">
-                                    <option value="0">1 articulación grande (0 puntos)</option>
-                                    <option value="1">2-10 articulaciones grandes (1 punto)</option>
-                                    <option value="2">1-3 articulaciones pequeñas ± grandes (2 puntos)</option>
-                                    <option value="3">4-10 articulaciones pequeñas ± grandes (3 puntos)</option>
-                                    <option value="5">>10 articulaciones (al menos 1 pequeña) (5 puntos)</option>
-                                </select>
-                            </div>
-
-                            <!-- B. Serología (0-3) -->
-                            <div class="acr-criterio-group">
-                                <label class="acr-criterio-label"><i class="fas fa-vial"></i> B. Serología</label>
-                                <select id="acrSerologia" class="criterio-acr-select">
-                                    <option value="0">FR negativo Y Anti-CCP negativo (0 puntos)</option>
-                                    <option value="2">FR positivo bajo O Anti-CCP positivo bajo (2 puntos)</option>
-                                    <option value="3">FR positivo alto O Anti-CCP positivo alto (3 puntos)</option>
-                                </select>
-                            </div>
-
-                            <!-- C. Reactantes de fase aguda (0-1) -->
-                            <div class="acr-criterio-group">
-                                <label class="acr-criterio-label"><i class="fas fa-tint"></i> C. Reactantes de fase
-                                    aguda</label>
-                                <select id="acrReactantes" class="criterio-acr-select">
-                                    <option value="0">PCR normal Y VSG normal (0 puntos)</option>
-                                    <option value="1">PCR anormal O VSG anormal (1 punto)</option>
-                                </select>
-                            </div>
-
-                            <!-- D. Duración de síntomas (0-1) -->
-                            <div class="acr-criterio-group">
-                                <label class="acr-criterio-label"><i class="fas fa-clock"></i> D. Duración de los
-                                    síntomas</label>
-                                <select id="acrDuracion" class="criterio-acr-select">
-                                    <option value="0">
-                                        <6 semanas (0 puntos)</option>
-                                    <option value="1">≥6 semanas (1 punto)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="caspar-result-box" id="acrResultBox">
-                            Puntuación ACR/EULAR: <span id="puntuacionACREULAR">0</span>/10 puntos. <span
-                                id="resultadoACREULAR" class="result-text"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECCIONES CLÍNICAS ESPECÍFICAS AR -->
-                <div class="collapsible-section ar-only" id="seccionesClinicasARSection" style="display: none;">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-notes-medical"></i> Valoración Clínica AR</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="collapsible-content">
-                        <!-- Rigidez matutina -->
-                        <div class="pruebas-apartado">
-                            <h5><i class="fas fa-sun"></i> Rigidez Matutina</h5>
-                            <div class="form-group">
-                                <label for="rigidezMatutinaAR">Duración de la rigidez matutina (minutos):</label>
-                                <input type="number" id="rigidezMatutinaAR" min="0" max="1440"
-                                    placeholder="Minutos de rigidez">
-                            </div>
-                        </div>
-
-                        <!-- Nódulos reumatoideos -->
-                        <div class="pruebas-apartado">
-                            <h5><i class="fas fa-circle"></i> Nódulos Reumatoideos</h5>
-                            <div class="form-group-checkbox">
-                                <label><input type="checkbox" id="nodulosReumatoideos"> Presencia de nódulos
-                                    reumatoideos</label>
-                            </div>
-                            <div class="form-group" id="nodulosLocalizacion" style="display:none;margin-top:10px;">
-                                <label for="nodulosLocalizacionTexto">Localización:</label>
-                                <input type="text" id="nodulosLocalizacionTexto"
-                                    placeholder="Codos, manos, tendón de Aquiles...">
-                            </div>
-                        </div>
-
-                        <!-- Erosiones radiológicas -->
-                        <div class="pruebas-apartado">
-                            <h5><i class="fas fa-x-ray"></i> Erosiones Radiológicas</h5>
-                            <div class="form-group-checkbox">
-                                <label><input type="checkbox" id="erosionesRadiologicas"> Presencia de erosiones
-                                    radiológicas</label>
-                            </div>
-                            <div class="form-group" id="erosionesDescripcion" style="display:none;margin-top:10px;">
-                                <label for="erosionesDescripcionTexto">Descripción:</label>
-                                <textarea id="erosionesDescripcionTexto" rows="2"
-                                    placeholder="Localización y grado de erosiones..."></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Manifestaciones Extraarticulares -->
-                        <div class="indices-apartado">
-                            <h5><i class="fas fa-lungs"></i> Manifestaciones Extraarticulares</h5>
-                            <div class="two-col-grid">
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="pulmonar-niu">
-                                        Enf. Pulmonar Intersticial (NIU)</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="pulmonar-nine">
-                                        Enf. Pulmonar (NINE)</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar"
-                                            data-tipo="nodulos-pulmonares"> Nódulos pulmonares</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="derrame-pleural">
-                                        Derrame pleural</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="epiescleritis">
-                                        Epiescleritis</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="escleritis">
-                                        Escleritis</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="queratitis">
-                                        Queratitis</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="vasculitis">
-                                        Vasculitis reumatoide</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="anemia"> Anemia
-                                        de enf. crónica</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="felty"> Síndrome
-                                        de Felty</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="neuropatia">
-                                        Neuropatía periférica</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar"
-                                            data-tipo="mielopatia-cervical"> Mielopatía cervical</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="pericarditis">
-                                        Pericarditis</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" class="extraarticular-ar" data-tipo="amiloidosis">
-                                        Amiloidosis</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Síndrome de Sjögren secundario -->
-                        <div class="pruebas-apartado">
-                            <h5><i class="fas fa-tint-slash"></i> Síndrome de Sjögren Secundario</h5>
-                            <div class="two-col-grid">
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" id="sequedadOcular"> Sequedad ocular
-                                        (xeroftalmia)</label>
-                                </div>
-                                <div class="form-group-checkbox">
-                                    <label><input type="checkbox" id="sequedadOral"> Sequedad oral (xerostomía)</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PRUEBAS COMPLEMENTARIAS -->
+                <!-- ═══════ BLOQUE 5 — Ecografía ═══════ -->
                 <div class="collapsible-section">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-vials"></i> Pruebas Complementarias</span>
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-wave-square"></i> Ecografía</span>
                         <i class="fas fa-chevron-down arrow"></i>
                     </button>
                     <div class="collapsible-content">
-                        <div class="pruebas-apartado">
-                            <h5><i class="fas fa-flask"></i> Analítica Sanguínea</h5>
-                            <div class="form-group-grid">
-                                <div class="form-group">
-                                    <label for="pcrValue">PCR (mg/L):</label>
-                                    <input type="number" id="pcrValue" min="0" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="vsgValue">VSG (mm/h):</label>
-                                    <input type="number" id="vsgValue" min="0" step="1">
-                                </div>
-                            </div>
+                        <div class="form-group-grid">
                             <div class="form-group">
-                                <label for="otrosHallazgosAnalitica">Otros Hallazgos (Analítica):</label>
-                                <textarea id="otrosHallazgosAnalitica" rows="3"
-                                    placeholder="Describir otros hallazgos relevantes..."></textarea>
+                                <label for="Ecografia_Realizada">Ecografía Realizada</label>
+                                <select id="Ecografia_Realizada">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
                             </div>
                         </div>
-
-                        <div class="pruebas-apartado">
-                            <h5><i class="fas fa-x-ray"></i> Radiografía</h5>
-                            <div class="form-group">
-                                <label for="hallazgosRadiografia">Hallazgos Radiográficos:</label>
-                                <textarea id="hallazgosRadiografia" rows="4"
-                                    placeholder="Describir hallazgos radiográficos..."></textarea>
+                        <div id="ecoFields" class="conditional-field-hidden">
+                            <!-- Hallazgos ecográficos: campo principal visible -->
+                            <div class="eco-hallazgos-group">
+                                <div class="form-group">
+                                    <label for="Hallazgos_Ecograficos">Hallazgos ecográficos</label>
+                                    <textarea id="Hallazgos_Ecograficos" rows="4"
+                                        placeholder="Describa hallazgos ecográficos relevantes: trayectos fistulosos, colecciones, Doppler, extensión, estructuras profundas o planificación quirúrgica."></textarea>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="pruebas-apartado">
-                            <h5><i class="fas fa-magnet"></i> RMN (Resonancia Magnética Nuclear)</h5>
-                            <div class="form-group">
-                                <label for="hallazgosRMN">Hallazgos RMN:</label>
-                                <textarea id="hallazgosRMN" rows="4"
-                                    placeholder="Describir hallazgos en RMN..."></textarea>
+                            <!-- Campos numéricos opcionales -->
+                            <div class="eco-fields-sub">
+                                <div class="form-group">
+                                    <label for="Eco_Nodulos_Total">Eco Nódulos Total</label>
+                                    <input type="number" id="Eco_Nodulos_Total" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Eco_Abscesos_Total">Eco Abscesos Total</label>
+                                    <input type="number" id="Eco_Abscesos_Total" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Eco_Fistulas_Total">Eco Fístulas Total</label>
+                                    <input type="number" id="Eco_Fistulas_Total" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Eco_Fistulas_Drenantes_Total">Eco Fístulas Drenantes Total</label>
+                                    <input type="number" id="Eco_Fistulas_Drenantes_Total" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="IHS4_Ecografico">IHS-4 Ecográfico</label>
+                                    <input type="number" id="IHS4_Ecografico" readonly class="readonly-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="IHS4_Ecografico_Categoria">Categoría Eco</label>
+                                    <input type="text" id="IHS4_Ecografico_Categoria" readonly class="readonly-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Doppler_Positivo">Doppler Positivo</label>
+                                    <select id="Doppler_Positivo">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="SI">Sí</option>
+                                        <option value="NO">No</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ÍNDICES DE ACTIVIDAD DE LA ENFERMEDAD -->
+                <!-- ═══════ BLOQUE 7 — PROMs ═══════ -->
                 <div class="collapsible-section">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-chart-line"></i> Índices de Actividad de la
-                            Enfermedad</span>
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-clipboard-check"></i> PROMs</span>
                         <i class="fas fa-chevron-down arrow"></i>
                     </button>
                     <div class="collapsible-content">
-                        <!-- EVAs y Dolor Nocturno (usados por múltiples índices) -->
-                        <div class="indices-apartado">
-                            <h5><i class="fas fa-tachometer-alt"></i> Escalas Visuales Análogas (EVA)</h5>
-                            <div class="form-group-grid">
-                                <div class="form-group">
-                                    <label for="evaGlobal">EVA Global del Paciente (0-10):</label>
-                                    <input type="number" id="evaGlobal" min="0" max="10" step="0.1">
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="DLQI">DLQI (0-30)</label>
+                                <input type="number" id="DLQI" min="0" max="30">
+                            </div>
+                            <div class="form-group">
+                                <label for="HSQoL24">HSQoL-24</label>
+                                <input type="number" id="HSQoL24" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="EVA_Dolor_Paciente">EVA Dolor Paciente (0-10)</label>
+                                <input type="number" id="EVA_Dolor_Paciente" min="0" max="10" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="EVA_Impacto_Global">EVA Impacto Global (0-10)</label>
+                                <input type="number" id="EVA_Impacto_Global" min="0" max="10" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="EVA_Olor">EVA Olor (0-10)</label>
+                                <input type="number" id="EVA_Olor" min="0" max="10" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="EVA_Supuracion">EVA Supuración (0-10)</label>
+                                <input type="number" id="EVA_Supuracion" min="0" max="10" step="0.1">
+                            </div>
+                        </div>
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Dias_Baja_Ultimos_6_Meses">Días baja últimos 6 meses</label>
+                                <input type="number" id="Dias_Baja_Ultimos_6_Meses" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="Impacto_Laboral">Impacto Laboral</label>
+                                <select id="Impacto_Laboral">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Ninguno">Ninguno</option>
+                                    <option value="Leve">Leve</option>
+                                    <option value="Moderado">Moderado</option>
+                                    <option value="Severo">Severo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Impacto_Sexual">Impacto Sexual</label>
+                                <select id="Impacto_Sexual">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Ninguno">Ninguno</option>
+                                    <option value="Leve">Leve</option>
+                                    <option value="Moderado">Moderado</option>
+                                    <option value="Severo">Severo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Comentarios_PROMs">Comentarios PROMs</label>
+                            <textarea id="Comentarios_PROMs" rows="2" placeholder="Observaciones..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════ BLOQUE 8 — Tratamiento previo y actual ═══════ -->
+                <div class="collapsible-section">
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-pills"></i> Tratamiento Previo y Actual</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </button>
+                    <div class="collapsible-content">
+                        <h3>Tratamiento Actual</h3>
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Tratamiento_Actual">Tratamiento Actual</label>
+                                <select id="Tratamiento_Actual">
+                                    <option value="">Seleccionar...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Fecha_Inicio_Tratamiento_Actual">Fecha Inicio</label>
+                                <input type="date" id="Fecha_Inicio_Tratamiento_Actual">
+                            </div>
+                        </div>
+
+                        <h3>Tratamientos Previos — Antibióticos</h3>
+                        <div id="previosAntibioticos">
+                            <div class="treatment-line">
+                                <div class="treatment-label">Antibiótico 1</div>
+                                <div class="treatment-controls">
+                                    <input type="text" class="previo-abx-nombre" placeholder="Nombre">
+                                    <input type="text" class="previo-abx-dosis" placeholder="Dosis">
                                 </div>
-                                <div class="form-group">
-                                    <label for="evaDolor">EVA Dolor (0-10):</label>
-                                    <input type="number" id="evaDolor" min="0" max="10" step="0.1">
+                            </div>
+                            <div class="treatment-line">
+                                <div class="treatment-label">Antibiótico 2</div>
+                                <div class="treatment-controls">
+                                    <input type="text" class="previo-abx-nombre" placeholder="Nombre">
+                                    <input type="text" class="previo-abx-dosis" placeholder="Dosis">
                                 </div>
+                            </div>
+                            <div class="treatment-line">
+                                <div class="treatment-label">Antibiótico 3</div>
+                                <div class="treatment-controls">
+                                    <input type="text" class="previo-abx-nombre" placeholder="Nombre">
+                                    <input type="text" class="previo-abx-dosis" placeholder="Dosis">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Tratamientos Previos — Biológicos</h3>
+                        <div id="previosBiologicos">
+                            <div class="treatment-line">
+                                <div class="treatment-label">Biológico 1</div>
+                                <div class="treatment-controls">
+                                    <input type="text" class="previo-bio-nombre" placeholder="Nombre">
+                                    <input type="text" class="previo-bio-dosis" placeholder="Dosis">
+                                </div>
+                            </div>
+                            <div class="treatment-line">
+                                <div class="treatment-label">Biológico 2</div>
+                                <div class="treatment-controls">
+                                    <input type="text" class="previo-bio-nombre" placeholder="Nombre">
+                                    <input type="text" class="previo-bio-dosis" placeholder="Dosis">
+                                </div>
+                            </div>
+                            <div class="treatment-line">
+                                <div class="treatment-label">Biológico 3</div>
+                                <div class="treatment-controls">
+                                    <input type="text" class="previo-bio-nombre" placeholder="Nombre">
+                                    <input type="text" class="previo-bio-dosis" placeholder="Dosis">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Tratamientos Previos — Otros Sistémicos</h3>
+                        <div id="previosOtros">
+                            <div class="treatment-line">
+                                <div class="treatment-label">Otro Sistémico 1</div>
+                                <div class="treatment-controls">
+                                    <input type="text" class="previo-otro-nombre" placeholder="Nombre">
+                                    <input type="text" class="previo-otro-dosis" placeholder="Dosis">
+                                </div>
+                            </div>
+                            <div class="treatment-line">
+                                <div class="treatment-label">Otro Sistémico 2</div>
+                                <div class="treatment-controls">
+                                    <input type="text" class="previo-otro-nombre" placeholder="Nombre">
+                                    <input type="text" class="previo-otro-dosis" placeholder="Dosis">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Tratamiento Indicada/Ajustado en esta Visita</h3>
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Trat_Antibiotico">Antibiótico</label>
+                                <select id="Trat_Antibiotico">
+                                    <option value="">Seleccionar...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Trat_Antibiotico_Dosis">Dosis</label>
+                                <input type="text" id="Trat_Antibiotico_Dosis" placeholder="Dosis">
+                            </div>
+                            <div class="form-group">
+                                <label for="Trat_Biologico">Biológico</label>
+                                <select id="Trat_Biologico">
+                                    <option value="">Seleccionar...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Trat_Biologico_Dosis">Dosis</label>
+                                <input type="text" id="Trat_Biologico_Dosis" placeholder="Dosis">
+                            </div>
+                            <div class="form-group">
+                                <label for="Trat_Topico">Tópico</label>
+                                <select id="Trat_Topico">
+                                    <option value="">Seleccionar...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Trat_Topico_Dosis">Dosis</label>
+                                <input type="text" id="Trat_Topico_Dosis" placeholder="Dosis">
+                            </div>
+                            <div class="form-group">
+                                <label for="Trat_Otro">Otro</label>
+                                <select id="Trat_Otro">
+                                    <option value="">Seleccionar...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Trat_Otro_Dosis">Dosis</label>
+                                <input type="text" id="Trat_Otro_Dosis" placeholder="Dosis">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════ BLOQUE 9 — Decisión terapéutica ═══════ -->
+                <div class="collapsible-section">
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-clipboard-check"></i> Decisión
+                            Terapéutica</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </button>
+                    <div class="collapsible-content">
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Decision_Terapeutica">Decisión Terapéutica</label>
+                                <select id="Decision_Terapeutica">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Mantener">Mantener</option>
+                                    <option value="Optimizar_Adherencia">Optimizar Adherencia</option>
+                                    <option value="Ajustar_Dosis">Ajustar Dosis</option>
+                                    <option value="Cambiar_Tratamiento">Cambiar Tratamiento</option>
+                                    <option value="Iniciar_Biologico">Iniciar Biológico</option>
+                                    <option value="Derivar_Cirugia">Derivar Cirugía</option>
+                                    <option value="Solicitar_Ecografia">Solicitar Ecografía</option>
+                                    <option value="Comite_Multidisciplinar">Comité Multidisciplinar</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Continuar_Tratamiento">Continuar Tratamiento</label>
+                                <select id="Continuar_Tratamiento">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Optimizar_Adherencia">Optimizar Adherencia</label>
+                                <select id="Optimizar_Adherencia">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Ajuste_Dosis">Ajuste de Dosis</label>
+                                <select id="Ajuste_Dosis">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Cambio_Tratamiento">Cambio de Tratamiento</label>
+                                <select id="Cambio_Tratamiento">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Cambio_Motivo">Motivo del Cambio</label>
+                            <textarea id="Cambio_Motivo" rows="2" placeholder="Describir..."></textarea>
+                        </div>
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Efectos_Adversos">Efectos Adversos</label>
+                                <select id="Efectos_Adversos">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Suspension_Tratamiento">Suspensión Tratamiento</label>
+                                <select id="Suspension_Tratamiento">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Efectos_Adversos_Descripcion">Descripción Efectos Adversos</label>
+                            <textarea id="Efectos_Adversos_Descripcion" rows="2" placeholder="Describir..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Suspension_Motivo">Motivo Suspensión</label>
+                            <textarea id="Suspension_Motivo" rows="2" placeholder="Describir..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════ BLOQUE 10 — Cirugía / Comité ═══════ -->
+                <div class="collapsible-section">
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-procedures"></i> Cirugía / Comité
+                            Multidisciplinar</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </button>
+                    <div class="collapsible-content">
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Requiere_Cirugia">Requiere Cirugía</label>
+                                <select id="Requiere_Cirugia">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Region_Quirurgica">Región Quirúrgica</label>
+                                <input type="text" id="Region_Quirurgica" placeholder="Especificar...">
+                            </div>
+                            <div class="form-group">
+                                <label for="Prioridad_Quirurgica">Prioridad Quirúrgica</label>
+                                <select id="Prioridad_Quirurgica">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Baja">Baja</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Preferente">Preferente</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h3>Derivaciones</h3>
+                        <div class="derivaciones-grid">
+                            <div class="form-group-checkbox">
+                                <label><input type="checkbox" name="derivacion" value="Dermatologia_Quirurgica">
+                                    Dermatología Quirúrgica</label>
                             </div>
                             <div class="form-group-checkbox">
-                                <label><input type="checkbox" id="dolorNocturno"> Dolor Nocturno</label>
+                                <label><input type="checkbox" name="derivacion" value="Cirugia_General"> Cirugía
+                                    General</label>
+                            </div>
+                            <div class="form-group-checkbox">
+                                <label><input type="checkbox" name="derivacion" value="Cirugia_Plastica"> Cirugía
+                                    Plástica</label>
+                            </div>
+                            <div class="form-group-checkbox">
+                                <label><input type="checkbox" name="derivacion" value="Ginecologia"> Ginecología</label>
+                            </div>
+                            <div class="form-group-checkbox">
+                                <label><input type="checkbox" name="derivacion" value="Urologia"> Urología</label>
                             </div>
                         </div>
 
-                        <div class="indices-apartado espa-only" id="basdaiSection" style="display: none;">
-                            <h5><i class="fas fa-calculator"></i> BASDAI (Bath Ankylosing Spondylitis Disease Activity
-                                Index)</h5>
-                            <div class="form-group-grid">
-                                <div class="form-group">
-                                    <label for="basdaiP1">P1: Fatiga (0-10):</label>
-                                    <input type="number" id="basdaiP1" min="0" max="10" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="basdaiP2">P2: Dolor Axial (0-10):</label>
-                                    <input type="number" id="basdaiP2" min="0" max="10" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="basdaiP3">P3: Dolor Articular Periférico (0-10):</label>
-                                    <input type="number" id="basdaiP3" min="0" max="10" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="basdaiP4">P4: Dolor Entesítico (0-10):</label>
-                                    <input type="number" id="basdaiP4" min="0" max="10" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="basdaiP5">P5: Rigidez Matutina - Nivel (0-10):</label>
-                                    <input type="number" id="basdaiP5" min="0" max="10" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="basdaiP6">P6: Rigidez Matutina - Duración (horas):</label>
-                                    <input type="number" id="basdaiP6" min="0" step="0.1">
-                                </div>
+                        <div class="form-group-grid" style="margin-top:12px;">
+                            <div class="form-group">
+                                <label for="Cirugia_Realizada">Cirugía Realizada</label>
+                                <select id="Cirugia_Realizada">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="basdaiResult">Resultado BASDAI:</label>
-                                <input type="text" id="basdaiResult" readonly class="indice-resultado">
-                                <span id="basdaiCategoria" class="indice-categoria"></span>
+                                <label for="Fecha_Cirugia">Fecha Cirugía</label>
+                                <input type="date" id="Fecha_Cirugia">
+                            </div>
+                            <div class="form-group">
+                                <label for="Comite_Multidisciplinar">Comité Multidisciplinar</label>
+                                <select id="Comite_Multidisciplinar">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="Resultado_Cirugia">Resultado Cirugía</label>
+                            <textarea id="Resultado_Cirugia" rows="2" placeholder="Describir..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Decision_Comite">Decisión del Comité</label>
+                            <textarea id="Decision_Comite" rows="2" placeholder="Describir..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Comentarios_Cirugia_Comite">Comentarios Cirugía/Comité</label>
+                            <textarea id="Comentarios_Cirugia_Comite" rows="2" placeholder="Observaciones..."></textarea>
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="indices-apartado espa-aps-only" id="asdasSection" style="display: none;">
-                            <h5><i class="fas fa-heartbeat"></i> ASDAS-CRP (Ankylosing Spondylitis Disease Activity
-                                Score)</h5>
-                            <div class="form-group-grid">
-                                <div class="form-group">
-                                    <label for="asdasDolorEspalda">Dolor de Espalda (EVA 0-10):</label>
-                                    <input type="number" id="asdasDolorEspalda" min="0" max="10" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="asdasDuracionRigidez">Duración Rigidez Matutina (EVA 0-10):</label>
-                                    <input type="number" id="asdasDuracionRigidez" min="0" max="10" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="asdasEvaGlobal">EVA Global del Paciente (0-10):</label>
-                                    <input type="number" id="asdasEvaGlobal" min="0" max="10" step="0.1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="asdasNAD">NAD (Articulaciones Dolorosas):</label>
-                                    <input type="number" id="asdasNAD" readonly class="asdas-readonly-input">
-                                </div>
-                                <div class="form-group">
-                                    <label for="asdasNAT">NAT (Articulaciones Tumefactas):</label>
-                                    <input type="number" id="asdasNAT" readonly class="asdas-readonly-input">
-                                </div>
-                                <div class="form-group">
-                                    <label for="asdasPCR">PCR (mg/L):</label>
-                                    <input type="number" id="asdasPCR" readonly class="asdas-readonly-input">
-                                </div>
+                <!-- ═══════ BLOQUE 11 — Analítica / Preventiva ═══════ -->
+                <div class="collapsible-section">
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-vial"></i> Analítica / Preventiva</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </button>
+                    <div class="collapsible-content">
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="Analitica_Solicitada">Analítica Solicitada</label>
+                                <select id="Analitica_Solicitada">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="asdasCrpResult">Resultado ASDAS-CRP:</label>
-                                <input type="text" id="asdasCrpResult" readonly class="indice-resultado">
-                                <span id="asdasCrpCategoria" class="indice-categoria"></span>
+                                <label for="Analitica_Realizada">Analítica Realizada</label>
+                                <select id="Analitica_Realizada">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Medicina_Preventiva_Solicitada">Med. Preventiva Solicitada</label>
+                                <select id="Medicina_Preventiva_Solicitada">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Medicina_Preventiva_Realizada">Med. Preventiva Realizada</label>
+                                <select id="Medicina_Preventiva_Realizada">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Vacunacion_Revisada">Vacunación Revisada</label>
+                                <select id="Vacunacion_Revisada">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Cribado_TB">Cribado TB</label>
+                                <select id="Cribado_TB">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Cribado_Hepatitis">Cribado Hepatitis</label>
+                                <select id="Cribado_Hepatitis">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Cribado_VIH">Cribado VIH</label>
+                                <select id="Cribado_VIH">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="SI">Sí</option>
+                                    <option value="NO">No</option>
+                                    <option value="ND">ND</option>
+                                </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="Observaciones_Preventiva">Observaciones Preventiva</label>
+                            <textarea id="Observaciones_Preventiva" rows="2" placeholder="Observaciones..."></textarea>
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="indices-apartado">
-                            <h5><i class="fas fa-heartbeat"></i> ASDAS-ESR (con VSG)</h5>
-                            <p class="info-note"><i class="fas fa-info-circle"></i> Utiliza los mismos parámetros que
-                                ASDAS-CRP, pero con VSG en lugar de PCR.</p>
-                            <div class="form-group-grid">
-                                <div class="form-group">
-                                    <label for="asdasVSG">VSG (mm/h):</label>
-                                    <input type="number" id="asdasVSG" readonly class="asdas-readonly-input">
-                                </div>
-                            </div>
+                <!-- ═══════ BLOQUE 12 — Cierre y exportación ═══════ -->
+                <div class="collapsible-section">
+                    <button class="collapsible-header" type="button">
+                        <span class="header-icon-text"><i class="fas fa-file-export"></i> Cierre y Exportación</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </button>
+                    <div class="collapsible-content">
+                        <div class="form-group">
+                            <label for="Plan_Clinico">Plan Clínico</label>
+                            <textarea id="Plan_Clinico" rows="4" placeholder="Plan de actuación..."></textarea>
+                        </div>
+                        <div class="form-group-grid">
                             <div class="form-group">
-                                <label for="asdasEsrResult">Resultado ASDAS-ESR:</label>
-                                <input type="text" id="asdasEsrResult" readonly class="indice-resultado">
-                                <span id="asdasEsrCategoria" class="indice-categoria"></span>
+                                <label for="Fecha_Proxima_Revision">Fecha Próxima Revisión</label>
+                                <input type="date" id="Fecha_Proxima_Revision">
                             </div>
                         </div>
-
-                        <!-- DAS28-CRP (AR) -->
-                        <div class="indices-apartado ar-only" id="das28CrpSection" style="display: none;">
-                            <h5><i class="fas fa-calculator"></i> DAS28-CRP (con PCR)</h5>
-                            <p class="info-note"><i class="fas fa-info-circle"></i> 0.56×√TJC28 + 0.28×√SJC28 +
-                                0.36×ln(CRP+1) + 0.014×VAS + 0.96. Umbrales: Remisión <2.6 | Baja <3.2 | Moderada <5.1 |
-                                    Alta ≥5.1</p>
-                                    <div class="form-group-grid">
-                                        <div class="form-group">
-                                            <label for="das28NAD">NAD28 (desde homúnculo):</label>
-                                            <input type="number" id="das28NAD" readonly class="asdas-readonly-input">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="das28NAT">NAT28 (desde homúnculo):</label>
-                                            <input type="number" id="das28NAT" readonly class="asdas-readonly-input">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="das28PCR">PCR (mg/L):</label>
-                                            <input type="number" id="das28PCR" readonly class="asdas-readonly-input">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="das28EVA">EVA Global Paciente:</label>
-                                            <input type="number" id="das28EVA" readonly class="asdas-readonly-input">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="das28CrpResult">Resultado DAS28-CRP:</label>
-                                        <input type="text" id="das28CrpResult" readonly class="indice-resultado">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Categoría de actividad:</label>
-                                        <span id="das28CrpCategoria" class="indice-categoria"></span>
-                                    </div>
+                        <div class="form-group">
+                            <label for="Comentarios_Adicionales">Comentarios Adicionales</label>
+                            <textarea id="Comentarios_Adicionales" rows="4"
+                                placeholder="Observaciones generales..."></textarea>
                         </div>
 
-                        <!-- DAS28-ESR (AR) -->
-                        <div class="indices-apartado ar-only" id="das28EsrSection" style="display: none;">
-                            <h5><i class="fas fa-calculator"></i> DAS28-ESR (con VSG)</h5>
-                            <p class="info-note"><i class="fas fa-info-circle"></i> Utiliza los mismos parámetros que
-                                DAS28-CRP, pero con VSG en lugar de PCR.</p>
-                            <div class="form-group-grid">
-                                <div class="form-group">
-                                    <label for="das28VSG">VSG (mm/h):</label>
-                                    <input type="number" id="das28VSG" readonly class="asdas-readonly-input">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="das28EsrResult">Resultado DAS28-ESR:</label>
-                                <input type="text" id="das28EsrResult" readonly class="indice-resultado">
-                            </div>
-                            <div class="form-group">
-                                <label>Categoría de actividad:</label>
-                                <span id="das28EsrCategoria" class="indice-categoria"></span>
-                            </div>
-                        </div>
+                        <!-- Campos ocultos -->
+                        <input type="hidden" id="TXT_Historia_Generado" value="NO">
+                        <input type="hidden" id="Fecha_Exportacion">
+                        <input type="hidden" id="Version_App" value="1.0.0">
 
-                        <!-- EVA Médico (AR - necesario para CDAI/SDAI) -->
-                        <div class="indices-apartado ar-only" id="evaMedicoSection" style="display: none;">
-                            <h5><i class="fas fa-user-md"></i> EVA Médico (Evaluación Global del Médico)</h5>
-                            <p class="info-note"><i class="fas fa-info-circle"></i> Valoración global de la actividad de
-                                la enfermedad por el médico (0-10 cm).</p>
-                            <div class="form-group">
-                                <label for="evaMedico">EVA Médico (0-10):</label>
-                                <input type="number" id="evaMedico" min="0" max="10" step="0.1" placeholder="0-10">
-                            </div>
-                        </div>
-
-                        <!-- CDAI (AR) -->
-                        <div class="indices-apartado ar-only" id="cdaiSection" style="display: none;">
-                            <h5><i class="fas fa-chart-bar"></i> CDAI (Clinical Disease Activity Index)</h5>
-                            <p class="info-note"><i class="fas fa-info-circle"></i> TJC28 + SJC28 + EVA Paciente + EVA
-                                Médico. Umbrales: Remisión ≤2.8 | Baja ≤10 | Moderada ≤22 | Alta >22</p>
-                            <div class="form-group">
-                                <label for="cdaiResult">Resultado CDAI:</label>
-                                <input type="text" id="cdaiResult" readonly class="indice-resultado">
-                            </div>
-                            <div class="form-group">
-                                <label>Categoría de actividad:</label>
-                                <span id="cdaiCategoria" class="indice-categoria"></span>
-                            </div>
-                        </div>
-
-                        <!-- SDAI (AR) -->
-                        <div class="indices-apartado ar-only" id="sdaiSection" style="display: none;">
-                            <h5><i class="fas fa-chart-bar"></i> SDAI (Simplified Disease Activity Index)</h5>
-                            <p class="info-note"><i class="fas fa-info-circle"></i> TJC28 + SJC28 + EVA Paciente + EVA
-                                Médico + PCR(mg/dL). Umbrales: Remisión ≤3.3 | Baja ≤11 | Moderada ≤26 | Alta >26</p>
-                            <div class="form-group">
-                                <label for="sdaiResult">Resultado SDAI:</label>
-                                <input type="text" id="sdaiResult" readonly class="indice-resultado">
-                            </div>
-                            <div class="form-group">
-                                <label>Categoría de actividad:</label>
-                                <span id="sdaiCategoria" class="indice-categoria"></span>
-                            </div>
-                        </div>
-
-                        <div class="collapsible-section aps-only ar-only" id="haqSection" style="display: none;">
-                            <button class="collapsible-header">
-                                <span class="header-icon-text"><i class="fas fa-tasks"></i> HAQ-DI (Health Assessment
-                                    Questionnaire)</span>
-                                <i class="fas fa-chevron-down arrow"></i>
+                        <div class="form-actions">
+                            <button type="button" id="btnExportarTXT" class="action-btn primary-btn">
+                                <i class="fas fa-file-alt"></i> Generar TXT para Historia Clínica
                             </button>
-                            <div class="collapsible-content">
-                                <p class="info-note"><i class="fas fa-info-circle"></i> Seleccione el nivel de
-                                    dificultad para cada actividad. Score 0-3 (0=sin dificultad, 3=incapaz)</p>
-
-                                <div class="haq-categories">
-                                    <!-- Categoría 1: Vestirse y Arreglarse -->
-                                    <div class="haq-category">
-                                        <label class="haq-category-title">1. Vestirse y Arreglarse</label>
-                                        <select class="haq-score" data-category="1">
-                                            <option value="0">Sin dificultad (0)</option>
-                                            <option value="1">Con alguna dificultad (1)</option>
-                                            <option value="2">Con mucha dificultad (2)</option>
-                                            <option value="3">Incapaz de hacer (3)</option>
-                                        </select>
-                                        <label class="haq-aids"><input type="checkbox" class="haq-aid"
-                                                data-category="1"> Usa ayudas o asistencia</label>
-                                    </div>
-
-                                    <!-- Categoría 2: Levantarse -->
-                                    <div class="haq-category">
-                                        <label class="haq-category-title">2. Levantarse</label>
-                                        <select class="haq-score" data-category="2">
-                                            <option value="0">Sin dificultad (0)</option>
-                                            <option value="1">Con alguna dificultad (1)</option>
-                                            <option value="2">Con mucha dificultad (2)</option>
-                                            <option value="3">Incapaz de hacer (3)</option>
-                                        </select>
-                                        <label class="haq-aids"><input type="checkbox" class="haq-aid"
-                                                data-category="2"> Usa ayudas o asistencia</label>
-                                    </div>
-
-                                    <!-- Categoría 3: Comer -->
-                                    <div class="haq-category">
-                                        <label class="haq-category-title">3. Comer</label>
-                                        <select class="haq-score" data-category="3">
-                                            <option value="0">Sin dificultad (0)</option>
-                                            <option value="1">Con alguna dificultad (1)</option>
-                                            <option value="2">Con mucha dificultad (2)</option>
-                                            <option value="3">Incapaz de hacer (3)</option>
-                                        </select>
-                                        <label class="haq-aids"><input type="checkbox" class="haq-aid"
-                                                data-category="3"> Usa ayudas o asistencia</label>
-                                    </div>
-
-                                    <!-- Categoría 4: Caminar -->
-                                    <div class="haq-category">
-                                        <label class="haq-category-title">4. Caminar</label>
-                                        <select class="haq-score" data-category="4">
-                                            <option value="0">Sin dificultad (0)</option>
-                                            <option value="1">Con alguna dificultad (1)</option>
-                                            <option value="2">Con mucha dificultad (2)</option>
-                                            <option value="3">Incapaz de hacer (3)</option>
-                                        </select>
-                                        <label class="haq-aids"><input type="checkbox" class="haq-aid"
-                                                data-category="4"> Usa ayudas o asistencia</label>
-                                    </div>
-
-                                    <!-- Categoría 5: Higiene -->
-                                    <div class="haq-category">
-                                        <label class="haq-category-title">5. Higiene Personal</label>
-                                        <select class="haq-score" data-category="5">
-                                            <option value="0">Sin dificultad (0)</option>
-                                            <option value="1">Con alguna dificultad (1)</option>
-                                            <option value="2">Con mucha dificultad (2)</option>
-                                            <option value="3">Incapaz de hacer (3)</option>
-                                        </select>
-                                        <label class="haq-aids"><input type="checkbox" class="haq-aid"
-                                                data-category="5"> Usa ayudas o asistencia</label>
-                                    </div>
-
-                                    <!-- Categoría 6: Alcanzar -->
-                                    <div class="haq-category">
-                                        <label class="haq-category-title">6. Alcanzar Objetos</label>
-                                        <select class="haq-score" data-category="6">
-                                            <option value="0">Sin dificultad (0)</option>
-                                            <option value="1">Con alguna dificultad (1)</option>
-                                            <option value="2">Con mucha dificultad (2)</option>
-                                            <option value="3">Incapaz de hacer (3)</option>
-                                        </select>
-                                        <label class="haq-aids"><input type="checkbox" class="haq-aid"
-                                                data-category="6"> Usa ayudas o asistencia</label>
-                                    </div>
-
-                                    <!-- Categoría 7: Agarrar -->
-                                    <div class="haq-category">
-                                        <label class="haq-category-title">7. Agarrar y Abrir Objetos</label>
-                                        <select class="haq-score" data-category="7">
-                                            <option value="0">Sin dificultad (0)</option>
-                                            <option value="1">Con alguna dificultad (1)</option>
-                                            <option value="2">Con mucha dificultad (2)</option>
-                                            <option value="3">Incapaz de hacer (3)</option>
-                                        </select>
-                                        <label class="haq-aids"><input type="checkbox" class="haq-aid"
-                                                data-category="7"> Usa ayudas o asistencia</label>
-                                    </div>
-
-                                    <!-- Categoría 8: Actividades -->
-                                    <div class="haq-category">
-                                        <label class="haq-category-title">8. Actividades Cotidianas</label>
-                                        <select class="haq-score" data-category="8">
-                                            <option value="0">Sin dificultad (0)</option>
-                                            <option value="1">Con alguna dificultad (1)</option>
-                                            <option value="2">Con mucha dificultad (2)</option>
-                                            <option value="3">Incapaz de hacer (3)</option>
-                                        </select>
-                                        <label class="haq-aids"><input type="checkbox" class="haq-aid"
-                                                data-category="8"> Usa ayudas o asistencia</label>
-                                    </div>
-                                </div>
-
-                                <div class="haq-resultado-box">
-                                    <span class="haq-resultado-label">HAQ-DI Total:</span>
-                                    <span class="haq-resultado-score" id="haqTotal">0.00</span>
-                                    <span id="haqCategoria" class="indice-categoria"></span>
-                                    <span class="haq-resultado-interpretacion">(0-1: Leve | 1-2: Moderado | 2-3:
-                                        Severo)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- MDA (MINIMAL DISEASE ACTIVITY) - SOLO APs -->
-                        <div class="indices-apartado aps-only" id="mdaSection" style="display: none;">
-                            <h5><i class="fas fa-bullseye"></i> MDA (Minimal Disease Activity)</h5>
-                            <p class="info-note"><i class="fas fa-info-circle"></i> El paciente alcanza MDA al cumplir
-                                ≥5 de los 7 criterios siguientes:</p>
-
-                            <div class="mda-criterios-grid">
-                                <div class="mda-criterio" id="mdaCriterio1">
-                                    <span class="mda-criterio-icon"><i class="fas fa-circle"></i></span>
-                                    <span class="mda-criterio-text">NAT ≤ 1:</span>
-                                    <span class="mda-criterio-valor" id="mdaNAT">0</span>
-                                    <span class="mda-criterio-status" id="mdaStatus1">✗</span>
-                                </div>
-
-                                <div class="mda-criterio" id="mdaCriterio2">
-                                    <span class="mda-criterio-icon"><i class="fas fa-circle"></i></span>
-                                    <span class="mda-criterio-text">NAD ≤ 1:</span>
-                                    <span class="mda-criterio-valor" id="mdaNAD">0</span>
-                                    <span class="mda-criterio-status" id="mdaStatus2">✗</span>
-                                </div>
-
-                                <div class="mda-criterio" id="mdaCriterio3">
-                                    <span class="mda-criterio-icon"><i class="fas fa-circle"></i></span>
-                                    <span class="mda-criterio-text">PASI ≤ 1 o BSA ≤ 3%:</span>
-                                    <span class="mda-criterio-valor" id="mdaPsoriasis">-</span>
-                                    <span class="mda-criterio-status" id="mdaStatus3">✗</span>
-                                </div>
-
-                                <div class="mda-criterio" id="mdaCriterio4">
-                                    <span class="mda-criterio-icon"><i class="fas fa-circle"></i></span>
-                                    <span class="mda-criterio-text">LEI ≤ 1:</span>
-                                    <span class="mda-criterio-valor" id="mdaLEI">0</span>
-                                    <span class="mda-criterio-status" id="mdaStatus4">✗</span>
-                                </div>
-
-                                <div class="mda-criterio" id="mdaCriterio5">
-                                    <span class="mda-criterio-icon"><i class="fas fa-circle"></i></span>
-                                    <span class="mda-criterio-text">EVA Dolor ≤ 15mm:</span>
-                                    <span class="mda-criterio-valor" id="mdaEvaDolor">0</span>
-                                    <span class="mda-criterio-status" id="mdaStatus5">✗</span>
-                                </div>
-
-                                <div class="mda-criterio" id="mdaCriterio6">
-                                    <span class="mda-criterio-icon"><i class="fas fa-circle"></i></span>
-                                    <span class="mda-criterio-text">EVA Global ≤ 20mm:</span>
-                                    <span class="mda-criterio-valor" id="mdaEvaGlobal">0</span>
-                                    <span class="mda-criterio-status" id="mdaStatus6">✗</span>
-                                </div>
-
-                                <div class="mda-criterio" id="mdaCriterio7">
-                                    <span class="mda-criterio-icon"><i class="fas fa-circle"></i></span>
-                                    <span class="mda-criterio-text">HAQ ≤ 0.5:</span>
-                                    <span class="mda-criterio-valor" id="mdaHAQ">0.00</span>
-                                    <span class="mda-criterio-status" id="mdaStatus7">✗</span>
-                                </div>
-                            </div>
-
-                            <div class="mda-resultado-box">
-                                <div class="mda-resultado-content">
-                                    <span class="mda-resultado-label">Criterios Cumplidos:</span>
-                                    <span class="mda-resultado-score"><span id="mdaCumplidos">0</span> / 7</span>
-                                </div>
-                                <div class="mda-resultado-status" id="mdaResultadoFinal">
-                                    MDA NO ALCANZADO
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- RAPID3 - APs y AR -->
-                        <div class="indices-apartado aps-only ar-only" id="rapid3Section" style="display: none;">
-                            <h5><i class="fas fa-tachometer-alt"></i> RAPID3 (Routine Assessment of Patient Index Data
-                                3)</h5>
-                            <p class="info-note"><i class="fas fa-info-circle"></i> Score 0-30: Función Física MDHAQ
-                                (0-10) + EVA Dolor (0-10) + EVA Global (0-10). Remisión ≤3 | Baja 3.1-6 | Moderada
-                                6.1-12 | Alta >12</p>
-
-                            <!-- Sección 1: Función Física MDHAQ (10 preguntas) -->
-                            <h6 class="haq-section-title"><i
-                                    class="fas fa-walking"></i> Función Física (últimos 7 días)</h6>
-                            <p class="info-note info-note--sm">0 = Sin dificultad | 1 =
-                                Con alguna dificultad | 2 = Con mucha dificultad | 3 = Incapaz</p>
-                            <div class="mdhaq-questions">
-                                <div class="mdhaq-item">
-                                    <label>a. ¿Vestirse solo/a, incluyendo abrocharse botones y atarse los
-                                        zapatos</label>
-                                    <select class="mdhaq-select" id="mdhaqA">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>b. ¿Acostarse y levantarse de la cama</label>
-                                    <select class="mdhaq-select" id="mdhaqB">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>c. ¿Levantar un vaso o taza llena hasta la boca</label>
-                                    <select class="mdhaq-select" id="mdhaqC">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>d. ¿Caminar en terreno llano en exteriores</label>
-                                    <select class="mdhaq-select" id="mdhaqD">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>e. ¿Lavarse y secarse todo el cuerpo</label>
-                                    <select class="mdhaq-select" id="mdhaqE">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>f. ¿Agacharse a recoger ropa del suelo</label>
-                                    <select class="mdhaq-select" id="mdhaqF">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>g. ¿Abrir y cerrar grifos</label>
-                                    <select class="mdhaq-select" id="mdhaqG">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>h. ¿Entrar y salir de un coche, autobús, tren o avión</label>
-                                    <select class="mdhaq-select" id="mdhaqH">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>i. ¿Caminar 3 km si lo desea</label>
-                                    <select class="mdhaq-select" id="mdhaqI">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="mdhaq-item">
-                                    <label>j. ¿Participar en deportes y juegos como desee</label>
-                                    <select class="mdhaq-select" id="mdhaqJ">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="rapid3-fn-result scale-hint">
-                                <span>FN Raw: <strong id="rapid3FnRaw">0</strong>/30</span> →
-                                <span>FN Ponderada: <strong id="rapid3Funcion">0.0</strong>/10</span>
-                            </div>
-
-
-                            <!-- Sección 2 y 3: EVAs (auto desde PROs) -->
-                            <div class="rapid3-components rapid3-components--spaced">
-                                <div class="rapid3-component">
-                                    <span class="rapid3-component-label">EVA Dolor (0-10):</span>
-                                    <span class="rapid3-component-valor" id="rapid3Dolor">0.0</span>
-                                </div>
-                                <div class="rapid3-component">
-                                    <span class="rapid3-component-label">EVA Global Paciente (0-10):</span>
-                                    <span class="rapid3-component-valor" id="rapid3Global">0.0</span>
-                                </div>
-                            </div>
-
-                            <div class="rapid3-resultado-box">
-                                <div class="rapid3-resultado-content">
-                                    <span class="rapid3-resultado-label">RAPID3 Total:</span>
-                                    <span class="rapid3-resultado-score" id="rapid3Total">0.0</span>
-                                    <span>/30</span>
-                                </div>
-                                <div class="rapid3-resultado-categoria" id="rapid3Categoria">
-                                    Casi Remisión (≤3)
-                                </div>
-                            </div>
+                            <button type="button" id="btnCopiarTSV" class="action-btn success-btn" disabled>
+                                <i class="fas fa-copy"></i> Copiar fila para Base de Datos
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="collapsible-section">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-pills"></i> Plan Terapéutico</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="collapsible-content">
-                        <!-- Tratamientos estructurados con diseño mejorado -->
-                        <div class="treatment-panel-improved">
-                            <div class="treatment-grid-improved">
-                                <div class="treatment-line-improved">
-                                    <div class="treatment-label-improved">Tratamientos sistémicos</div>
-                                    <div class="treatment-controls-improved">
-                                        <select id="sistemicoSelect"
-                                            class="tratamiento-dropdown treatment-select-improved">
-                                            <!-- Poblado dinámicamente desde la base de datos -->
-                                        </select>
-                                        <input type="text" id="sistemicoDose"
-                                            class="dosis-input treatment-dose-input-improved"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn" data-type="plan-sistemico"
-                                            title="Añadir otro"><i class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="planSistemicosExtras"></div>
-                                <div class="treatment-line-improved">
-                                    <div class="treatment-label-improved">FAMEs</div>
-                                    <div class="treatment-controls-improved">
-                                        <select id="fameSelect" class="tratamiento-dropdown treatment-select-improved">
-                                            <!-- Poblado dinámicamente desde la base de datos -->
-                                        </select>
-                                        <input type="text" id="fameDose"
-                                            class="dosis-input treatment-dose-input-improved"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn" data-type="plan-fame"
-                                            title="Añadir otro"><i class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="planFamesExtras"></div>
-                                <div class="treatment-line-improved">
-                                    <div class="treatment-label-improved">Biológicos</div>
-                                    <div class="treatment-controls-improved">
-                                        <select id="biologicoSelect"
-                                            class="tratamiento-dropdown treatment-select-improved">
-                                            <!-- Poblado dinámicamente desde la base de datos -->
-                                        </select>
-                                        <input type="text" id="biologicoDose"
-                                            class="dosis-input treatment-dose-input-improved"
-                                            placeholder="Dosis / frecuencia" disabled>
-                                        <button type="button" class="add-treatment-line-btn" data-type="plan-biologico"
-                                            title="Añadir otro"><i class="fas fa-plus-circle"></i></button>
-                                    </div>
-                                </div>
-                                <div id="planBiologicosExtras"></div>
-                            </div>
-                        </div>
-
-                        <!-- Fecha próxima revisión -->
-                        <div class="plan-next-review-card-improved">
-                            <label for="fechaProximaRevision">Fecha próxima revisión</label>
-                            <input type="date" id="fechaProximaRevision" class="plan-date-input-improved">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="collapsible-section">
-                    <button class="collapsible-header">
-                        <span class="header-icon-text"><i class="fas fa-comment-medical"></i> Comentarios
-                            Adicionales</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="collapsible-content">
-                        <div class="form-group">
-                            <label for="comentariosAdicionales">Observaciones y Comentarios:</label>
-                            <textarea id="comentariosAdicionales" rows="6"
-                                placeholder="Espacio para anotaciones clínicas adicionales, observaciones relevantes, plan de seguimiento, o cualquier información complementaria..."></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button id="btnExportarTXT" class="action-btn primary-btn"><i class="fas fa-file-alt"></i> Convertir
-                        TXT (Historia Clínica)</button>
-                    <button id="btnEstructurarCSV" class="action-btn success-btn"><i class="fas fa-file-csv"></i>
-                        Estructurar CSV (Excel)</button>
-                    <button id="btnNuevoPaciente" class="action-btn warning-btn"><i class="fas fa-user-plus"></i> Nuevo
-                        Paciente</button>
-                </div>
             </div>
         </main>
     </div>
@@ -1961,21 +968,18 @@
     <!-- Cargar SheetJS para manejo de Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-    <!-- MÓDULOS HUBTOOLS - ORDEN CRÍTICO: hubTools.js PRIMERO -->
-    <script src="modules/hubTools.js?v=20260306l"></script>
-    <script src="modules/utils.js?v=20260306l"></script>
-    <script src="modules/customSelect.js?v=20260307a"></script>
-    <script src="modules/fieldNormalizer.js?v=20260306l"></script>
-    <script src="modules/mockPatients.js?v=20260306l"></script>
-    <script src="modules/scoreCalculators.js?v=20260306l"></script>
-    <script src="modules/homunculus.js?v=20260306l"></script>
-    <script src="modules/dataManager.js?v=20260307s"></script>
-    <script src="modules/exportManager.js?v=20260306l"></script>
-    <script src="modules/formController.js?v=20260307n"></script>
+    <!-- MÓDULOS HUBTOOLS HS — ORDEN CRÍTICO -->
+    <script src="modules/hubTools.js?v=20260502c"></script>
+    <script src="modules/utils.js?v=20260502c"></script>
+    <script src="modules/hsConfig.js?v=20260502c"></script>
+    <script src="modules/scoresHS.js?v=20260502c"></script>
+    <script src="modules/exportManagerHS.js?v=20260502c"></script>
+    <script src="modules/fieldNormalizer.js?v=20260502c"></script>
+    <script src="modules/dataManager.js?v=20260502c"></script>
+    <script src="modules/formControllerHS.js?v=20260502c"></script>
 
-    <!-- Scripts globales y coordinadores -->
-    <script src="script.js?v=20260307t"></script>
-    <script src="scripts/script_primera_visita.js?v=20260306l"></script>
+    <!-- Scripts globales -->
+    <script src="script.js?v=20260502c"></script>
 </body>
 
 </html>

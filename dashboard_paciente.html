@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard del Paciente - Hub Clínico Reumatológico</title>
+    <title>Dashboard del Paciente - Hub Clínico HS Canarias</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260307t">
-    <link rel="stylesheet" href="style_dashboard.css?v=20260307s">
+    <link rel="stylesheet" href="style.css?v=20260502b">
+    <link rel="stylesheet" href="style_dashboard.css?v=20260502b">
 </head>
 <body>
 
@@ -16,7 +16,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-circle"><span class="logo-text">HC</span></div>
-                <h1 class="sidebar-title">Hub Clínico<br>Reumatología</h1>
+                <h1 class="sidebar-title">Hub Clínico<br>HS Canarias</h1>
             </div>
 
             <div class="user-block">
@@ -28,7 +28,7 @@
             </div>
 
             <div class="search-container">
-                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por ID..." autocomplete="off">
+                <input type="text" id="patientSearch" class="search-input" placeholder="Buscar paciente por NHC..." autocomplete="off">
                 <i class="fas fa-search search-icon" aria-hidden="true"></i>
                 <button type="button" class="clear-search hidden" id="clearPatientSearch" aria-label="Limpiar búsqueda">
                     <i class="fas fa-times-circle"></i>
@@ -67,16 +67,16 @@
 
         <!-- MAIN CONTENT -->
         <main class="main-content dashboard-paciente">
-            <!-- Empty State (cuando no hay paciente seleccionado) -->
-            <div class="empty-state hidden" id="emptyState">
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState">
                 <i class="fas fa-user-injured"></i>
-                <h2 id="emptyStateTitle">Sin datos disponibles</h2>
-                <p id="emptyStateSubtitle">Busca un paciente para cargar su cuadro de mando.</p>
+                <h2>Sin datos disponibles</h2>
+                <p>Busca un paciente para cargar su cuadro de mando.</p>
             </div>
 
-            <!-- Dashboard Content (se muestra cuando hay paciente) -->
-            <div id="dashboardContent">
-                <!-- Header Premium del Paciente -->
+            <!-- Dashboard Content -->
+            <div id="dashboardContent" class="hidden">
+                <!-- Cabecera del Paciente -->
                 <div class="patient-header-card" id="patientHeaderCard">
                     <div class="patient-header-main">
                         <div class="patient-avatar">
@@ -84,12 +84,9 @@
                         </div>
                         <div class="patient-info">
                             <div class="patient-id-badge" id="patientIdBadge">---</div>
-                            <h1 class="patient-name" id="patientName">Nombre del Paciente</h1>
+                            <h1 class="patient-name" id="patientName">Paciente HS</h1>
                             <div class="patient-meta">
-                                <span><i class="fas fa-stethoscope"></i> <span id="patientDiagnosis">---</span></span>
-                                <span><i class="fas fa-calendar-alt"></i> Última visita: <span id="patientLastVisit">---</span></span>
-                                <span><i class="fas fa-birthday-cake"></i> <span id="patientAge">---</span> años</span>
-                                <span><i class="fas fa-venus-mars"></i> <span id="patientGender">---</span></span>
+                                <span><i class="fas fa-stethoscope"></i> <span id="patientDiagnosis">Hidradenitis Supurativa</span></span>
                             </div>
                         </div>
                         <div class="patient-status-badge" id="patientStatusBadge">
@@ -106,170 +103,55 @@
 
                 <!-- KPIs del Paciente -->
                 <div class="patient-kpis" id="patientKpis">
-                    <div class="kpi-card" id="kpiBASDAI">
-                        <div class="kpi-icon"><i class="fas fa-chart-line"></i></div>
-                        <span class="kpi-value" id="kpiBASDAIValue">---</span>
-                        <span class="kpi-label" id="kpiPrimaryMetricLabel">BASDAI</span>
-                        <span class="kpi-status" id="kpiBASDAIStatus">---</span>
-                        <span class="kpi-threshold" id="kpiBASDAIThreshold"></span>
-                    </div>
-                    <div class="kpi-card" id="kpiASDAS">
-                        <div class="kpi-icon"><i class="fas fa-fire"></i></div>
-                        <span class="kpi-value" id="kpiASDASValue">---</span>
-                        <span class="kpi-label" id="kpiSecondaryMetricLabel">ASDAS</span>
-                        <span class="kpi-status" id="kpiASDASStatus">---</span>
-                        <span class="kpi-threshold" id="kpiASDASThreshold"></span>
-                    </div>
-                    <div class="kpi-card" id="kpiPCR">
-                        <div class="kpi-icon"><i class="fas fa-vial"></i></div>
-                        <span class="kpi-value" id="kpiPCRValue">---</span>
-                        <span class="kpi-label">PCR (mg/L)</span>
-                        <span class="kpi-status" id="kpiPCRStatus">---</span>
-                        <span class="kpi-threshold" id="kpiPCRThreshold"></span>
-                    </div>
-                    <div class="kpi-card kpi-card--biologic" id="kpiTratamiento">
-                        <div class="kpi-icon"><i class="fas fa-pills"></i></div>
-                        <span class="kpi-value kpi-value-small" id="kpiTratamientoValue">---</span>
-                        <span class="kpi-label">Tratamiento</span>
-                        <span class="kpi-status" id="kpiTratamientoStatus">---</span>
-                    </div>
-                    <div class="kpi-card" id="kpiVisitas">
-                        <div class="kpi-icon"><i class="fas fa-calendar-check"></i></div>
-                        <span class="kpi-value" id="kpiVisitasValue">---</span>
-                        <span class="kpi-label">Visitas</span>
-                        <span class="kpi-status" id="kpiVisitasStatus">---</span>
-                    </div>
+                    <!-- Se rellena dinámicamente -->
                 </div>
 
                 <!-- Grid de Tarjetas -->
                 <div class="dashboard-grid" id="dashboardGrid">
-                    <!-- Tarjeta 1: Datos Generales del Paciente -->
-                    <div class="dashboard-card dashboard-card--clinical">
-                        <h2 class="card-title"><i class="fas fa-user-circle"></i> Datos Generales</h2>
-                        <div class="card-content">
-                            <ul>
-                                <li><strong>ID:</strong> <span id="patientGeneralId">---</span></li>
-                                <li><strong>Nombre:</strong> <span id="patientGeneralName">---</span></li>
-                                <li><strong>Sexo:</strong> <span id="patientGeneralGender">---</span></li>
-                                <li><strong>Edad:</strong> <span id="patientGeneralAge">---</span></li>
-                                <li><strong>Diagnóstico:</strong> <span id="patientGeneralDiagnosis">---</span></li>
-                                <li><strong>Años de enfermedad:</strong> <span id="patientDiseaseYears">---</span></li>
-                            </ul>
+
+                    <!-- Tarjeta 1: Evolución IHS-4 -->
+                    <div class="dashboard-card dashboard-card--chart">
+                        <h2 class="card-title"><i class="fas fa-chart-line"></i> Evolución IHS-4 Clínico</h2>
+                        <div class="chart-container">
+                            <canvas id="ihs4Chart"></canvas>
                         </div>
+                        <p class="empty-chart-message hidden" id="emptyIHS4Chart">Se necesitan al menos 2 visitas con IHS-4 para mostrar la evolución.</p>
                     </div>
 
-                    <!-- Tarjeta 2: Biomarcadores Clave -->
-                    <div class="dashboard-card dashboard-card--biomarkers">
-                        <h2 class="card-title"><i class="fas fa-dna"></i> Biomarcadores Clave</h2>
-                        <div class="card-content">
-                            <ul>
-                                <li class="biomarker-item"><i class="fas fa-vial"></i> HLA-B27: <span id="biomarkerHlaB27">---</span></li>
-                                <li class="biomarker-item"><i class="fas fa-vial"></i> FR: <span id="biomarkerFr">---</span></li>
-                                <li class="biomarker-item"><i class="fas fa-vial"></i> aPCC: <span id="biomarkerApcc">---</span></li>
-                            </ul>
+                    <!-- Tarjeta 2: PROMs (DLQI + EVA Dolor) -->
+                    <div class="dashboard-card dashboard-card--chart">
+                        <h2 class="card-title"><i class="fas fa-user-edit"></i> PROMs: DLQI y EVA Dolor</h2>
+                        <div class="chart-container">
+                            <canvas id="promsChart"></canvas>
                         </div>
+                        <p class="empty-chart-message hidden" id="emptyPROMsChart">Sin datos PROMs registrados.</p>
                     </div>
 
-                    <!-- Tarjeta 3: Resumen Clínico Rápido -->
-                    <div class="dashboard-card dashboard-card--summary">
-                        <h2 class="card-title"><i class="fas fa-notes-medical"></i> Resumen Clínico</h2>
-                        <div class="card-content">
-                            <p><strong>Comorbilidades:</strong></p>
-                            <ul id="comorbiditiesList">
-                                <li>Sin comorbilidades registradas</li>
-                            </ul>
-                            <p style="margin-top: 12px;"><strong>Manifestaciones Extra-articulares:</strong></p>
-                            <ul id="extraArticularManifestationsList">
-                                <li>Sin manifestaciones registradas</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Tarjeta 4: Tratamiento Activo -->
+                    <!-- Tarjeta 3: Timeline de Tratamiento -->
                     <div class="dashboard-card dashboard-card--treatment">
-                        <h2 class="card-title"><i class="fas fa-prescription-bottle-alt"></i> Tratamiento Activo</h2>
-                        <div class="card-content">
-                            <ul>
-                                <li><strong>Fármaco:</strong> <span id="activeTreatmentName">---</span></li>
-                                <li><strong>Fecha Inicio:</strong> <span id="activeTreatmentStartDate">---</span></li>
-                                <li><strong>Duración:</strong> <span id="activeTreatmentDuration">---</span></li>
-                            </ul>
+                        <h2 class="card-title"><i class="fas fa-prescription-bottle-alt"></i> Historial de Tratamientos</h2>
+                        <div class="card-content timeline" id="treatmentTimeline">
+                            <p class="empty-message">No hay historial de tratamientos.</p>
                         </div>
                     </div>
 
-                    <!-- Tarjeta 5: Historial de Tratamientos -->
-                    <div class="dashboard-card dashboard-card--history">
-                        <h2 class="card-title"><i class="fas fa-history"></i> Historial de Tratamientos</h2>
-                        <div class="card-content timeline" id="treatmentHistory">
-                            <p class="empty-message">No hay historial de tratamientos previos.</p>
+                    <!-- Tarjeta 4: Regiones Afectas -->
+                    <div class="dashboard-card dashboard-card--clinical">
+                        <h2 class="card-title"><i class="fas fa-map-marked-alt"></i> Regiones Más Afectas</h2>
+                        <div class="chart-container" style="min-height:250px;">
+                            <canvas id="regionChart"></canvas>
                         </div>
                     </div>
 
-                    <!-- Tarjeta 6: Eventos Clínicos Clave -->
+                    <!-- Tarjeta 5: Eventos Clínicos -->
                     <div class="dashboard-card dashboard-card--events">
                         <h2 class="card-title"><i class="fas fa-exclamation-triangle"></i> Eventos Clínicos</h2>
-                        <div class="card-content timeline" id="keyEventsTimeline">
+                        <div class="card-content timeline" id="eventsTimeline">
                             <p class="empty-message">No hay eventos clínicos registrados.</p>
                         </div>
                     </div>
 
-                    <!-- Tarjeta 7: Evoluci&oacute;n de &Iacute;ndices de Actividad -->
-                    <div class="dashboard-card dashboard-card--chart">
-                        <h2 class="card-title"><i class="fas fa-chart-area"></i> Evoluci&oacute;n de &Iacute;ndices de Actividad</h2>
-                        <div class="chart-controls">
-                            <label for="selectActivityIndex">&Iacute;ndice:</label>
-                            <select id="selectActivityIndex" class="select-modern">
-                                <option value="basdai">BASDAI</option>
-                                <option value="asdas">ASDAS</option>
-                                <option value="basfi">BASFI</option>
-                                <option value="haq">HAQ</option>
-                                <option value="lei">LEI</option>
-                                <option value="rapid3">RAPID3</option>
-                                <option value="pcr">PCR</option>
-                                <option value="vsg">VSG</option>
-                            </select>
-                            <input type="checkbox" id="compareActivityCheckbox">
-                            <label for="compareActivityCheckbox">Comparar con:</label>
-                            <select id="compareActivityIndexSelect" class="select-modern hidden">
-                                <option value="asdas">ASDAS</option>
-                                <option value="basdai">BASDAI</option>
-                                <option value="basfi">BASFI</option>
-                                <option value="haq">HAQ</option>
-                                <option value="lei">LEI</option>
-                                <option value="rapid3">RAPID3</option>
-                                <option value="pcr">PCR</option>
-                                <option value="vsg">VSG</option>
-                            </select>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="activityChart"></canvas>
-                        </div>
-                        <p class="empty-chart-message hidden" id="emptyActivityChart">Se necesitan al menos 2 visitas para mostrar la evolución.</p>
-                    </div>
-
-                    <!-- Tarjeta 8: Evolución Reporte Paciente (PROs) -->
-                    <div class="dashboard-card dashboard-card--chart">
-                        <h2 class="card-title"><i class="fas fa-user-edit"></i> Evolución PROs (Reportes del Paciente)</h2>
-                        <div class="chart-controls">
-                            <label for="selectPRO">PRO:</label>
-                            <select id="selectPRO" class="select-modern">
-                                <option value="evaDolor">EVA Dolor</option>
-                                <option value="evaGlobal">EVA Global</option>
-                            </select>
-                            <input type="checkbox" id="comparePROCheckbox">
-                            <label for="comparePROCheckbox">Comparar con:</label>
-                            <select id="comparePROSelect" class="select-modern hidden">
-                                <option value="evaGlobal">EVA Global</option>
-                                <option value="evaDolor">EVA Dolor</option>
-                            </select>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="proChart"></canvas>
-                        </div>
-                        <p class="empty-chart-message hidden" id="emptyPROChart">Se necesitan al menos 2 visitas para mostrar la evolución.</p>
-                    </div>
-
-                    <!-- Tarjeta 9: Historial de Visitas (Tabla) -->
+                    <!-- Tarjeta 6: Historial de Visitas (Tabla) -->
                     <div class="dashboard-card visits-table-card">
                         <div class="table-header">
                             <h2 class="card-title"><i class="fas fa-list-alt"></i> Historial de Visitas</h2>
@@ -281,24 +163,22 @@
                             <table class="data-table" id="visitsTable">
                                 <thead>
                                     <tr>
-                                        <th data-sort="fecha">Fecha <i class="fas fa-sort"></i></th>
-                                        <th data-sort="basdai" id="visitsTablePrimaryHeader">BASDAI <i class="fas fa-sort"></i></th>
-                                        <th data-sort="asdas" id="visitsTableSecondaryHeader">ASDAS <i class="fas fa-sort"></i></th>
-                                        <th data-sort="evaDolor">EVA Dolor <i class="fas fa-sort"></i></th>
-                                        <th data-sort="pcr">PCR <i class="fas fa-sort"></i></th>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>
+                                        <th>IHS-4</th>
+                                        <th>Categoría</th>
+                                        <th>Hurley</th>
                                         <th>Tratamiento</th>
+                                        <th>Decisión</th>
+                                        <th>Próxima Revisión</th>
                                     </tr>
                                 </thead>
                                 <tbody id="visitsTableBody">
                                     <tr>
-                                        <td colspan="6" class="empty-message">No hay visitas registradas.</td>
+                                        <td colspan="8" class="empty-message">No hay visitas registradas.</td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="table-pagination" id="visitsPagination">
-                            <span class="pagination-info" id="paginationInfo">Mostrando 0 de 0 visitas</span>
-                            <div class="pagination-controls" id="paginationControls"></div>
                         </div>
                     </div>
                 </div>
@@ -312,18 +192,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 
-    <script src="modules/hubTools.js?v=20260306l"></script>
-    <script src="modules/utils.js?v=20260306l"></script>
-    <script src="modules/customSelect.js?v=20260307a"></script>
-    <script src="modules/fieldNormalizer.js?v=20260306l"></script>
-    <script src="modules/mockPatients.js?v=20260306l"></script>
-    <script src="modules/scoreCalculators.js?v=20260306l"></script>
-    <script src="modules/homunculus.js?v=20260306l"></script>
-    <script src="modules/exportManager.js?v=20260306l"></script>
-    <script src="modules/formController.js?v=20260307m"></script>
-    <script src="modules/dataManager.js?v=20260307s"></script>
+    <script src="modules/hubTools.js?v=20260502b"></script>
+    <script src="modules/utils.js?v=20260502b"></script>
+    <script src="modules/customSelect.js?v=20260502b"></script>
+    <script src="modules/fieldNormalizer.js?v=20260502b"></script>
+    <script src="modules/scoresHS.js?v=20260502b"></script>
+    <script src="modules/hsConfig.js?v=20260502b"></script>
+    <script src="modules/dataManager.js?v=20260502b"></script>
 
-    <script src="script.js?v=20260307t"></script>
-    <script src="scripts/script_dashboard.js?v=20260307s"></script>
+    <script src="script.js?v=20260502b"></script>
+    <script src="modules/dashboardHS.js?v=20260502b"></script>
 </body>
 </html>
