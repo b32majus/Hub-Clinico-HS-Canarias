@@ -193,8 +193,9 @@
   function recalculateEcoIHS4() {
     const ecoN = toNum(val('Eco_Nodulos_Total'));
     const ecoA = toNum(val('Eco_Abscesos_Total'));
+    const ecoF = toNum(val('Eco_Fistulas_Total'));
     const ecoFD = toNum(val('Eco_Fistulas_Drenantes_Total'));
-    const score = ecoN + (ecoA * 2) + (ecoFD * 4);
+    const score = ecoN + (ecoA * 2) + ((ecoF + ecoFD) * 4);
     setVal('IHS4_Ecografico', score);
     setVal('IHS4_Ecografico_Categoria', HubTools?.scoresHS?.categorizeIHS4?.(score) || '');
   }
@@ -231,6 +232,7 @@
     const ihs4 = HubTools?.scoresHS?.calculateIHS4?.({
       nodulos: totalNodulos,
       abscesos: totalAbscesos,
+      fistulas: totalFistulas,
       fistulasDrenantes: totalFistulasDrenantes
     });
 
@@ -306,7 +308,7 @@
       if (el) el.addEventListener('input', recalculateIMC);
     });
 
-    ['Eco_Nodulos_Total', 'Eco_Abscesos_Total', 'Eco_Fistulas_Drenantes_Total'].forEach((id) => {
+    ['Eco_Nodulos_Total', 'Eco_Abscesos_Total', 'Eco_Fistulas_Total', 'Eco_Fistulas_Drenantes_Total'].forEach((id) => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', recalculateEcoIHS4);
     });

@@ -6,8 +6,9 @@ function toNumber(value, fallback = 0) {
   return Number.isNaN(num) ? fallback : num;
 }
 
-function calculateIHS4({ nodulos, abscesos, fistulasDrenantes }) {
-  return toNumber(nodulos) + (toNumber(abscesos) * 2) + (toNumber(fistulasDrenantes) * 4);
+function calculateIHS4({ nodulos, abscesos, fistulas, fistulasDrenantes }) {
+  const totalFistulasIHS4 = toNumber(fistulas) + toNumber(fistulasDrenantes);
+  return toNumber(nodulos) + (toNumber(abscesos) * 2) + (totalFistulasIHS4 * 4);
 }
 
 function categorizeIHS4(score) {

@@ -111,7 +111,7 @@
     // Actividad clínica
     lines.push('── ACTIVIDAD CLÍNICA HS ──');
     lines.push('Hurley: ' + (datos.Hurley || '—'));
-    lines.push('Nódulos: ' + (datos.Nodulos_Total || '0') + ' | Abscesos: ' + (datos.Abscesos_Total || '0') + ' | Fístulas: ' + (datos.Fistulas_Total || '0') + ' | Fístulas drenantes: ' + (datos.Fistulas_Drenantes_Total || '0'));
+    lines.push('Nódulos: ' + (datos.Nodulos_Total || '0') + ' | Abscesos: ' + (datos.Abscesos_Total || '0') + ' | Fístulas no drenantes: ' + (datos.Fistulas_Total || '0') + ' | Fístulas drenantes: ' + (datos.Fistulas_Drenantes_Total || '0'));
     lines.push('IHS-4: ' + (datos.IHS4_Clinico || '0') + ' (' + (datos.IHS4_Clinico_Categoria || 'ND') + ')');
     lines.push('Dolor EVA: ' + (datos.Dolor_EVA || '—') + ' | Prurito EVA: ' + (datos.Prurito_EVA || '—') + ' | Supuración EVA: ' + (datos.Supuracion_EVA || '—'));
     lines.push('Brotes (3 meses): ' + (datos.Brotes_Ultimos_3_Meses || '0'));
@@ -147,7 +147,7 @@
     // Ecografía
     if (datos.Ecografia_Realizada === 'SI') {
       lines.push('── ECOGRAFÍA ──');
-      lines.push('Eco Nódulos: ' + (datos.Eco_Nodulos_Total || '0') + ' | Abscesos: ' + (datos.Eco_Abscesos_Total || '0') + ' | Fístulas: ' + (datos.Eco_Fistulas_Total || '0') + ' | Drenantes: ' + (datos.Eco_Fistulas_Drenantes_Total || '0'));
+    lines.push('Eco Nódulos: ' + (datos.Eco_Nodulos_Total || '0') + ' | Abscesos: ' + (datos.Eco_Abscesos_Total || '0') + ' | Fístulas no drenantes: ' + (datos.Eco_Fistulas_Total || '0') + ' | Fístulas drenantes: ' + (datos.Eco_Fistulas_Drenantes_Total || '0'));
       lines.push('IHS-4 Eco: ' + (datos.IHS4_Ecografico || '0') + ' (' + (datos.IHS4_Ecografico_Categoria || 'ND') + ')');
       lines.push('Doppler: ' + (datos.Doppler_Positivo || '—'));
       if (datos.Hallazgos_Ecograficos) lines.push('Hallazgos: ' + datos.Hallazgos_Ecograficos);

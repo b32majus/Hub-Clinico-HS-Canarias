@@ -55,7 +55,12 @@ Las cabeceras están definidas en `modules/hsConfig.js` → `HS_EXPORT_HEADERS`,
 
 ## Score IHS-4
 
-**Fórmula:** `IHS-4 = Nódulos + 2 × Abscesos + 4 × Fístulas drenantes`
+**Fórmula:** `IHS-4 = Nódulos + 2 × Abscesos + 4 × (Fístulas + Fístulas drenantes)`
+
+Regla de registro clínico:
+- Si la fístula no drena, registrar en **Fístulas**.
+- Si la fístula es drenante, registrar en **Fístulas drenantes**.
+- No registrar la misma lesión en ambas columnas.
 
 | Categoría | Rango |
 |-----------|-------|

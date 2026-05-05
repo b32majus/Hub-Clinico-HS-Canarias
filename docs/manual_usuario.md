@@ -32,6 +32,10 @@ Necesitas:
 1. Entrar en **Primera visita HS**.
 2. Completar datos obligatorios y bloques clínicos.
 3. Revisar el cálculo automático de IHS-4.
+   - Fórmula aplicada: `IHS-4 = Nódulos + 2 × Abscesos + 4 × (Fístulas + Fístulas drenantes)`.
+   - Si la fístula no drena, registrarla en **Fístulas**.
+   - Si la fístula drena, registrarla solo en **Fístulas drenantes**.
+   - No registrar la misma lesión en ambas columnas.
 4. Generar y copiar primero el **TXT** para historia clínica.
 5. Copiar el **TSV**.
 6. Pegar la fila en la hoja `HS` del Excel maestro.

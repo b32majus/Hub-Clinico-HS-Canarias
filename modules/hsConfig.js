@@ -42,7 +42,7 @@ const HS_REGIONS = [
 const HS_LESION_TYPES = [
   { key: 'Nodulos', label: 'Nódulos' },
   { key: 'Abscesos', label: 'Abscesos' },
-  { key: 'Fistulas', label: 'Fístulas' },
+  { key: 'Fistulas', label: 'Fístulas no drenantes' },
   { key: 'Fistulas_Drenantes', label: 'Fístulas drenantes' }
 ];
 
