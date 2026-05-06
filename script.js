@@ -289,10 +289,9 @@ function initSessionGate() {
         populateGateSelect();
     }
 
-    // Si la BD ya está en caché de esta pestaña, ir directamente al paso de selección
-    if (sessionStorage.getItem('hubClinicoDB')) {
-        showSelectStep();
-    }
+    // HOTFIX: tras cerrar sesión, forzar siempre paso de carga para permitir
+    // recargar/cambiar la base antes de elegir profesional.
+    // Evita quedar bloqueado en selector vacío por estado cacheado inconsistente.
 
     if (gateLoadBtn && gateExcelInput) {
         gateLoadBtn.addEventListener('click', function() {
